@@ -18,7 +18,7 @@ function Home() {
             <Canvas precision="high" shadows>
                 <Camera />
                 <Lighting />
-                <Model ref={modelRef} />
+                <Model ref={modelRef}/>
                 <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
                 <Stats />
                 <ModelController modelRef={modelRef} />

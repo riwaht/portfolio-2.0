@@ -3,8 +3,7 @@ import { useThree } from '@react-three/fiber'
 
 function Camera() {
     const { camera } = useThree()
-    camera.position.set(10, 30, 60)
-    camera.fov = 50
+    camera.position.set(10, 30, 50)
 
     return null
 }
