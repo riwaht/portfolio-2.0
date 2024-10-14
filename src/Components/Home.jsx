@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 import Camera from './Camera';
 import Lighting from './Lighting';
-import Model from './Model';
 import ModelController from '../Controllers/ModelController';
 import '../styles.css';
 import steps from '../Utils/steps.json';
@@ -12,6 +11,7 @@ import WalkthroughController from '../Controllers/WalkthroughController';
 
 function Home() {
     const modelRef = useRef();
+    const Model = React.lazy(() => import('./Model'));
     const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({}); // Track completed events
@@ -67,6 +67,7 @@ function Home() {
                 completedEvents={completedEvents[currentStep] || {}}
             />
             <Canvas precision="high" shadows>
+                <Suspense fallback={<div>Loading...</div>} />
                 <Camera />
                 <Lighting />
                 <Model ref={modelRef} />
