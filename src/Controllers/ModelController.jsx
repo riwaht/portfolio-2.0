@@ -6,11 +6,11 @@ function ModelController({ modelRef }) {
     const [targetRotationY, setTargetRotationY] = useState(0);
     const rotationSpeed = 0.1;
 
-    useFrame(() => {
-        if (modelRef.current) {
-            modelRef.current.rotation.y += (targetRotationY - modelRef.current.rotation.y) * rotationSpeed;
-        }
-    });
+    // useFrame(() => {
+    //     if (modelRef.current) {
+    //         modelRef.current.rotation.y += (targetRotationY - modelRef.current.rotation.y) * rotationSpeed;
+    //     }
+    // });
 
     useEffect(() => {
         const handleScroll = (event) => {
