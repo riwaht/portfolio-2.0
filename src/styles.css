@@ -79,3 +79,30 @@ button:disabled:hover {
   background-color: #cccccc; /* Maintain gray color when hovering */
   transform: none; /* No hover effect when disabled */
 }
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full height of the viewport */
+  background-color: #f0f0f0; /* Light background color */
+}
+
+.loader {
+  border: 8px solid #e0e0e0; /* Light gray border */
+  border-top: 8px solid #3498db; /* Blue top */
+  border-radius: 50%;
+  width: 60px; /* Width of the loader */
+  height: 60px; /* Height of the loader */
+  animation: spin 1s linear infinite; /* Spin animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

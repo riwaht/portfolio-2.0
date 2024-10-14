@@ -2,10 +2,9 @@ import React, { forwardRef, useEffect, useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 
 // Use forwardRef to properly assign the ref
-const Model = forwardRef((props, ref) => {
+const Model = forwardRef(({ onLoad, ...props }, ref) => {
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
-
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
 
     // Ensure ref is assigned when the model is loaded
@@ -13,8 +12,9 @@ const Model = forwardRef((props, ref) => {
         if (scene && ref) {
             ref.current = scene;  // Assign the model scene to ref
             console.log("Model has loaded, ref is assigned:", ref.current);
+            if (onLoad) onLoad();  // Call the onLoad callback if provided
         }
-    }, [scene, ref]);  // Only run this effect when scene or ref changes
+    }, [scene, ref, onLoad]);  // Only run this effect when scene or ref changes
 
     // Loop over nodes and apply shadow settings based on object name
     useMemo(() => {
@@ -115,8 +115,8 @@ const Model = forwardRef((props, ref) => {
                 <mesh geometry={nodes.Object_0010_1.geometry} material={materials.Material} />
                 <mesh geometry={nodes.Object_2004.geometry} material={materials.StingrayPBS4SG} />
                 <mesh geometry={nodes.Object_2004_1.geometry} material={materials.StingrayPBS5SG} />
-                <mesh geometry={nodes.Mesh1_GRANITE_0.geometry} material={materials.GRANITE} />
-                <mesh geometry={nodes.Mesh1_GRANITE_0_1.geometry} material={materials['GRANITE.001']} />
+                <mesh geometry={nodes.Mesh1_GRANITE_0.geometry} material={materials.GRANITE} receiveShadow />
+                <mesh geometry={nodes.Mesh1_GRANITE_0_1.geometry} material={materials['GRANITE.001']} receiveShadow />
                 <mesh geometry={nodes.Object_3003.geometry} material={materials.bark} />
                 <mesh geometry={nodes.Object_3003_1.geometry} material={materials.foliage} />
                 <mesh geometry={nodes.Object_3003_2.geometry} material={materials.fruit} />
@@ -130,4 +130,4 @@ const Model = forwardRef((props, ref) => {
 export default Model;
 
 // Don't forget to preload Draco decoder
-useGLTF.preload('/Models/house-transformed.glb');
+useGLTF.preload('/Models/house-transformed.glb', true, '/draco-gltf/');

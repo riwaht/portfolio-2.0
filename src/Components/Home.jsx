@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 import Camera from './Camera';
@@ -8,24 +8,32 @@ import '../styles.css';
 import steps from '../Utils/steps.json';
 import WalkthroughUI from './WalkthroughUI';
 import WalkthroughController from '../Controllers/WalkthroughController';
+import Loading from '../Utils/Loading'; // Import the Loading component
 
 function Home() {
     const modelRef = useRef();
     const Model = React.lazy(() => import('./Model'));
     const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    const [completedEvents, setCompletedEvents] = useState({}); // Track completed events
+    const [completedEvents, setCompletedEvents] = useState({});
+    const [isLoading, setIsLoading] = useState(true); // Loading state
 
-    // Destructure step details for clarity
     const { description, events } = steps[currentStep] || {};
 
-    // Move to the next step if all events are completed
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsLoading(false); // Set loading to false after 2 seconds
+        }, 2000);
+
+        return () => clearTimeout(timeout);
+    }
+        , []); // Run only once
+
     const nextStep = () => {
         if (!isTransitioning && currentStep < steps.length - 1) {
-            // Check if all required events for this step are completed
             const allEventsCompleted = events
                 ? Object.keys(events).every(event => completedEvents[currentStep]?.[event] === true)
-                : true; // If no events, automatically complete
+                : true;
 
             if (!allEventsCompleted) {
                 console.log('All events not completed for this step');
@@ -51,35 +59,46 @@ function Home() {
         }));
     };
 
+    const handleModelLoad = () => {
+        setIsLoading(false);
+    };
+
     return (
         <div className="container">
             <header className="header">
                 <h1>Riwa Hoteit</h1>
             </header>
-            <WalkthroughUI
-                currentStep={currentStep}
-                stepDescription={description}
-                nextStep={nextStep}
-                prevStep={prevStep}
-                isTransitioning={isTransitioning}
-                completeEvent={completeEvent}
-                events={events}
-                completedEvents={completedEvents[currentStep] || {}}
-            />
-            <Canvas precision="high" shadows>
-                <Suspense fallback={<div>Loading...</div>} />
-                <Camera />
-                <Lighting />
-                <Model ref={modelRef} />
-                <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                <Stats />
-                <ModelController modelRef={modelRef} />
-                <WalkthroughController
-                    steps={steps}
-                    currentStep={currentStep}
-                    setIsTransitioning={setIsTransitioning}
-                />
-            </Canvas>
+            {isLoading ? (
+                <Loading /> // Show loading component if loading
+            ) : (
+                <>
+                    <WalkthroughUI
+                        currentStep={currentStep}
+                        stepDescription={description}
+                        nextStep={nextStep}
+                        prevStep={prevStep}
+                        isTransitioning={isTransitioning}
+                        completeEvent={completeEvent}
+                        events={events}
+                        completedEvents={completedEvents[currentStep] || {}}
+                    />
+                    <Canvas precision="high" shadows>
+                        <Suspense fallback={null}>
+                            <Camera />
+                            <Lighting />
+                            <Model ref={modelRef} onLoad={handleModelLoad} />
+                            <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+                            <Stats />
+                            <ModelController modelRef={modelRef} />
+                            <WalkthroughController
+                                steps={steps}
+                                currentStep={currentStep}
+                                setIsTransitioning={setIsTransitioning}
+                            />
+                        </Suspense>
+                    </Canvas>
+                </>
+            )}
         </div>
     );
 }
