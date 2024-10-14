@@ -1,0 +1,101 @@
+[
+    {
+        "position": [50, 30, 50],
+        "lookAt": [0, 0, 0],
+        "description": "Welcome to Riwriw's house! This'll be your home for the next few days (or weeks).",
+        "events" :{
+            "next": false
+        }
+    },
+    {
+        "position": [40, 30, 50],
+        "lookAt": [0, 0, 0],
+        "description": "Here is the kitchen, where you can cook your meals and enjoy a cup of coffee.",
+        "events" : {}
+    },
+    {
+        "position": [27, 15, 20],
+        "lookAt": [12, 5, 0],
+        "description": "This is the fridge, help yourself to anything inside.",
+        "events" : {}
+    },
+    {
+        "position": [17, 15, 30],
+        "lookAt": [-12, 2, 0],
+        "description": "This is the oven. where I make the best pancakes in the world.",
+        "events" : {}
+    },
+    {
+        "position": [40, 30, 50],
+        "lookAt": [0, 0, 0],
+        "description": "Let's go to another room. Click next!",
+        "events" : {}
+    },
+    {
+        "position": [-50, 30, 50],
+        "lookAt": [0, 0, 0],
+        "description": "This is the gym, where you can work out and stay fit.",
+        "events" : {}
+    },
+    {
+        "position": [-20, 10, 10],
+        "lookAt": [0, 0, 0],
+        "description": "These are my boxing gloves, feel free to try them on.",
+        "events" : {}
+    },
+    {
+        "position": [-40, 10, 15],
+        "lookAt": [-10, 3, 0],
+        "description": "These are dip bars, try them out, but be careful.",
+        "events" : {}
+    },
+    {
+        "position": [-50, 30, 50],
+        "lookAt": [0, 0, 0],
+        "description": "Let's go to another room. Click next!",
+        "events" : {}
+    },
+    {
+        "position": [-40, 30, -40],
+        "lookAt": [0, 0, 0],
+        "description": "This is my garden, where I spend most of my time.",
+        "events" : {}
+    },
+    {
+        "position": [-15, 20, -33],
+        "lookAt": [15, -5, 0],
+        "description": "Sunflowers are my favorite, what's yours?",
+        "events" : {}
+    },
+    {
+        "position": [-40, 20, -25],
+        "lookAt": [-2, 7, 0],
+        "description": "This is my mango tree, it's been here for years.",
+        "events" : {}
+    },
+    {
+        "position": [-40, 30, -40],
+        "lookAt": [0, 0, 0],
+        "description": "Let's go to another room. Click next!",
+        "events" : {}
+    },
+    {
+        "position": [40, 30, -30],
+        "lookAt": [0, 0, 0],
+        "description": "Finally, this is my bedroom, where I sleep and dream.",
+        "events" : {}
+    },
+    {
+        "position": [15, 15, -32],
+        "lookAt": [-10, 0, 0],
+        "description": "One of my favorite things to do is read books, specifically manga.",
+        "events" : {}
+    },
+    {
+        "position": [20, 15, -17],
+        "lookAt": [15, 12, 0],
+        "description": "This is my PC setup, where I spend most of my time.",
+        "events" : {}
+    }
+]
+

@@ -1,0 +1,81 @@
+/* styles.css */
+@import url("https://fonts.cdnfonts.com/css/satoshi");
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #eeebd3; /* Dark background */
+  position: relative;
+}
+
+.header {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  z-index: 1;
+  color: #00c49a;
+  font-family: "Satoshi", sans-serif;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.popup {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  border: 2px solid #007bff; /* Blue border */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Make sure it's on top of other elements */
+  text-align: center;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between; /* Space out the buttons */
+  margin-top: 15px; /* Add space above the buttons */
+}
+
+button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none; /* Remove default border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 15px; /* Padding for the button */
+  font-size: 16px; /* Larger text size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
+  flex: 1; /* Make buttons grow equally */
+  margin: 0 5px; /* Space between buttons */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+button:disabled {
+  background-color: #cccccc; /* Gray background for disabled buttons */
+  cursor: not-allowed; /* Not-allowed cursor */
+}
+
+button:disabled:hover {
+  background-color: #cccccc; /* Maintain gray color when hovering */
+  transform: none; /* No hover effect when disabled */
+}
