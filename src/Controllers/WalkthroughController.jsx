@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useSpring } from '@react-spring/three';
 import * as THREE from 'three';

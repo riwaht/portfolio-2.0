@@ -15,7 +15,7 @@ function WalkthroughUI({ currentStep, stepDescription, nextStep, prevStep, isTra
                 <div className="popup">
                     <p>{stepDescription}</p>
                     <div className="button">
-                        <button onClick={prevStep} disabled={currentStep === 0}>
+                        <button onClick={prevStep} disabled={currentStep === 0 || isTransitioning}>
                             Back
                         </button>
                         {Object.keys(events).length > 0 ? (
