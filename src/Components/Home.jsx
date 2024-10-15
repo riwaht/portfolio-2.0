@@ -9,6 +9,7 @@ import steps from '../Utils/steps.json';
 import WalkthroughUI from './WalkthroughUI';
 import WalkthroughController from '../Controllers/WalkthroughController';
 import Loading from '../Utils/Loading'; // Import the Loading component
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function Home() {
     const modelRef = useRef();
@@ -87,6 +88,7 @@ function Home() {
                     />
                 )}
             </Suspense>
+            <SpeedInsights />
         </div>
     );
 }
