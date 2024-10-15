@@ -20,15 +20,6 @@ function Home() {
 
     const { description, events } = steps[currentStep] || {};
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setIsLoading(false); // Set loading to false after 2 seconds
-        }, 2000);
-
-        return () => clearTimeout(timeout);
-    }
-        , []); // Run only once
-
     const nextStep = () => {
         if (!isTransitioning && currentStep < steps.length - 1) {
             const allEventsCompleted = events
@@ -68,10 +59,22 @@ function Home() {
             <header className="header">
                 <h1>Riwa Hoteit</h1>
             </header>
-            {isLoading ? (
-                <Loading /> // Show loading component if loading
-            ) : (
-                <>
+            <Suspense fallback={<Loading />}>
+                {isLoading && <Loading />}
+                <Canvas precision="high" shadows>
+                    <Camera />
+                    <Lighting />
+                    <Model ref={modelRef} onLoad={handleModelLoad} />
+                    <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+                    <Stats />
+                    <ModelController modelRef={modelRef} />
+                    <WalkthroughController
+                        steps={steps}
+                        currentStep={currentStep}
+                        setIsTransitioning={setIsTransitioning}
+                    />
+                </Canvas>
+                {!isLoading && (
                     <WalkthroughUI
                         currentStep={currentStep}
                         stepDescription={description}
@@ -82,23 +85,8 @@ function Home() {
                         events={events}
                         completedEvents={completedEvents[currentStep] || {}}
                     />
-                    <Canvas precision="high" shadows>
-                        <Suspense fallback={null}>
-                            <Camera />
-                            <Lighting />
-                            <Model ref={modelRef} onLoad={handleModelLoad} />
-                            <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                            <Stats />
-                            <ModelController modelRef={modelRef} />
-                            <WalkthroughController
-                                steps={steps}
-                                currentStep={currentStep}
-                                setIsTransitioning={setIsTransitioning}
-                            />
-                        </Suspense>
-                    </Canvas>
-                </>
-            )}
+                )}
+            </Suspense>
         </div>
     );
 }
