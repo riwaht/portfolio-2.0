@@ -10,11 +10,12 @@ import WalkthroughUI from './WalkthroughUI';
 import WalkthroughController from '../Controllers/WalkthroughController';
 import Loading from '../Utils/Loading'; // Import the Loading component
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from "@vercel/analytics/react"
 
 function Home() {
     const modelRef = useRef();
     const Model = React.lazy(() => import('./Model'));
-    const [currentStep, setCurrentStep] = useState(0);
+    const [currentStep, setCurrentStep] = useState(15);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
     const [isLoading, setIsLoading] = useState(true); // Loading state
@@ -57,15 +58,13 @@ function Home() {
 
     return (
         <div className="container">
-            <header className="header">
-                <h1>Riwa Hoteit</h1>
-            </header>
+            
             <Suspense fallback={<Loading />}>
                 {isLoading && <Loading />}
                 <Canvas precision="high" shadows>
                     <Camera />
                     <Lighting />
-                    <Model ref={modelRef} onLoad={handleModelLoad} />
+                    <Model ref={modelRef} onLoad={handleModelLoad} completeEvent={completeEvent} />
                     <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
                     <Stats />
                     <ModelController modelRef={modelRef} />
@@ -89,6 +88,7 @@ function Home() {
                 )}
             </Suspense>
             <SpeedInsights />
+            <Analytics />
         </div>
     );
 }
