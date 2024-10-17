@@ -1,7 +1,6 @@
-import React, { Suspense, useRef, useState, useEffect } from 'react';
+import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
-import Camera from './Camera';
 import Lighting from './Lighting';
 import ModelController from '../Controllers/ModelController';
 import '../styles.css';
@@ -15,41 +14,75 @@ import { Analytics } from "@vercel/analytics/react"
 function Home() {
     const modelRef = useRef();
     const Model = React.lazy(() => import('./Model'));
-    const [currentStep, setCurrentStep] = useState(15);
+    const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
     const [isLoading, setIsLoading] = useState(true); // Loading state
+    const [isWalkthroughActive, setIsWalkthroughActive] = useState(true);
+    const [pcZoomed, setPcZoomed] = useState(false);
+
+    const exitWalkthrough = () => {
+        setIsWalkthroughActive(false); // Or any logic to hide the walkthrough
+    };
 
     const { description, events } = steps[currentStep] || {};
 
-    const nextStep = () => {
-        if (!isTransitioning && currentStep < steps.length - 1) {
-            const allEventsCompleted = events
-                ? Object.keys(events).every(event => completedEvents[currentStep]?.[event] === true)
-                : true;
+    const handleBackClick = () => {
+        setPcZoomed(false);
+        // TODO: Reset the camera to a default or previous position
+    };
 
-            if (!allEventsCompleted) {
-                console.log('All events not completed for this step');
-                return;
-            }
+    const nextStep = useCallback(() => {
+        if (!isTransitioning && currentStep < steps.length - 1) {
             setCurrentStep((prev) => prev + 1);
         }
-    };
+    }, [isTransitioning, currentStep, steps, completedEvents]);
 
     const prevStep = () => {
         if (!isTransitioning && currentStep > 0) {
             setCurrentStep((prev) => prev - 1);
         }
-    };
+    }
 
-    const completeEvent = (eventName) => {
-        setCompletedEvents((prev) => ({
-            ...prev,
-            [currentStep]: {
-                ...prev[currentStep],
-                [eventName]: true,
-            },
-        }));
+    const completeEvent = (eventName, stepIndex) => {
+        // TODO: wait till lerp animation is done
+        if (isTransitioning) {
+            return;
+        }
+        // Ensure that the event only completes if it's the correct step
+        if (stepIndex !== currentStep) {
+            return;
+        }
+
+        // Check if the event is already completed for the given step
+        setCompletedEvents((prev) => {
+            const isEventAlreadyCompleted = prev[stepIndex]?.[eventName];
+
+            if (isEventAlreadyCompleted) {
+                return prev; // Event is already completed, so return previous state
+            }
+
+            // If not completed, create a new state object
+            const updatedEvents = {
+                ...prev,
+                [stepIndex]: {
+                    ...prev[stepIndex],
+                    [eventName]: true,
+                },
+            };
+
+            // Check if all events for the current step are now completed
+            const stepEvents = steps[stepIndex]?.events || {};
+            const allEventsCompleted = Object.keys(stepEvents).every(
+                (event) => updatedEvents[stepIndex]?.[event] === true
+            );
+
+            if (allEventsCompleted) {
+                nextStep(); // Move to the next step if all events are completed
+            }
+
+            return updatedEvents;
+        });
     };
 
     const handleModelLoad = () => {
@@ -58,34 +91,54 @@ function Home() {
 
     return (
         <div className="container">
-            
             <Suspense fallback={<Loading />}>
                 {isLoading && <Loading />}
                 <Canvas precision="high" shadows>
-                    <Camera />
                     <Lighting />
-                    <Model ref={modelRef} onLoad={handleModelLoad} completeEvent={completeEvent} />
+                    <Model
+                        ref={modelRef}
+                        onLoad={handleModelLoad}
+                        completeEvent={completeEvent}
+                        isTransitioning={isTransitioning}
+                        isWalkthroughActive={isWalkthroughActive}
+                        setPcZoomed={setPcZoomed}
+                    />
                     <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
                     <Stats />
-                    <ModelController modelRef={modelRef} />
-                    <WalkthroughController
-                        steps={steps}
-                        currentStep={currentStep}
-                        setIsTransitioning={setIsTransitioning}
-                    />
+                    <ModelController modelRef={modelRef} isWalkthroughActive={isWalkthroughActive} />
+                    {isWalkthroughActive && (
+                        <WalkthroughController
+                            steps={steps}
+                            currentStep={currentStep}
+                            setIsTransitioning={setIsTransitioning}
+                        />
+                    )}
                 </Canvas>
-                {!isLoading && (
+                {!isLoading && isWalkthroughActive && (
                     <WalkthroughUI
                         currentStep={currentStep}
                         stepDescription={description}
                         nextStep={nextStep}
                         prevStep={prevStep}
                         isTransitioning={isTransitioning}
-                        completeEvent={completeEvent}
                         events={events}
                         completedEvents={completedEvents[currentStep] || {}}
+                        exitWalkthrough={exitWalkthrough}
                     />
                 )}
+                {/* {pcZoomed && (
+                    <button
+                        onClick={handleBackClick}
+                        style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            zIndex: 1000,
+                        }}
+                    >
+                        Back
+                    </button>
+                )} */}
             </Suspense>
             <SpeedInsights />
             <Analytics />

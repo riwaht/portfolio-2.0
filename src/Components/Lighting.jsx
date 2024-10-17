@@ -11,7 +11,7 @@ function Lighting() {
     return (
         <>
             {/* HDRI for realistic environment lighting */}
-            {/* <Environment preset="apartment" /> */}
+            <Environment preset="apartment" />
 
             {/* Soft ambient light for base lighting */}
             {/* <ambientLight intensity={0.2} /> */}

@@ -1,6 +1,7 @@
-import React, { forwardRef, useEffect, useMemo, useState } from 'react';
+import React, { forwardRef, useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import { useThree, useFrame } from '@react-three/fiber';
 
 const images = [
     '/Images/MainScreen.png',
@@ -9,7 +10,7 @@ const images = [
 ];
 
 // Use forwardRef to properly assign the ref
-const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
+const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, setPcZoomed, ...props }, ref) => {
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
@@ -17,33 +18,77 @@ const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
     const [showImportantBoxes, setShowImportantBoxes] = useState(false);
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
     const [imageIndex, setImageIndex] = React.useState(0);
+    const { camera } = useThree();
+    const targetPosition = useRef(new THREE.Vector3());
+    const targetLookAt = useRef(new THREE.Vector3());
+    const isAnimating = useRef(false);
+
 
     const textures = useMemo(() => {
-        return images.map((image) => new THREE.TextureLoader().load(image));
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.crossOrigin = 'anonymous';
+        return images.map((image, index) => {
+            const texture = textureLoader.load(
+                image,
+                () => {
+                    console.log(`Texture ${index} loaded successfully:`, image);
+                },
+                undefined,
+                (error) => {
+                    console.error(`Failed to load texture ${index}:`, error);
+                }
+            );
+            return texture;
+        });
     }, [images]);
 
 
     const handleCVClick = () => {
-        completeEvent('clickCV');
+        completeEvent('clickCV', 17);
         window.open('/PC Documents/Riwa Hoteit, CV.pdf', '_blank');
     };
 
-    const handleScreenClick = () => {
-        // TODO: add a boolean to check if it's walkthrough
-        completeEvent('clickPC');
-        // TODO: if not walkthrough, zoom in on PC
+    const handleScreenClick = useCallback(() => {
+        completeEvent('clickPC', 15);
         if (!showImportantBoxes && !showRandomBoxes) {
             setShowFolderBoxes(true);
         }
-    }
+
+        if (!isWalkthroughActive && camera) {
+            setPcZoomed(true);
+            // TODO: Set the target position and look-at for the camera
+            // targetPosition.current.set(15, 14, -7);
+            // targetLookAt.current.set(14, 13, 0);
+            // isAnimating.current = true;
+        }
+    }, [completeEvent, isWalkthroughActive, setPcZoomed, showImportantBoxes, showRandomBoxes, camera]);
+
+    useFrame(() => {
+        if (isAnimating.current) {
+            // Lerp the camera position
+            camera.position.lerp(targetPosition.current, 0.1);
+
+            // Create a vector and apply lerp for the lookAt direction
+            const currentLookAt = new THREE.Vector3();
+            camera.getWorldDirection(currentLookAt);
+            currentLookAt.lerp(targetLookAt.current.clone().sub(camera.position), 0.1);
+            camera.lookAt(camera.position.clone().add(currentLookAt));
+
+            // Check if the camera is close enough to the target to stop the animation
+            if (camera.position.distanceTo(targetPosition.current) < 0.01) {
+                isAnimating.current = false;
+            }
+
+            camera.updateProjectionMatrix();
+        }
+    });
 
     const BoxCollider = ({ position, color, onClick, size }) => (
         <mesh position={position} onClick={onClick}>
             <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={0.5} />
+            <meshStandardMaterial color={color} transparent opacity={0} />
         </mesh>
     );
-
     const folderBoxes = [
         { show: showFolderBoxes, position: [17, 14.7, -4], color: "red", onClick: () => handleImageClick('important') },
         { show: showFolderBoxes, position: [17, 14, -4], color: "blue", onClick: () => handleImageClick('random') },
@@ -60,56 +105,46 @@ const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
         }
     }, [scene, ref, onLoad]);  // Only run this effect when scene or ref changes
 
-    const handleImageClick = (type) => {
+    const handleImageClick = React.useCallback((type) => {
         switch (type) {
             case 'important':
-                if (imageIndex !== 1) { // Prevent redundant updates
-                    setImageIndex(1);
-                    completeEvent('clickFolder');
-                    setShowImportantBoxes(true);
-                    setShowRandomBoxes(false);
-                    setShowFolderBoxes(false); // Hide folder boxes
-                }
+                setImageIndex(1);
+                completeEvent('clickFolder', 16);
+                setShowImportantBoxes(true);
+                setShowRandomBoxes(false);
+                setShowFolderBoxes(false);
                 break;
             case 'random':
-                if (imageIndex !== 2) { // Prevent redundant updates
-                    setImageIndex(2);
-                    setShowRandomBoxes(true);
-                    setShowImportantBoxes(false); // Hide important boxes
-                    setShowFolderBoxes(false); // Hide folder boxes
-                }
+                setImageIndex(2);
+                setShowRandomBoxes(true);
+                setShowImportantBoxes(false);
+                setShowFolderBoxes(false);
                 break;
             case 'exit':
-                if (imageIndex !== 0) { // Prevent redundant updates
-                    setImageIndex(0);
-                    setShowFolderBoxes(true); // Show folder boxes again
-                    setShowImportantBoxes(false); // Hide important boxes
-                    setShowRandomBoxes(false); // Hide random boxes
-                }
+                setImageIndex(0);
+                setShowFolderBoxes(true);
+                setShowImportantBoxes(false);
+                setShowRandomBoxes(false);
                 break;
             default:
                 console.warn('Unknown image type:', type);
         }
-    };
+    }, [completeEvent]);
 
-    // Update screen texture when imageIndex changes
+
     useEffect(() => {
-        const updateMaterial = () => {
-            if (materials['Screen.002'] && textures[imageIndex]) {
-                const texture = textures[imageIndex];
-                texture.flipY = false;
-                texture.colorSpace = THREE.SRGBColorSpace;
-                materials['Screen.002'].map = texture;
-                if (texture.image) texture.needsUpdate = true;
-            }
+        if (materials['Screen.002']?.map && textures[imageIndex]?.image) {
+            const texture = textures[imageIndex];
+            texture.flipY = false;
+            texture.colorSpace = THREE.SRGBColorSpace;
+            materials['Screen.002'].map = texture;
+            materials['Screen.002'].needsUpdate = true;
+        }
 
-            if (showImportantBoxes || showRandomBoxes) {
-                setShowFolderBoxes(false); // Hide folder boxes
-            }
-        };
-
-        updateMaterial();
-    }, [imageIndex, materials, textures, showImportantBoxes, showRandomBoxes]);
+        if (showImportantBoxes || showRandomBoxes) {
+            setShowFolderBoxes(false);
+        }
+    }, [imageIndex, materials, textures]);
 
     // Loop over nodes and apply shadow settings based on object name
     useMemo(() => {
@@ -133,12 +168,14 @@ const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
             {!onLoad ? null :
                 <primitive object={scene} dispose={null} ref={ref} {...props}>
                     <group {...props} dispose={null}>
-                        <mesh geometry={nodes.WhiteWalls.geometry} material={materials.PaletteMaterial001} />
-                        <mesh geometry={nodes.GardenWall.geometry} material={nodes.GardenWall.material} />
-                        <mesh geometry={nodes.Floor001.geometry} material={materials.Parquet} />
+                        <mesh geometry={nodes.Parallettes.geometry} material={materials['Parallettes.002']} position={[-19.616, 1.232, 4.108]} scale={9.878} />
+                        <mesh geometry={nodes.WhiteWalls.geometry} material={materials.PaletteMaterial001} receiveShadow />
+                        <mesh geometry={nodes.GardenWall.geometry} material={nodes.GardenWall.material} receiveShadow />
+                        <mesh geometry={nodes.Floor001.geometry} material={materials.Parquet} receiveShadow />
+                        <mesh geometry={nodes.Riwa.geometry} material={materials.Akira} position={[26.224, 1.498, -23.295]} rotation={[Math.PI, 0, Math.PI]} scale={[1, 1.363, 1]} />
                         <mesh geometry={nodes.Desk.geometry} material={materials.Desk} />
                         <mesh geometry={nodes.Screen2.geometry} material={materials['Screen.002']} onClick={handleScreenClick} />
-                        <mesh geometry={nodes.Screen.geometry} material={materials['Screen.001']} />
+                        <mesh geometry={nodes.Screen.geometry} material={materials['Screen.001']} onClick={handleScreenClick}/>
                         {folderBoxes.map((box, index) => (
                             box.show && (
                                 <BoxCollider
@@ -154,16 +191,16 @@ const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
                         <mesh geometry={nodes.Tori.geometry} material={materials['lambert1.001']} />
                         <mesh geometry={nodes.Skateboard.geometry} material={materials.Skateboard} />
                         <mesh geometry={nodes.Tokyo_Ghoul_Manga.geometry} material={materials.TokyoGhoul} />
-                        <mesh geometry={nodes.Akira.geometry} material={materials.Akira} />
                         <mesh geometry={nodes.PS2.geometry} material={materials.PS2} />
-                        <mesh geometry={nodes.Volleyball.geometry} material={materials.Volleyball} />
-                        <mesh geometry={nodes.Mousepad.geometry} material={materials.PaletteMaterial002} />
+                        <mesh geometry={nodes.Volleyball.geometry} material={materials.Volleyball} position={[0, 0, 0.874]} />
+                        <mesh geometry={nodes.Mousepad.geometry} material={materials.PaletteMaterial002} position={[0, 0.04, 0]} />
                         <mesh geometry={nodes.GoingMerry.geometry} material={materials.GoingMerry} />
                         <mesh geometry={nodes.JBL.geometry} material={materials.JBL} />
                         <mesh geometry={nodes.SwitchScreen.geometry} material={materials.obj01_001} position={[22.003, 10.951, -5.62]} />
                         <mesh geometry={nodes.Switch.geometry} material={materials.obj00_001_1} />
                         <mesh geometry={nodes.Mario.geometry} material={materials.initialShadingGroup} />
                         <mesh geometry={nodes.Chair.geometry} material={materials.Matteplastic} />
+                        <mesh geometry={nodes.Stove.geometry} material={materials.Stove} />
                         <mesh geometry={nodes.Fridge.geometry} material={materials['Cube.016__0.001']} />
                         <mesh geometry={nodes.Flour.geometry} material={materials.Material_01} />
                         <mesh geometry={nodes.Bowl.geometry} material={materials.None} />
@@ -226,8 +263,8 @@ const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
                         <mesh geometry={nodes.Object_0010_1.geometry} material={materials.Material} />
                         <mesh geometry={nodes.Object_2004.geometry} material={materials.StingrayPBS4SG} />
                         <mesh geometry={nodes.Object_2004_1.geometry} material={materials.StingrayPBS5SG} />
-                        <mesh geometry={nodes.Mesh1_GRANITE_0.geometry} material={materials.GRANITE} />
-                        <mesh geometry={nodes.Mesh1_GRANITE_0_1.geometry} material={materials['GRANITE.001']} />
+                        <mesh geometry={nodes.Mesh1_GRANITE_0.geometry} material={materials.GRANITE} receiveShadow />
+                        <mesh geometry={nodes.Mesh1_GRANITE_0_1.geometry} material={materials['GRANITE.001']} receiveShadow />
                         <mesh geometry={nodes.Object_3003.geometry} material={materials.bark} />
                         <mesh geometry={nodes.Object_3003_1.geometry} material={materials.foliage} />
                         <mesh geometry={nodes.Object_3003_2.geometry} material={materials.fruit} />
@@ -240,7 +277,7 @@ const Model = forwardRef(({ onLoad, completeEvent, ...props }, ref) => {
     );
 });
 
-export default Model;
+export default React.memo(Model);
 
 // Don't forget to preload Draco decoder
 useGLTF.preload('/Models/house-transformed.glb', true, '/draco-gltf/');
