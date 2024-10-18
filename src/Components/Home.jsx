@@ -1,6 +1,7 @@
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
+import LightingWalkthrough from './LightingWalkthrough';
 import Lighting from './Lighting';
 import ModelController from '../Controllers/ModelController';
 import '../styles.css';
@@ -10,6 +11,8 @@ import WalkthroughController from '../Controllers/WalkthroughController';
 import Loading from '../Utils/Loading'; // Import the Loading component
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from "@vercel/analytics/react"
+import * as THREE from 'three';
+import { SoftShadows } from '@react-three/drei';
 
 function Home() {
     const modelRef = useRef();
@@ -93,8 +96,9 @@ function Home() {
         <div className="container">
             <Suspense fallback={<Loading />}>
                 {isLoading && <Loading />}
-                <Canvas precision="high" shadows>
-                    <Lighting />
+                <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
+                    {!isWalkthroughActive && <Lighting />}
+                    <SoftShadows size={20} samples={16} />
                     <Model
                         ref={modelRef}
                         onLoad={handleModelLoad}
@@ -104,14 +108,17 @@ function Home() {
                         setPcZoomed={setPcZoomed}
                     />
                     <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                    <Stats />
+                    {/* <Stats /> */}
                     <ModelController modelRef={modelRef} isWalkthroughActive={isWalkthroughActive} />
                     {isWalkthroughActive && (
-                        <WalkthroughController
-                            steps={steps}
-                            currentStep={currentStep}
-                            setIsTransitioning={setIsTransitioning}
-                        />
+                        <>
+                            <LightingWalkthrough currentStep={currentStep} />
+                            <WalkthroughController
+                                steps={steps}
+                                currentStep={currentStep}
+                                setIsTransitioning={setIsTransitioning}
+                            />
+                        </>
                     )}
                 </Canvas>
                 {!isLoading && isWalkthroughActive && (
