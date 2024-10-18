@@ -1,12 +1,12 @@
-/* styles.css */
 @import url("https://fonts.cdnfonts.com/css/satoshi");
+
 body,
 html {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: Arial, sans-serif;
+  font-family: "Satoshi", sans-serif;
 }
 
 .container {
@@ -37,13 +37,16 @@ html {
   bottom: 20%;
   left: 50%;
   transform: translate(-50%, -20%);
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-  border: 2px solid #007bff; /* Blue border */
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  z-index: 1000; /* Make sure it's on top of other elements */
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque */
+  border: 2px solid #00c49a; /* Green border */
+  border-radius: 12px; /* Softer rounded corners */
+  padding: 20px 30px; /* Increase padding for a balanced look */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); /* Softer, larger shadow */
+  z-index: 1000; /* Ensure it's on top */
   text-align: center;
+  color: #00c49a; /* Green text */
+  font-family: "Satoshi", sans-serif;
+  font-size: 1.1rem; /* Adjusted font size */
 }
 
 .navigation-buttons {
@@ -53,10 +56,10 @@ html {
 }
 
 button {
-  background-color: #007bff; /* Blue background */
+  background-color: #00c49a; /* Green background */
   color: white; /* White text */
   border: none; /* Remove default border */
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 6px; /* Rounded corners */
   padding: 10px 15px; /* Padding for the button */
   font-size: 16px; /* Larger text size */
   cursor: pointer; /* Pointer cursor on hover */
@@ -66,7 +69,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #009f7e; /* Darker green on hover */
   transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
@@ -82,21 +85,74 @@ button:disabled:hover {
 
 .loading-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* Arrange the message and loader vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
   height: 100vh; /* Full height of the viewport */
-  background-color: #f0f0f0; /* Light background color */
+  background-color: #f9f9f9; /* Light background color */
+  text-align: center; /* Center align the text */
+  font-family: "Satoshi", sans-serif; /* Use Satoshi for loading text */
+  color: black; /* Green color for the text */
+  padding: 20px; /* Add some padding for spacing */
+}
+
+.loading-container h2 {
+  margin-bottom: 20px; /* Space between the message and the loader */
+  font-size: 1.5rem; /* Adjust the font size */
+}
+
+.backstory {
+  margin-top: 15px; /* Space between the loader and the backstory */
+  font-size: 1rem; /* Slightly smaller font for the backstory */
+  color: #007bff; /* A different color for the backstory text to distinguish it */
+  max-width: 80%; /* Restrict width for better readability */
+  line-height: 1.5; /* Improve readability */
 }
 
 .loader {
-  border: 8px solid #e0e0e0; /* Light gray border */
-  border-top: 8px solid #3498db; /* Blue top */
-  border-radius: 50%;
-  width: 60px; /* Width of the loader */
-  height: 60px; /* Height of the loader */
-  animation: spin 1s linear infinite; /* Spin animation */
+  --s: 25px; /* Size of each element */
+  --g: 5px; /* Gap between elements */
+  
+  width: calc(3 * (1.353 * var(--s) + var(--g)));
+  display: grid;
+  justify-items: end;
+  aspect-ratio: 3; /* Aspect ratio to maintain proportion */
+  overflow: hidden;
+  --_m: linear-gradient(90deg, #0000, #000 15px calc(100% - 15px), #0000);
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
 }
+
+.loader:before {
+  content: "";
+  width: calc(4 * 100% / 3);
+  background: conic-gradient(
+    from -90deg at var(--s) calc(0.353 * var(--s)),
+    #00c49a 135deg, #007bff 0 270deg, #cccccc 0
+  ); 
+  --_m: linear-gradient(
+      to bottom right,
+      #0000 calc(0.25 * var(--s)),
+      #000 0 calc(100% - calc(0.25 * var(--s)) - 1.414 * var(--g)),
+      #0000 0
+    ),
+    conic-gradient(from -90deg at right var(--g) bottom var(--g), #000 90deg, #0000 0);
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  background-size: calc(100% / 4) 100%;
+  -webkit-mask-size: calc(100% / 4) 100%;
+  mask-size: calc(100% / 4) 100%;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  animation: loader-animation 1s infinite linear;
+}
+
+@keyframes loader-animation {
+  to {
+    transform: translate(calc(100% / 4));
+  }
+}
+
 
 @keyframes spin {
   0% {

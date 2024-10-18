@@ -6,7 +6,7 @@ const roomLightMapping = {
     kitchen: [1, 2, 3, 4], // Steps that belong to the kitchen
     gym: [5, 6, 7, 8],
     garden: [9, 10, 11, 12],
-    bedroom: [13, 14, 15, 16, 17],
+    bedroom: [13, 14, 15, 16, 17, 18],
 };
 
 function LightingWalkthrough({ currentStep }) {
