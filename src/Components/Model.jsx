@@ -10,7 +10,7 @@ const images = [
 ];
 
 // Use forwardRef to properly assign the ref
-const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, setPcZoomed, ...props }, ref) => {
+const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, ...props }, ref) => {
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
@@ -19,10 +19,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
     const [imageIndex, setImageIndex] = React.useState(0);
     const { camera } = useThree();
-    const targetPosition = useRef(new THREE.Vector3());
-    const targetLookAt = useRef(new THREE.Vector3());
-    const isAnimating = useRef(false);
-
 
     const textures = useMemo(() => {
         const textureLoader = new THREE.TextureLoader();
@@ -56,30 +52,17 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
 
         if (!isWalkthroughActive && camera) {
             setPcZoomed(true);
-            // TODO: Set the target position and look-at for the camera
-            // targetPosition.current.set(15, 14, -7);
-            // targetLookAt.current.set(14, 13, 0);
-            // isAnimating.current = true;
+            console.log(pcZoomed);
         }
-    }, [completeEvent, isWalkthroughActive, setPcZoomed, showImportantBoxes, showRandomBoxes, camera]);
+    }, [completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, showImportantBoxes, showRandomBoxes, camera]);
 
     useFrame(() => {
-        if (isAnimating.current) {
-            // Lerp the camera position
-            camera.position.lerp(targetPosition.current, 0.1);
-
-            // Create a vector and apply lerp for the lookAt direction
-            const currentLookAt = new THREE.Vector3();
-            camera.getWorldDirection(currentLookAt);
-            currentLookAt.lerp(targetLookAt.current.clone().sub(camera.position), 0.1);
-            camera.lookAt(camera.position.clone().add(currentLookAt));
-
-            // Check if the camera is close enough to the target to stop the animation
-            if (camera.position.distanceTo(targetPosition.current) < 0.01) {
-                isAnimating.current = false;
-            }
-
-            camera.updateProjectionMatrix();
+        if (pcZoomed) {
+            camera.position.lerp(new THREE.Vector3(15, 14, -7), 0.1);
+            camera.lookAt(new THREE.Vector3(14, 13, 0));
+        } else {
+            camera.position.lerp(new THREE.Vector3(40, 30, -30), 0.1);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
         }
     });
 
@@ -175,7 +158,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         <mesh geometry={nodes.Riwa.geometry} material={materials.Akira} position={[26.224, 1.498, -23.295]} rotation={[Math.PI, 0, Math.PI]} scale={[1, 1.363, 1]} />
                         <mesh geometry={nodes.Desk.geometry} material={materials.Desk} />
                         <mesh geometry={nodes.Screen2.geometry} material={materials['Screen.002']} onClick={handleScreenClick} />
-                        <mesh geometry={nodes.Screen.geometry} material={materials['Screen.001']} onClick={handleScreenClick}/>
+                        <mesh geometry={nodes.Screen.geometry} material={materials['Screen.001']} onClick={handleScreenClick} />
                         {folderBoxes.map((box, index) => (
                             box.show && (
                                 <BoxCollider

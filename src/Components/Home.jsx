@@ -1,5 +1,5 @@
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 import LightingWalkthrough from './LightingWalkthrough';
 import Lighting from './Lighting';
@@ -17,7 +17,7 @@ import { SoftShadows } from '@react-three/drei';
 function Home() {
     const modelRef = useRef();
     const Model = React.lazy(() => import('./Model'));
-    const [currentStep, setCurrentStep] = useState(0);
+    const [currentStep, setCurrentStep] = useState(18);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
     const [isLoading, setIsLoading] = useState(true); // Loading state
@@ -32,7 +32,6 @@ function Home() {
 
     const handleBackClick = () => {
         setPcZoomed(false);
-        // TODO: Reset the camera to a default or previous position
     };
 
     const nextStep = useCallback(() => {
@@ -105,11 +104,16 @@ function Home() {
                         completeEvent={completeEvent}
                         isTransitioning={isTransitioning}
                         isWalkthroughActive={isWalkthroughActive}
+                        pcZoomed={pcZoomed}
                         setPcZoomed={setPcZoomed}
                     />
                     <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                    {/* <Stats /> */}
-                    <ModelController modelRef={modelRef} isWalkthroughActive={isWalkthroughActive} />
+                    <Stats />
+                    <ModelController
+                        modelRef={modelRef}
+                        isWalkthroughActive={isWalkthroughActive}
+                        pcZoomed={pcZoomed}
+                    />
                     {isWalkthroughActive && (
                         <>
                             <LightingWalkthrough currentStep={currentStep} />
@@ -133,7 +137,7 @@ function Home() {
                         exitWalkthrough={exitWalkthrough}
                     />
                 )}
-                {/* {pcZoomed && (
+                {pcZoomed && (
                     <button
                         onClick={handleBackClick}
                         style={{
@@ -145,7 +149,7 @@ function Home() {
                     >
                         Back
                     </button>
-                )} */}
+                )}
             </Suspense>
             <SpeedInsights />
             <Analytics />

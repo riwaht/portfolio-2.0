@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
-function ModelController({ modelRef, isWalkthroughActive }) {
+function ModelController({ modelRef, isWalkthroughActive, pcZoomed }) {
     const [isModelLoaded, setIsModelLoaded] = useState(false);
     const [targetRotationY, setTargetRotationY] = useState(0);
     const rotationSpeed = 0.1;
@@ -13,8 +13,9 @@ function ModelController({ modelRef, isWalkthroughActive }) {
     });
 
     useEffect(() => {
+        setTargetRotationY(0);
         const handleScroll = (event) => {
-            if (!isWalkthroughActive) {
+            if (!isWalkthroughActive && !pcZoomed) {
                 setTargetRotationY((prev) => prev + event.deltaY * 0.001); // Adjust sensitivity here
             }
         };
@@ -32,7 +33,7 @@ function ModelController({ modelRef, isWalkthroughActive }) {
                 window.removeEventListener('wheel', handleScroll);
             }
         };
-    }, [modelRef, isModelLoaded, isWalkthroughActive]); // Re-run effect when modelRef, isModelLoaded, or isWalkthroughActive changes
+    }, [modelRef, isModelLoaded, isWalkthroughActive, pcZoomed]);
 
     return null;
 }
