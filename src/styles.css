@@ -33,10 +33,6 @@ html {
 }
 
 .popup {
-  position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translate(-50%, -20%);
   background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque */
   border: 2px solid #00c49a; /* Green border */
   border-radius: 12px; /* Softer rounded corners */
@@ -47,6 +43,13 @@ html {
   color: #00c49a; /* Green text */
   font-family: "Satoshi", sans-serif;
   font-size: 1.1rem; /* Adjusted font size */
+  transition: opacity 0.5s ease-in-out; /* Adjust the duration as needed */
+  opacity: 1; /* Fully visible */
+}
+
+.popup.hidden {
+  opacity: 0; /* Fully transparent */
+  pointer-events: none; /* Prevent interaction when hidden */
 }
 
 .navigation-buttons {
@@ -65,7 +68,7 @@ button {
   cursor: pointer; /* Pointer cursor on hover */
   transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
   flex: 1; /* Make buttons grow equally */
-  margin: 0 5px; /* Space between buttons */
+  margin: 5px 5px; /* Space between buttons */
 }
 
 button:hover {
@@ -112,7 +115,7 @@ button:disabled:hover {
 .loader {
   --s: 25px; /* Size of each element */
   --g: 5px; /* Gap between elements */
-  
+
   width: calc(3 * (1.353 * var(--s) + var(--g)));
   display: grid;
   justify-items: end;
@@ -128,15 +131,21 @@ button:disabled:hover {
   width: calc(4 * 100% / 3);
   background: conic-gradient(
     from -90deg at var(--s) calc(0.353 * var(--s)),
-    #00c49a 135deg, #007bff 0 270deg, #cccccc 0
-  ); 
+    #00c49a 135deg,
+    #007bff 0 270deg,
+    #cccccc 0
+  );
   --_m: linear-gradient(
       to bottom right,
       #0000 calc(0.25 * var(--s)),
       #000 0 calc(100% - calc(0.25 * var(--s)) - 1.414 * var(--g)),
       #0000 0
     ),
-    conic-gradient(from -90deg at right var(--g) bottom var(--g), #000 90deg, #0000 0);
+    conic-gradient(
+      from -90deg at right var(--g) bottom var(--g),
+      #000 90deg,
+      #0000 0
+    );
   -webkit-mask: var(--_m);
   mask: var(--_m);
   background-size: calc(100% / 4) 100%;
@@ -152,7 +161,6 @@ button:disabled:hover {
     transform: translate(calc(100% / 4));
   }
 }
-
 
 @keyframes spin {
   0% {

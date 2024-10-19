@@ -31,7 +31,7 @@ function LightingWalkthrough({ currentStep }) {
                 <pointLight
                     ref={pointLightRef}
                     castShadow
-                    intensity={1000}
+                    intensity={500}
                     position={[25, 25, 25]}
                 />
             )}
@@ -40,7 +40,7 @@ function LightingWalkthrough({ currentStep }) {
                 <pointLight
                     ref={pointLightRef2}
                     castShadow
-                    intensity={1000}
+                    intensity={500}
                     position={[-25, 25, 25]}
                 />
             )}
@@ -49,7 +49,7 @@ function LightingWalkthrough({ currentStep }) {
                 <pointLight
                     ref={pointLightRef3}
                     castShadow
-                    intensity={1000}
+                    intensity={500}
                     position={[-25, 25, -25]}
                 />
             )}
@@ -58,10 +58,14 @@ function LightingWalkthrough({ currentStep }) {
                 <pointLight
                     ref={pointLightRef4}
                     castShadow
-                    intensity={800}
+                    intensity={500}
                     position={[25, 25, -25]}
                 />
             )}
+
+            <hemisphereLight
+                args={[0xffffbb, 0x080820, 0.4]}
+            />
         </>
     );
 }
