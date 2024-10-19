@@ -3,6 +3,9 @@ import steps from '../Utils/steps.json';
 
 function WalkthroughUI({ currentStep, stepDescription, nextStep, prevStep, isTransitioning, events, completedEvents, exitWalkthrough }) {
     const [showPopup, setShowPopup] = useState(true);
+    // Get the popup position for the current step
+    const popupPosition = steps[currentStep]?.popupPosition || { top: '30%', left: '50%' };
+    const popupWidth = steps[currentStep]?.popupWidth || '30%';
 
     // Show the popup when the step changes
     useEffect(() => {
@@ -12,7 +15,7 @@ function WalkthroughUI({ currentStep, stepDescription, nextStep, prevStep, isTra
     return (
         <>
             {showPopup && (
-                <div className="popup">
+                <div className="popup" style={{ position: 'absolute', top: popupPosition.top, left: popupPosition.left, width: popupWidth }}>
                     <p>{stepDescription}</p>
                     <div className="button">
                         <button onClick={prevStep} disabled={currentStep === 0 || isTransitioning}>

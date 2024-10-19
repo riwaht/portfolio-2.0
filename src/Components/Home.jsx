@@ -17,7 +17,7 @@ import { SoftShadows } from '@react-three/drei';
 function Home() {
     const modelRef = useRef();
     const Model = React.lazy(() => import('./Model'));
-    const [currentStep, setCurrentStep] = useState(18);
+    const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
     const [isLoading, setIsLoading] = useState(true); // Loading state
