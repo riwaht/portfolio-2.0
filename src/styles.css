@@ -43,6 +43,13 @@ html {
   color: #00c49a; /* Green text */
   font-family: "Satoshi", sans-serif;
   font-size: 1.1rem; /* Adjusted font size */
+  transition: opacity 0.5s ease-in-out; /* Adjust the duration as needed */
+  opacity: 1; /* Fully visible */
+}
+
+.popup.hidden {
+  opacity: 0; /* Fully transparent */
+  pointer-events: none; /* Prevent interaction when hidden */
 }
 
 .navigation-buttons {
