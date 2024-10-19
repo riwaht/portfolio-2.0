@@ -108,7 +108,7 @@ function Home() {
                         setPcZoomed={setPcZoomed}
                     />
                     <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                    <Stats />
+                    {/* <Stats /> */}
                     <ModelController
                         modelRef={modelRef}
                         isWalkthroughActive={isWalkthroughActive}

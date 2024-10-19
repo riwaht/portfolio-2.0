@@ -14,6 +14,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
+    const castOnlyMeshes = ['Volleyball'];
     const [showFolderBoxes, setShowFolderBoxes] = useState(false);
     const [showImportantBoxes, setShowImportantBoxes] = useState(false);
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
@@ -138,9 +139,14 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                     // Only receive shadows
                     obj.receiveShadow = true;
                     obj.castShadow = false;
+                } else if (castOnlyMeshes.includes(obj.name)) {
+                    // Only cast shadows
+                    obj.receiveShadow = false;
+                    obj.castShadow = true;
                 } else {
-                    obj.castShadow = true;   // Both cast and receive shadows
+                    // Both receive and cast shadows
                     obj.receiveShadow = true;
+                    obj.castShadow = true;
                 }
             }
         });
