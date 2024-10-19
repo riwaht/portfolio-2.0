@@ -136,7 +136,7 @@
         "events" : {
             "clickFolder": false
         },
-        "popupPosition": { "top": "10%", "left": "20%" },
+        "popupPosition": { "top": "10%", "left": "26%" },
         "popupWidth": "10%"
     },
     {
