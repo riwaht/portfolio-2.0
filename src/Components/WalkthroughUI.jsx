@@ -13,7 +13,7 @@ function WalkthroughUI({ currentStep, stepDescription, nextStep, prevStep, isTra
         setShowPopup(true);
         setIsFading(false);
     }, [currentStep]);
-
+    
     const handleNext = () => {
         // Start the fade-out
         setIsFading(true);
