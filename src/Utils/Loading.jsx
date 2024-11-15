@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import '../styles.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Loading = () => {
+const Loading = ({ isLoading }) => {
+    const navigate = useNavigate();  // useNavigate hook for navigation
+
+    // Define the stages of the loading process
     const stages = [
         { progress: 0, message: "Hold tight, our virtual carpenters are hammering away at your room!" },
         { progress: 5, message: "Patience, young grasshopper. This room will be worth the wait." },
@@ -18,6 +21,7 @@ const Loading = () => {
         { progress: 100, message: "Our virtual team is working hard to make your room look amazing. We're also taking virtual bets on whether you'll love it or love it even more." }
     ];
 
+    // Define the backstories
     const backstories = [
         "Hi, I'm Riwa, a game development enthusiast with a passion for creating immersive 3D experiences.",
         "Did you know? I developed a VR hand-tracking system using OpenCV and Unity. It was a fun challenge!",
@@ -29,29 +33,66 @@ const Loading = () => {
 
     const [message, setMessage] = useState(stages[0].message);
     const [backstory, setBackstory] = useState(backstories[0]);
+    const [progress, setProgress] = useState(0);  // Track the progress value
 
     useEffect(() => {
+        if (!isLoading) return; // Only run if isLoading is true
+
         const messageInterval = setInterval(() => {
             const randomStage = stages[Math.floor(Math.random() * stages.length)];
             setMessage(randomStage.message);
-        }, 8000); // Change the message every 3 seconds
+        }, 8000); // Change the message every 8 seconds
 
         const backstoryInterval = setInterval(() => {
             const randomBackstory = backstories[Math.floor(Math.random() * backstories.length)];
             setBackstory(randomBackstory);
-        }, 8000); // Change the backstory every 5 seconds
+        }, 8000); // Change the backstory every 8 seconds
 
+        // Simulate the progress increment
+        const progressInterval = setInterval(() => {
+            if (progress < 100) {
+                setProgress((prevProgress) => prevProgress + 5);  // Increment progress
+            } else {
+                clearInterval(progressInterval);  // Stop the progress when it reaches 100%
+            }
+        }, 1000);  // Update progress every second
+
+        // Cleanup intervals on unmount
         return () => {
             clearInterval(messageInterval);
             clearInterval(backstoryInterval);
+            clearInterval(progressInterval);
         };
-    }, []);
+    }, [isLoading, progress]);
+
+    // Function to handle the start button click
+    const handleStart = () => {
+        navigate('/home');  // Navigate to home page when the button is clicked
+    };
 
     return (
         <div className="loading-container">
             <h2>{message}</h2>
             <div className="loader"></div>
             <p className="backstory">{backstory}</p>
+
+            {/* Only show the Start button when loading is done */}
+            {!isLoading && (
+                <button onClick={handleStart} style={{
+                    position: 'absolute',
+                    bottom: '30%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    padding: '10px 20px',
+                    backgroundColor: '#00c49a',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    zIndex: 1000,
+                    fontFamily: "Satoshi, sans-serif",
+                }}>START</button>
+            )}
         </div>
     );
 };

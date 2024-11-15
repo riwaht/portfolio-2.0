@@ -8,11 +8,12 @@ import '../styles.css';
 import steps from '../Utils/steps.json';
 import WalkthroughUI from './WalkthroughUI';
 import WalkthroughController from '../Controllers/WalkthroughController';
-import Loading from '../Utils/Loading'; // Import the Loading component
+import Loading from '../Utils/Loading';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 import * as THREE from 'three';
 import { SoftShadows } from '@react-three/drei';
+import AudioPlayer from '../Utils/AudioPlayer';
 
 function Home() {
     const modelRef = useRef();
@@ -20,12 +21,12 @@ function Home() {
     const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
-    const [isLoading, setIsLoading] = useState(true); // Loading state
+    const [isLoading, setIsLoading] = useState(true);
     const [isWalkthroughActive, setIsWalkthroughActive] = useState(true);
     const [pcZoomed, setPcZoomed] = useState(false);
 
     const exitWalkthrough = () => {
-        setIsWalkthroughActive(false); // Or any logic to hide the walkthrough
+        setIsWalkthroughActive(false);
     };
 
     const { description, events } = steps[currentStep] || {};
@@ -44,27 +45,20 @@ function Home() {
         if (!isTransitioning && currentStep > 0) {
             setCurrentStep((prev) => prev - 1);
         }
-    }
+    };
 
     const completeEvent = (eventName, stepIndex) => {
-        // TODO: wait till lerp animation is done
         if (isTransitioning) {
             return;
         }
-        // Ensure that the event only completes if it's the correct step
         if (stepIndex !== currentStep) {
             return;
         }
-
-        // Check if the event is already completed for the given step
         setCompletedEvents((prev) => {
             const isEventAlreadyCompleted = prev[stepIndex]?.[eventName];
-
             if (isEventAlreadyCompleted) {
-                return prev; // Event is already completed, so return previous state
+                return prev;
             }
-
-            // If not completed, create a new state object
             const updatedEvents = {
                 ...prev,
                 [stepIndex]: {
@@ -72,15 +66,13 @@ function Home() {
                     [eventName]: true,
                 },
             };
-
-            // Check if all events for the current step are now completed
             const stepEvents = steps[stepIndex]?.events || {};
             const allEventsCompleted = Object.keys(stepEvents).every(
                 (event) => updatedEvents[stepIndex]?.[event] === true
             );
 
             if (allEventsCompleted) {
-                nextStep(); // Move to the next step if all events are completed
+                nextStep();
             }
 
             return updatedEvents;
@@ -93,8 +85,9 @@ function Home() {
 
     return (
         <div className="container">
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading isLoading={isLoading} />}>
                 {isLoading && <Loading />}
+                <AudioPlayer />
                 <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
                     {!isWalkthroughActive && <Lighting />}
                     <SoftShadows size={20} samples={16} />
@@ -108,7 +101,6 @@ function Home() {
                         setPcZoomed={setPcZoomed}
                     />
                     <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                    {/* <Stats /> */}
                     <ModelController
                         modelRef={modelRef}
                         isWalkthroughActive={isWalkthroughActive}

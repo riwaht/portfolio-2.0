@@ -16,7 +16,7 @@
         "popupWidth": "15%"
     },
     {
-        "position": [27, 15, 20],
+        "position": [25, 15, 28],
         "lookAt": [12, 5, 0],
         "description": "This is the fridge, help yourself to anything inside.",
         "events" : {},

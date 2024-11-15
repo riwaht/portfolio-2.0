@@ -14,7 +14,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
-    const castOnlyMeshes = ['Volleyball'];
+    const castOnlyMeshes = ['Volleyball', 'defaultMaterial001', 'defaultMaterial', 'Photo', 'Sunflower'];
     const [showFolderBoxes, setShowFolderBoxes] = useState(false);
     const [showImportantBoxes, setShowImportantBoxes] = useState(false);
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
@@ -82,7 +82,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const BoxCollider = ({ position, color, onClick, size }) => (
         <mesh position={position} onClick={onClick}>
             <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={1} />
+            <meshStandardMaterial color={color} transparent opacity={0} />
         </mesh>
     );
     const folderBoxes = [
@@ -172,6 +172,8 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             {!onLoad ? null :
                 <primitive object={scene} dispose={null} ref={ref} {...props}>
                     <group {...props} dispose={null}>
+                        <mesh geometry={nodes.defaultMaterial.geometry} material={materials.Frige_Door} position={[26.48, 10.644, 8.653]} rotation={[-Math.PI, 0, -Math.PI]} scale={4.583} />
+                        <mesh geometry={nodes.defaultMaterial001.geometry} material={materials.Frige} position={[22.082, 1.473, 4.701]} rotation={[0, -1.571, 0]} scale={4.583} />
                         <mesh geometry={nodes.WhiteWalls.geometry} material={materials.PaletteMaterial001} receiveShadow />
                         <mesh geometry={nodes.GardenWall.geometry} material={nodes.GardenWall.material} receiveShadow />
                         <mesh geometry={nodes.Floor001.geometry} material={materials.Parquet} receiveShadow />
@@ -191,6 +193,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                                 />
                             )
                         ))}
+                        <mesh geometry={nodes.Photo.geometry} material={materials['Material.001']} position={[0.006, -0.028, 0.065]} scale={[1, 1.006, 1]} />
                         <mesh geometry={nodes.Photoframe.geometry} material={materials.Photoframe} />
                         <mesh geometry={nodes.Tori.geometry} material={materials['lambert1.001']} />
                         <mesh geometry={nodes.Skateboard.geometry} material={materials.Skateboard} />
@@ -198,15 +201,15 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         <mesh geometry={nodes.PS2.geometry} material={materials.PS2} />
                         <mesh geometry={nodes.Volleyball.geometry} material={materials.Volleyball} />
                         <mesh geometry={nodes.Mousepad.geometry} material={materials.PaletteMaterial003} />
-                        <mesh geometry={nodes.GoingMerry.geometry} material={materials.GoingMerry} />
                         <mesh geometry={nodes.JBL.geometry} material={materials.JBL} />
                         <mesh geometry={nodes.SwitchScreen.geometry} material={materials.obj01_001} />
                         <mesh geometry={nodes.Switch.geometry} material={materials.obj00_001_1} />
                         <mesh geometry={nodes.Mario.geometry} material={materials.initialShadingGroup} />
                         <mesh geometry={nodes.Chair.geometry} material={materials.Matteplastic} />
                         <mesh geometry={nodes.Stove.geometry} material={materials.Stove} />
-                        <mesh geometry={nodes.Fridge.geometry} material={materials['Cube.016__0.001']} />
+                        <mesh geometry={nodes.Plant.geometry} material={materials['PlantSucculentEcheveria001_2K_2K.001']} />
                         <mesh geometry={nodes.Flour.geometry} material={materials.Material_01} />
+                        <mesh geometry={nodes.Eggs.geometry} material={materials.material_0} />
                         <mesh geometry={nodes.Bowl.geometry} material={materials.None} />
                         <mesh geometry={nodes.EggsSeparate.geometry} material={materials['DefaultMaterial.001']} />
                         <mesh geometry={nodes.Cutting_Board.geometry} material={materials.CuttingBoard_A} />
@@ -221,7 +224,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         <mesh geometry={nodes.BoxingGlove.geometry} material={materials.Glove} />
                         <mesh geometry={nodes.Parallettes.geometry} material={materials['Parallettes.002']} />
                         <mesh geometry={nodes.WaterPipe__0.geometry} material={materials['Scene_-_Root.001']} />
-                        <mesh geometry={nodes.Ivy.geometry} material={materials['material.002']} />
+                        <mesh geometry={nodes.Sunflower.geometry} material={materials.lambert16} />
                         <mesh geometry={nodes.Attaches_Attaches_0.geometry} material={materials.Attaches} />
                         <mesh geometry={nodes.Chaine1_Chaine_0.geometry} material={materials.Chaine} />
                         <mesh geometry={nodes.Sac_TourSac_0.geometry} material={materials.TourSac} />
@@ -234,33 +237,32 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         <mesh geometry={nodes.Mouse_1.geometry} material={materials.standardSurface13} />
                         <mesh geometry={nodes.Mouse_2.geometry} material={materials.standardSurface12} />
                         <mesh geometry={nodes.usb003.geometry} material={materials.usb} />
-                        <mesh geometry={nodes.usb003_1.geometry} material={materials.PaletteMaterial004} />
-                        <mesh geometry={nodes.usb003_2.geometry} material={materials['test-aorus-m2-souris-aorus-rgb2']} />
-                        <mesh geometry={nodes.usb003_3.geometry} material={materials['rgb-hdd-cover-aorus-v1']} />
-                        <mesh geometry={nodes.usb003_4.geometry} material={materials['NVIDIA LOGO']} />
-                        <mesh geometry={nodes.usb003_5.geometry} material={materials.MOBOAORUSORANGETRANS} />
-                        <mesh geometry={nodes.usb003_6.geometry} material={materials['metal-mesh-500x500']} />
-                        <mesh geometry={nodes.usb003_7.geometry} material={materials['maxresdefault (1)']} />
-                        <mesh geometry={nodes.usb003_8.geometry} material={materials.IOSHIELD} />
-                        <mesh geometry={nodes.usb003_9.geometry} material={materials['Material.051']} />
-                        <mesh geometry={nodes.usb003_10.geometry} material={materials['Material.041']} />
-                        <mesh geometry={nodes.usb003_11.geometry} material={materials['Material.086']} />
-                        <mesh geometry={nodes.usb003_12.geometry} material={materials['Material.063']} />
-                        <mesh geometry={nodes.usb003_13.geometry} material={materials['Material.059']} />
-                        <mesh geometry={nodes.usb003_14.geometry} material={materials.PaletteMaterial005} />
-                        <mesh geometry={nodes.usb003_15.geometry} material={materials['Material.035']} />
-                        <mesh geometry={nodes.usb003_16.geometry} material={materials['Material.027']} />
-                        <mesh geometry={nodes.usb003_17.geometry} material={materials['Material.026']} />
-                        <mesh geometry={nodes.usb003_18.geometry} material={materials['Material.008']} />
+                        <mesh geometry={nodes.usb003_1.geometry} material={materials['test-aorus-m2-souris-aorus-rgb2']} />
+                        <mesh geometry={nodes.usb003_2.geometry} material={materials['rgb-hdd-cover-aorus-v1']} />
+                        <mesh geometry={nodes.usb003_3.geometry} material={materials['NVIDIA LOGO']} />
+                        <mesh geometry={nodes.usb003_4.geometry} material={materials.MOBOAORUSORANGETRANS} />
+                        <mesh geometry={nodes.usb003_5.geometry} material={materials['metal-mesh-500x500']} />
+                        <mesh geometry={nodes.usb003_6.geometry} material={materials['maxresdefault (1)']} />
+                        <mesh geometry={nodes.usb003_7.geometry} material={materials.IOSHIELD} />
+                        <mesh geometry={nodes.usb003_8.geometry} material={materials['Material.051']} />
+                        <mesh geometry={nodes.usb003_9.geometry} material={materials['Material.041']} />
+                        <mesh geometry={nodes.usb003_10.geometry} material={materials['Material.086']} />
+                        <mesh geometry={nodes.usb003_11.geometry} material={materials['Material.063']} />
+                        <mesh geometry={nodes.usb003_12.geometry} material={materials['Material.059']} />
+                        <mesh geometry={nodes.usb003_13.geometry} material={materials.PaletteMaterial004} />
+                        <mesh geometry={nodes.usb003_14.geometry} material={materials['Material.035']} />
+                        <mesh geometry={nodes.usb003_15.geometry} material={materials['Material.027']} />
+                        <mesh geometry={nodes.usb003_16.geometry} material={materials['Material.026']} />
+                        <mesh geometry={nodes.usb003_17.geometry} material={materials['Material.008']} />
+                        <mesh geometry={nodes.usb003_18.geometry} material={materials.PaletteMaterial005} />
                         <mesh geometry={nodes.usb003_19.geometry} material={materials.PaletteMaterial006} />
-                        <mesh geometry={nodes.usb003_20.geometry} material={materials.PaletteMaterial007} />
-                        <mesh geometry={nodes.usb003_21.geometry} material={materials['Material.020']} />
-                        <mesh geometry={nodes.usb003_22.geometry} material={materials['Material.016']} />
-                        <mesh geometry={nodes.usb003_23.geometry} material={materials['aorus logotranspa']} />
-                        <mesh geometry={nodes.usb003_24.geometry} material={materials['aorus case fans']} />
-                        <mesh geometry={nodes.usb003_25.geometry} material={materials['Material.052']} />
-                        <mesh geometry={nodes.usb003_26.geometry} material={materials['Material.038']} />
-                        <mesh geometry={nodes.usb003_27.geometry} material={materials['Material.022']} />
+                        <mesh geometry={nodes.usb003_20.geometry} material={materials['Material.020']} />
+                        <mesh geometry={nodes.usb003_21.geometry} material={materials['Material.016']} />
+                        <mesh geometry={nodes.usb003_22.geometry} material={materials['aorus logotranspa']} />
+                        <mesh geometry={nodes.usb003_23.geometry} material={materials['aorus case fans']} />
+                        <mesh geometry={nodes.usb003_24.geometry} material={materials['Material.052']} />
+                        <mesh geometry={nodes.usb003_25.geometry} material={materials['Material.038']} />
+                        <mesh geometry={nodes.usb003_26.geometry} material={materials['Material.022']} />
                         <mesh geometry={nodes.Cube072.geometry} material={materials.ParquetTable} />
                         <mesh geometry={nodes.Cube072_1.geometry} material={materials.ParquetTableSides} />
                         <mesh geometry={nodes.Object_0010.geometry} material={materials.Rakovina} />
@@ -274,8 +276,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         <mesh geometry={nodes.Object_3003_2.geometry} material={materials.fruit} />
                         <mesh geometry={nodes.LONG_skinny_1_mesh_hedge_dom_creame_0001.geometry} material={materials.dom_creame} />
                         <mesh geometry={nodes.LONG_skinny_1_mesh_hedge_dom_creame_0001_1.geometry} material={materials.model} />
-                        <mesh geometry={nodes.pPlane3_lambert16_0.geometry} material={materials.lambert16} />
-                        <mesh geometry={nodes.pPlane3_lambert16_0_1.geometry} material={materials.lambert17} />
                     </group>
                 </primitive>
             }
