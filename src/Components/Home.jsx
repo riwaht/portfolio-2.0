@@ -17,6 +17,7 @@ import AudioPlayer from '../Utils/AudioPlayer';
 
 function Home() {
     const modelRef = useRef();
+    const audioRef = useRef(); // Create audioRef here
     const Model = React.lazy(() => import('./Model'));
     const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -92,6 +93,7 @@ function Home() {
         <div className="container">
             <Suspense fallback={<Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}>
                 {!isStarted && <Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}
+                {isStarted && <AudioPlayer ref={audioRef} />} 
                 <div
                     style={{
                         visibility: isStarted ? 'visible' : 'hidden', // Alternatively, use opacity: 0 if you prefer
@@ -102,7 +104,6 @@ function Home() {
                         height: '100%',
                     }}
                 >
-                    <AudioPlayer />
                     <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
                         {!isWalkthroughActive && <Lighting />}
                         <SoftShadows size={20} samples={16} />

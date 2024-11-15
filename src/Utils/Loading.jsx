@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import AudioPlayer from './AudioPlayer';  // Import your AudioPlayer component
 
-const Loading = ({ isLoading, isStarted, handleStart, audioRef }) => {
+const Loading = ({ isLoading, isStarted, handleStart }) => {
+    const audioRef = useRef(null);  // Declare the ref for audio player
 
     // Define the stages of the loading process
     const stages = [
@@ -53,8 +55,11 @@ const Loading = ({ isLoading, isStarted, handleStart, audioRef }) => {
     }, [isLoading]);
 
     const handleStartClick = () => {
-        handleStart(); // This triggers the audio play
-        audioRef.current.play(); // Play the audio when the start button is clicked
+        // Check if the audioRef is valid and then play the audio
+        if (audioRef.current) {
+            audioRef.current.play();  // Play the audio when Start is clicked
+        }
+        handleStart(); // Call the handleStart function passed down as prop
     };
 
     return (

@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackward, faPlay, faPause, faForward } from "@fortawesome/free-solid-svg-icons";
 import "../AudioPlayer.css";
 
-const AudioPlayer = () => {
+// Forward the ref to the component
+const AudioPlayer = React.forwardRef((props, ref) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
 
-    const audioRef = useRef(null);
+    // Using the forwarded ref instead of the local useRef
+    const audioRef = ref || useRef(null);
 
     const togglePlayPause = () => {
         if (isPlaying) {
@@ -42,11 +44,11 @@ const AudioPlayer = () => {
     };
 
     const handlePlay = () => {
-        setIsPlaying(true); // Set isPlaying to true when the audio starts playing
+        setIsPlaying(true);
     };
 
     const handlePause = () => {
-        setIsPlaying(false); // Set isPlaying to false when the audio is paused
+        setIsPlaying(false);
     };
 
     return (
@@ -88,14 +90,14 @@ const AudioPlayer = () => {
                 ref={audioRef}
                 onTimeUpdate={updateTime}
                 onLoadedMetadata={updateTime}
-                onPlay={handlePlay} // Trigger when the audio starts playing
-                onPause={handlePause} // Trigger when the audio is paused
+                onPlay={handlePlay}
+                onPause={handlePause}
                 src="/Married Life.mp3"
                 autoPlay
             />
         </div>
     );
-};
+});
 
 // Helper function to format the time (e.g., 02:30)
 const formatTime = (time) => {
