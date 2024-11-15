@@ -54,27 +54,35 @@ const AudioPlayer = React.forwardRef((props, ref) => {
     return (
         <div className="media-controls">
             <div className="media-buttons">
-                <button className="rewind-button media-button" onClick={handleRewindButton}>
-                    <FontAwesomeIcon icon={faBackward} className="button-icons" />
+                {/* Each button and text wrapped in a container */}
+                <div className="media-button-container">
+                    <button className="rewind-button media-button" onClick={handleRewindButton}>
+                        <FontAwesomeIcon icon={faBackward} className="button-icons" />
+                    </button>
                     <span className="button-text">Rewind</span>
-                </button>
+                </div>
 
-                <button className="play-button media-button" onClick={togglePlayPause}>
-                    <FontAwesomeIcon
-                        icon={isPlaying ? faPause : faPlay}
-                        className={`button-icons ${isPlaying ? "delta" : ""}`}
-                    />
+                <div className="media-button-container">
+                    <button className="play-button media-button" onClick={togglePlayPause}>
+                        <FontAwesomeIcon
+                            icon={isPlaying ? faPause : faPlay}
+                            className={`button-icons ${isPlaying ? "delta" : ""}`}
+                        />
+                    </button>
                     <span className="button-text">{isPlaying ? "Pause" : "Play"}</span>
-                </button>
+                </div>
 
-                <button className="fast-forward-button media-button" onClick={handleForwardButton}>
-                    <FontAwesomeIcon icon={faForward} className="button-icons" />
+                <div className="media-button-container">
+                    <button className="fast-forward-button media-button" onClick={handleForwardButton}>
+                        <FontAwesomeIcon icon={faForward} className="button-icons" />
+                    </button>
                     <span className="button-text">Forward</span>
-                </button>
+                </div>
             </div>
 
             <div className="media-progress">
-                <div className="progress-bar-wrapper progress" onClick={handleProgressBarClick}>
+                <div className="progress-time-current">{formatTime(currentTime)}</div>
+                <div className="progress-bar-wrapper" onClick={handleProgressBarClick}>
                     <div
                         className="progress-bar"
                         style={{
@@ -82,7 +90,6 @@ const AudioPlayer = React.forwardRef((props, ref) => {
                         }}
                     ></div>
                 </div>
-                <div className="progress-time-current">{formatTime(currentTime)}</div>
                 <div className="progress-time-total">{formatTime(duration)}</div>
             </div>
 
