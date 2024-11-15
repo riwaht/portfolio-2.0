@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-const Loading = ({ isLoading }) => {
-    const navigate = useNavigate();  // useNavigate hook for navigation
+const Loading = ({ isLoading, isStarted, handleStart, audioRef }) => {
 
     // Define the stages of the loading process
     const stages = [
@@ -33,7 +31,6 @@ const Loading = ({ isLoading }) => {
 
     const [message, setMessage] = useState(stages[0].message);
     const [backstory, setBackstory] = useState(backstories[0]);
-    const [progress, setProgress] = useState(0);  // Track the progress value
 
     useEffect(() => {
         if (!isLoading) return; // Only run if isLoading is true
@@ -48,26 +45,16 @@ const Loading = ({ isLoading }) => {
             setBackstory(randomBackstory);
         }, 8000); // Change the backstory every 8 seconds
 
-        // Simulate the progress increment
-        const progressInterval = setInterval(() => {
-            if (progress < 100) {
-                setProgress((prevProgress) => prevProgress + 5);  // Increment progress
-            } else {
-                clearInterval(progressInterval);  // Stop the progress when it reaches 100%
-            }
-        }, 1000);  // Update progress every second
-
         // Cleanup intervals on unmount
         return () => {
             clearInterval(messageInterval);
             clearInterval(backstoryInterval);
-            clearInterval(progressInterval);
         };
-    }, [isLoading, progress]);
+    }, [isLoading]);
 
-    // Function to handle the start button click
-    const handleStart = () => {
-        navigate('/home');  // Navigate to home page when the button is clicked
+    const handleStartClick = () => {
+        handleStart(); // This triggers the audio play
+        audioRef.current.play(); // Play the audio when the start button is clicked
     };
 
     return (
@@ -77,8 +64,8 @@ const Loading = ({ isLoading }) => {
             <p className="backstory">{backstory}</p>
 
             {/* Only show the Start button when loading is done */}
-            {!isLoading && (
-                <button onClick={handleStart} style={{
+            {!isLoading && !isStarted && (
+                <button onClick={handleStartClick} style={{
                     position: 'absolute',
                     bottom: '30%',
                     left: '50%',

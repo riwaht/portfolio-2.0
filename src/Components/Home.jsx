@@ -22,6 +22,7 @@ function Home() {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isStarted, setIsStarted] = useState(false);
     const [isWalkthroughActive, setIsWalkthroughActive] = useState(true);
     const [pcZoomed, setPcZoomed] = useState(false);
 
@@ -83,41 +84,56 @@ function Home() {
         setIsLoading(false);
     };
 
+    const handleStart = () => {
+        setIsStarted(true);
+    }
+
     return (
         <div className="container">
-            <Suspense fallback={<Loading isLoading={isLoading} />}>
-                {isLoading && <Loading />}
-                <AudioPlayer />
-                <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
-                    {!isWalkthroughActive && <Lighting />}
-                    <SoftShadows size={20} samples={16} />
-                    <Model
-                        ref={modelRef}
-                        onLoad={handleModelLoad}
-                        completeEvent={completeEvent}
-                        isTransitioning={isTransitioning}
-                        isWalkthroughActive={isWalkthroughActive}
-                        pcZoomed={pcZoomed}
-                        setPcZoomed={setPcZoomed}
-                    />
-                    <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                    <ModelController
-                        modelRef={modelRef}
-                        isWalkthroughActive={isWalkthroughActive}
-                        pcZoomed={pcZoomed}
-                    />
-                    {isWalkthroughActive && (
-                        <>
-                            <LightingWalkthrough currentStep={currentStep} />
-                            <WalkthroughController
-                                steps={steps}
-                                currentStep={currentStep}
-                                setIsTransitioning={setIsTransitioning}
-                            />
-                        </>
-                    )}
-                </Canvas>
-                {!isLoading && isWalkthroughActive && (
+            <Suspense fallback={<Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}>
+                {!isStarted && <Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}
+                <div
+                    style={{
+                        visibility: isStarted ? 'visible' : 'hidden', // Alternatively, use opacity: 0 if you prefer
+                        opacity: isStarted ? 1 : 0,
+                        position: 'absolute', // Ensure it's layered correctly
+                        zIndex: isStarted ? 1 : -1, // Make it unclickable when not started
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                    <AudioPlayer />
+                    <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
+                        {!isWalkthroughActive && <Lighting />}
+                        <SoftShadows size={20} samples={16} />
+                        <Model
+                            ref={modelRef}
+                            onLoad={handleModelLoad}
+                            completeEvent={completeEvent}
+                            isTransitioning={isTransitioning}
+                            isWalkthroughActive={isWalkthroughActive}
+                            pcZoomed={pcZoomed}
+                            setPcZoomed={setPcZoomed}
+                        />
+                        <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+                        <ModelController
+                            modelRef={modelRef}
+                            isWalkthroughActive={isWalkthroughActive}
+                            pcZoomed={pcZoomed}
+                        />
+                        {isWalkthroughActive && (
+                            <>
+                                <LightingWalkthrough currentStep={currentStep} />
+                                <WalkthroughController
+                                    steps={steps}
+                                    currentStep={currentStep}
+                                    setIsTransitioning={setIsTransitioning}
+                                />
+                            </>
+                        )}
+                    </Canvas>
+                </div>
+                {isStarted && isWalkthroughActive && (
                     <WalkthroughUI
                         currentStep={currentStep}
                         stepDescription={description}
