@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackward, faPlay, faPause, faForward } from "@fortawesome/free-solid-svg-icons";
 import "../AudioPlayer.css";
@@ -11,6 +11,12 @@ const AudioPlayer = React.forwardRef((props, ref) => {
 
     // Using the forwarded ref instead of the local useRef
     const audioRef = ref || useRef(null);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = 0.2;
+        }
+    }, [audioRef]);
 
     const togglePlayPause = () => {
         if (isPlaying) {
@@ -99,7 +105,7 @@ const AudioPlayer = React.forwardRef((props, ref) => {
                 onLoadedMetadata={updateTime}
                 onPlay={handlePlay}
                 onPause={handlePause}
-                src="/Married Life.mp3"
+                src="/Sounds/Married Life.mp3"
                 autoPlay
             />
         </div>
