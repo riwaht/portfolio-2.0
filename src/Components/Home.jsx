@@ -17,7 +17,7 @@ import PostProcessing from '../Utils/Postprocessing';
 
 function Home() {
     const modelRef = useRef();
-    const audioRef = useRef(); // Create audioRef here
+    const audioRef = useRef(); 
     const Model = React.lazy(() => import('./Model'));
     const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);

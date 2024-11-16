@@ -12,13 +12,15 @@ const PostProcessing = ({ highlightedMeshes }) => {
 
     useEffect(() => {
         composer.current = new EffectComposer(gl);
-        composer.current.addPass(new RenderPass(scene, camera)); // Renders the scene with existing lighting
+        composer.current.addPass(new RenderPass(scene, camera));
 
         outlinePass.current = new OutlinePass(new THREE.Vector2(size.width, size.height), scene, camera);
-        outlinePass.current.edgeStrength = 7;
-        outlinePass.current.edgeThickness = 2;
-        outlinePass.current.visibleEdgeColor.set(0x000000); // Black outline
+        outlinePass.current.edgeStrength = 7; // Increase strength
+        outlinePass.current.edgeThickness = 5; // Adjust for thicker outlines
+        outlinePass.current.visibleEdgeColor.set(0x007bff); // Set outline color
+        outlinePass.current.hiddenEdgeColor.set(0x007bff); // Set hidden outline color
         composer.current.addPass(outlinePass.current);
+
 
         return () => {
             composer.current = null;

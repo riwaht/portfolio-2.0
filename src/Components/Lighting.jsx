@@ -35,21 +35,13 @@ function Lighting({ isDebugMode = false }) {
                 castShadow
                 intensity={1}
                 position={[10, 50, 20]}
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-                shadow-camera-near={0.5}
-                shadow-camera-far={100}
-                shadow-camera-left={-50}
-                shadow-camera-right={50}
-                shadow-camera-top={50}
-                shadow-camera-bottom={-50}
             />
 
             {/* Hemisphere light for sky and ground effect */}
             <hemisphereLight
                 skyColor={0xffffbb} // Sky color
                 groundColor={0x080820} // Ground color
-                intensity={0.7}
+                intensity={0.5}
                 position={[0, 50, 0]}
             />
         </>

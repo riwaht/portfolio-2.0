@@ -21,7 +21,9 @@
         "position": [25, 15, 28],
         "lookAt": [12, 5, 0],
         "description": "This is the fridge, help yourself to anything inside.",
-        "events" : {},
+        "events" : {
+            "clickFridge": false
+        },
         "popupPosition": { "top": "60%", "left": "20%" },
         "popupWidth": "15%",
         "meshName": ["Fridge", "FridgeDoor"]
