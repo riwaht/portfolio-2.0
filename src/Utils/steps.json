@@ -142,9 +142,9 @@
     {
         "position": [15, 14, -7],
         "lookAt": [14, 13, 0],
-        "description": "Click on my CV to view it!",
+        "description": "Click on my Linkedin to view it!",
         "events" : {
-            "clickCV": false
+            "clickLinkedin": false
         },
         "popupPosition": { "top": "20%", "left": "40%" },
         "popupWidth": "10%"

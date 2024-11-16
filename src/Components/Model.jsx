@@ -40,9 +40,13 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     }, [images]);
 
 
-    const handleCVClick = () => {
-        completeEvent('clickCV', 17);
-        window.open('/PC Documents/Riwa Hoteit, CV.pdf', '_blank');
+    const handleLinkedinClick = () => {
+        completeEvent('clickLinkedin', 17);
+        window.open('https://www.linkedin.com/in/riwa-hoteit-7236b6204/', '_blank');
+    };
+
+    const handleGithubClick = () => {
+        window.open('https://github.com/riwaht', '_blank');
     };
 
     const handleFrontendClick = () => {
@@ -88,9 +92,10 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const folderBoxes = [
         { show: showFolderBoxes, position: [17, 14.7, -4], color: "red", onClick: () => handleImageClick('important') },
         { show: showFolderBoxes, position: [17, 14, -4], color: "blue", onClick: () => handleImageClick('random') },
-        { show: showImportantBoxes, position: [15.7, 14.15, -4], color: "red", onClick: handleCVClick },
-        { show: showImportantBoxes, position: [15, 14.15, -4], color: "red", onClick: handleFrontendClick },
-        { show: showImportantBoxes, position: [14.3, 14.15, -4], color: "red", onClick: handleGameDevClick },
+        { show: showImportantBoxes, position: [15.7, 14.15, -4], color: "red", onClick: handleLinkedinClick },
+        { show: showImportantBoxes, position: [15, 14.15, -4], color: "red", onClick: handleGameDevClick },
+        { show: showImportantBoxes, position: [14.3, 14.15, -4], color: "red", onClick: handleFrontendClick },
+        { show: showImportantBoxes, position: [13.5, 14.15, -4], color: "red", onClick: handleGithubClick },
         { show: showImportantBoxes, position: [12.5, 14.9, -5], color: "blue", onClick: () => handleImageClick('exit'), size: [0.2, 0.2, 0.2] },
         { show: showRandomBoxes, position: [12.5, 14.9, -5], color: "blue", onClick: () => handleImageClick('exit'), size: [0.2, 0.2, 0.2] },
         { show: showRandomBoxes, position: [15.7, 14.15, -4], color: "red", onClick: handleBlenderClick },
