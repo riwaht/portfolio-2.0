@@ -1,4 +1,6 @@
+import { useHelper } from '@react-three/drei';
 import React, { useRef } from 'react';
+import { PointLightHelper } from 'three';
 
 const roomLightMapping = {
     kitchen: [1, 2, 3, 4], // Steps that belong to the kitchen
@@ -8,59 +10,53 @@ const roomLightMapping = {
 };
 
 function LightingWalkthrough({ currentStep }) {
+    const pointLightRef = useRef();
     const getRoomForStep = () => {
         return Object.keys(roomLightMapping).find((room) =>
             roomLightMapping[room].includes(currentStep)
         );
     };
 
+    useHelper(pointLightRef, PointLightHelper, 2);
+
     const currentRoom = getRoomForStep();
 
     return (
         <>
             {(currentRoom === 'kitchen' || currentStep === 0) && (
-                <pointLight
-                    castShadow
-                    intensity={2000}
-                    decay={2}
-                    distance={50}
-                    position={[25, 25, 25]}
-                    shadow-mapSize-width={1024}
-                    shadow-mapSize-height={1024}
-                />
+                <>
+                    <pointLight
+                        castShadow
+                        intensity={2000}
+                        position={[25, 25, 25]}
+                    />
+                </>
             )}
 
             {currentRoom === 'gym' && (
-                <pointLight
-                    castShadow
-                    intensity={1500}
-                    decay={2}
-                    distance={50}
-                    position={[-25, 25, 25]}
-                    shadow-mapSize-width={1024}
-                    shadow-mapSize-height={1024}
-                />
+                <>
+                    <pointLight
+                        castShadow
+                        intensity={2000}
+                        position={[-25, 25, 25]}
+                    />
+                    
+                </>
             )}
 
             {currentRoom === 'garden' && (
-                <directionalLight
+                <pointLight
                     castShadow
-                    intensity={1.5}
+                    intensity={2000}
                     position={[-20, 30, -20]}
-                    shadow-mapSize-width={1024}
-                    shadow-mapSize-height={1024}
                 />
             )}
 
             {currentRoom === 'bedroom' && (
                 <pointLight
                     castShadow
-                    intensity={1000}
-                    decay={2}
-                    distance={50}
+                    intensity={2000}
                     position={[25, 25, -25]}
-                    shadow-mapSize-width={1024}
-                    shadow-mapSize-height={1024}
                 />
             )}
 

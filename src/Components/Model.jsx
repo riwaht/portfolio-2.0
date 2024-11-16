@@ -10,11 +10,11 @@ const images = [
 ];
 
 // Use forwardRef to properly assign the ref
-const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, ...props }, ref) => {
+const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, currentStep, ...props }, ref) => {
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
-    const castOnlyMeshes = ['Volleyball', 'defaultMaterial001', 'defaultMaterial', 'Photo', 'Sunflower'];
+    const castOnlyMeshes = ['Volleyball', 'defaultMaterial001', 'defaultMaterial', 'Photo', 'Sunflower', 'BoxingGlove', 'shard2_lambert4_0', 'shard3_lambert7_0', 'shard4_lambert5_0', 'shard14_lambert6_0', 'Sac_Sac_0', 'Desk', 'Mario', 'Skateboard', 'Tori', 'Book', 'PS2', 'JBL'];
     const [showFolderBoxes, setShowFolderBoxes] = useState(false);
     const [showImportantBoxes, setShowImportantBoxes] = useState(false);
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
@@ -23,9 +23,15 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const [fridgeOpen, setFridgeOpen] = useState(false);
     const [doorRotation, setDoorRotation] = useState(0);
     const [doorPosition, setDoorPosition] = useState(0);
-    const hiddenObjects = ['defaultMaterial', 'defaultMaterial001', 'Screen', 'Screen2', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'WhiteWalls', 'GardenWall', 'Floor001'];
+    const currentKitchenSteps = [1, 2, 3, 4];
+    const currentBedroomSteps = [13, 14, 15, 16, 17, 18, 19];
+    const hiddenObjects = ['defaultMaterial', 'defaultMaterial001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'WhiteWalls', 'GardenWall', 'Floor001'];
 
     const handleFridgeClick = useCallback(() => {
+        if (!currentKitchenSteps.includes(currentStep)) {
+            return;
+        }
+
         setFridgeOpen((prev) => !prev);
         if (isWalkthroughActive) {
             // set timeout for 2 seconds to allow the walkthrough to finish
@@ -33,7 +39,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                 completeEvent('clickFridge', 2);
                 setFridgeOpen(false);
             }
-            , 2000);
+                , 2000);
         }
     }, [completeEvent, isWalkthroughActive]);
 
@@ -83,6 +89,9 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     };
 
     const handleScreenClick = useCallback(() => {
+        if (!currentBedroomSteps.includes(currentStep)) {
+            return;
+        }
         completeEvent('clickPC', 15);
         if (!showImportantBoxes && !showRandomBoxes) {
             setShowFolderBoxes(true);
@@ -90,7 +99,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
 
         if (!isWalkthroughActive && camera) {
             setPcZoomed(true);
-            console.log(pcZoomed);
         }
     }, [completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, showImportantBoxes, showRandomBoxes, camera]);
 
@@ -105,7 +113,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     });
 
     const BoxCollider = ({ position, color, onClick, size }) => (
-        <mesh position={position} onClick={onClick}>
+        <mesh position={position} onClick={onClick} >
             <boxGeometry args={size} />
             <meshStandardMaterial color={color} transparent opacity={0} />
         </mesh>
@@ -220,7 +228,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                             material={materials.Frige}
                             castShadow
                         />
-
                         <mesh geometry={nodes.WhiteWalls.geometry} material={materials.PaletteMaterial001} receiveShadow />
                         <mesh geometry={nodes.GardenWall.geometry} material={nodes.GardenWall.material} receiveShadow />
                         <mesh geometry={nodes.Floor001.geometry} material={materials.Parquet} receiveShadow />

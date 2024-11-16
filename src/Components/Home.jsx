@@ -127,6 +127,7 @@ function Home() {
                             isWalkthroughActive={isWalkthroughActive}
                             pcZoomed={pcZoomed}
                             setPcZoomed={setPcZoomed}
+                            currentStep={currentStep}
                         />
                         <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
                         <ModelController

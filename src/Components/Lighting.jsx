@@ -27,6 +27,20 @@ function Lighting({ isDebugMode = false }) {
                 shadow-mapSize-width={1024}
                 shadow-mapSize-height={1024}
             />
+            <pointLight
+                castShadow
+                intensity={100}
+                decay={2}
+                distance={50}
+                position={[8, 15, 8]}
+            />
+            <pointLight
+                castShadow
+                intensity={50}
+                decay={2}
+                distance={10}
+                position={[12, 5, 12]}
+            />
 
             {/* Directional light for sunlight-like effect */}
             <directionalLight
