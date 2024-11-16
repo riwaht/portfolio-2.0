@@ -126,6 +126,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                 break;
             case 'exit':
                 setImageIndex(0);
+                completeEvent('clickX', 18);
                 setShowFolderBoxes(true);
                 setShowImportantBoxes(false);
                 setShowRandomBoxes(false);

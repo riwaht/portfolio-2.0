@@ -150,6 +150,16 @@
         "popupWidth": "10%"
     },
     {
+        "position": [15, 14, -7],
+        "lookAt": [14, 13, 0],
+        "description": "Click on the X to exit the file.",
+        "events" : {
+            "clickX": false
+        },
+        "popupPosition": { "top": "20%", "left": "40%" },
+        "popupWidth": "10%"
+    },
+    {
         "position": [40, 30, -30],
         "lookAt": [0, 0, 0],
         "description": "That's all for now! I hope you enjoyed the tour. Feel free to explore the house on your own.",
