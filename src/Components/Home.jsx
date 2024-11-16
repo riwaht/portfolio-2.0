@@ -1,6 +1,6 @@
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, Stats } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Stats, SoftShadows } from '@react-three/drei';
 import LightingWalkthrough from './LightingWalkthrough';
 import Lighting from './Lighting';
 import ModelController from '../Controllers/ModelController';
@@ -12,8 +12,8 @@ import Loading from '../Utils/Loading';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from "@vercel/analytics/react";
 import * as THREE from 'three';
-import { SoftShadows } from '@react-three/drei';
 import AudioPlayer from '../Utils/AudioPlayer';
+import PostProcessing from '../Utils/Postprocessing';
 
 function Home() {
     const modelRef = useRef();
@@ -26,12 +26,25 @@ function Home() {
     const [isStarted, setIsStarted] = useState(false);
     const [isWalkthroughActive, setIsWalkthroughActive] = useState(true);
     const [pcZoomed, setPcZoomed] = useState(false);
+    const [highlightedMesh, setHighlightedMesh] = useState(null);
 
     const exitWalkthrough = () => {
         setIsWalkthroughActive(false);
     };
 
-    const { description, events } = steps[currentStep] || {};
+    const { description, events, meshName } = steps[currentStep] || {};
+
+    useEffect(() => {
+        if (modelRef.current && meshName) {
+            const meshes = Array.isArray(meshName)
+                ? meshName.map((name) => modelRef.current.getObjectByName(name)).filter(Boolean) // Get each mesh
+                : []; // Ensure it's an array or fallback to empty
+            console.log(meshes); // Debug to check meshes
+            setHighlightedMesh(meshes.length ? meshes : null); // Update state
+        } else {
+            setHighlightedMesh(null); // Clear highlight if no meshName
+        }
+    }, [currentStep, meshName]);
 
     const handleBackClick = () => {
         setPcZoomed(false);
@@ -87,19 +100,19 @@ function Home() {
 
     const handleStart = () => {
         setIsStarted(true);
-    }
+    };
 
     return (
         <div className="container">
             <Suspense fallback={<Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}>
                 {!isStarted && <Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}
-                {isStarted && <AudioPlayer ref={audioRef} />} 
+                {isStarted && <AudioPlayer ref={audioRef} />}
                 <div
                     style={{
-                        visibility: isStarted ? 'visible' : 'hidden', // Alternatively, use opacity: 0 if you prefer
+                        visibility: isStarted ? 'visible' : 'hidden',
                         opacity: isStarted ? 1 : 0,
-                        position: 'absolute', // Ensure it's layered correctly
-                        zIndex: isStarted ? 1 : -1, // Make it unclickable when not started
+                        position: 'absolute',
+                        zIndex: isStarted ? 1 : -1,
                         width: '100%',
                         height: '100%',
                     }}
@@ -107,6 +120,7 @@ function Home() {
                     <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
                         {!isWalkthroughActive && <Lighting />}
                         <SoftShadows size={20} samples={16} />
+                        <PostProcessing highlightedMeshes={highlightedMesh} />
                         <Model
                             ref={modelRef}
                             onLoad={handleModelLoad}

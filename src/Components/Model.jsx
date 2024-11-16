@@ -19,7 +19,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const [showImportantBoxes, setShowImportantBoxes] = useState(false);
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
     const [imageIndex, setImageIndex] = React.useState(0);
-    const { camera } = useThree();
+    const { camera, gl } = useThree();
 
     const textures = useMemo(() => {
         const textureLoader = new THREE.TextureLoader();
@@ -38,7 +38,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             return texture;
         });
     }, [images]);
-
 
     const handleLinkedinClick = () => {
         completeEvent('clickLinkedin', 17);
@@ -178,8 +177,8 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             {!onLoad ? null :
                 <primitive object={scene} dispose={null} ref={ref} {...props}>
                     <group {...props} dispose={null}>
-                        <mesh geometry={nodes.defaultMaterial.geometry} material={materials.Frige_Door} position={[26.48, 10.644, 8.653]} rotation={[-Math.PI, 0, -Math.PI]} scale={4.583} />
-                        <mesh geometry={nodes.defaultMaterial001.geometry} material={materials.Frige} position={[22.082, 1.473, 4.701]} rotation={[0, -1.571, 0]} scale={4.583} />
+                        <mesh name="FridgeDoor" geometry={nodes.defaultMaterial.geometry} material={materials.Frige_Door} />
+                        <mesh name="Fridge" geometry={nodes.defaultMaterial001.geometry} material={materials.Frige} />
                         <mesh geometry={nodes.WhiteWalls.geometry} material={materials.PaletteMaterial001} receiveShadow />
                         <mesh geometry={nodes.GardenWall.geometry} material={nodes.GardenWall.material} receiveShadow />
                         <mesh geometry={nodes.Floor001.geometry} material={materials.Parquet} receiveShadow />
