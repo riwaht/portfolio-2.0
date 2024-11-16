@@ -1,21 +1,13 @@
 import React, { useRef } from 'react';
-import { useHelper } from '@react-three/drei';
-import { DirectionalLightHelper, PointLightHelper } from 'three';
 
 const roomLightMapping = {
     kitchen: [1, 2, 3, 4], // Steps that belong to the kitchen
     gym: [5, 6, 7, 8],
     garden: [9, 10, 11, 12],
-    bedroom: [13, 14, 15, 16, 17, 18],
+    bedroom: [13, 14, 15, 16, 17, 18, 19],
 };
 
 function LightingWalkthrough({ currentStep }) {
-    const pointLightRef = useRef();
-    const pointLightRef2 = useRef();
-    const pointLightRef3 = useRef();
-    const pointLightRef4 = useRef();
-
-    // Determine the current room based on the step
     const getRoomForStep = () => {
         return Object.keys(roomLightMapping).find((room) =>
             roomLightMapping[room].includes(currentStep)
@@ -26,46 +18,57 @@ function LightingWalkthrough({ currentStep }) {
 
     return (
         <>
-            {/* Render lights based on the current room */}
             {(currentRoom === 'kitchen' || currentStep === 0) && (
                 <pointLight
-                    ref={pointLightRef}
                     castShadow
-                    intensity={500}
+                    intensity={2000}
+                    decay={2}
+                    distance={50}
                     position={[25, 25, 25]}
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
                 />
             )}
 
             {currentRoom === 'gym' && (
                 <pointLight
-                    ref={pointLightRef2}
                     castShadow
-                    intensity={500}
+                    intensity={1500}
+                    decay={2}
+                    distance={50}
                     position={[-25, 25, 25]}
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
                 />
             )}
 
             {currentRoom === 'garden' && (
-                <pointLight
-                    ref={pointLightRef3}
+                <directionalLight
                     castShadow
-                    intensity={500}
-                    position={[-25, 25, -25]}
+                    intensity={1.5}
+                    position={[-20, 30, -20]}
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
                 />
             )}
 
             {currentRoom === 'bedroom' && (
                 <pointLight
-                    ref={pointLightRef4}
                     castShadow
-                    intensity={500}
+                    intensity={1000}
+                    decay={2}
+                    distance={50}
                     position={[25, 25, -25]}
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
                 />
             )}
 
-            <hemisphereLight
-                args={[0xffffbb, 0x080820, 0.4]}
-            />
+            {/* Add ambient light for general soft illumination */}
+            <ambientLight intensity={0.3} />
+
+            {/* Keep hemisphere light for natural fill */}
+            <hemisphereLight args={[0xffffbb, 0x080820, 0.6]} />
         </>
     );
 }

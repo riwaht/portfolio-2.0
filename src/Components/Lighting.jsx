@@ -1,34 +1,56 @@
 import React, { useRef } from 'react';
-import { Environment, useHelper } from '@react-three/drei';
-import { DirectionalLightHelper, PointLightHelper, HemisphereLight } from 'three';
+import { useHelper } from '@react-three/drei';
+import { DirectionalLightHelper, PointLightHelper } from 'three';
 
-function Lighting() {
+function Lighting({ isDebugMode = false }) {
     const pointLightRef = useRef();
     const dirLightRef = useRef();
 
-    // Use helper to visualize the lights in the scene
-    useHelper(dirLightRef, DirectionalLightHelper, 1);
-    useHelper(pointLightRef, PointLightHelper, 1);
+    // Use helpers for debugging
+    if (isDebugMode) {
+        useHelper(dirLightRef, DirectionalLightHelper, 5);
+        useHelper(pointLightRef, PointLightHelper, 2);
+    }
 
     return (
         <>
-            {/* Point light (simulating light bulb) */}
+            {/* Ambient light for baseline illumination */}
+            <ambientLight color={0xffffff} intensity={0.3} />
+
+            {/* Point light acting as a light bulb */}
             <pointLight
-                color={0x800020}
+                ref={pointLightRef}
+                color={0xff4400}
                 castShadow
-                intensity={300}
+                intensity={1.5}
                 position={[27, 22, -20]}
+                shadow-mapSize-width={1024}
+                shadow-mapSize-height={1024}
             />
 
-            <pointLight
+            {/* Directional light for sunlight-like effect */}
+            <directionalLight
+                ref={dirLightRef}
+                color={0xffffff}
                 castShadow
-                intensity={300}
-                position={[27, 22, -20]}
+                intensity={1}
+                position={[10, 50, 20]}
+                shadow-mapSize-width={2048}
+                shadow-mapSize-height={2048}
+                shadow-camera-near={0.5}
+                shadow-camera-far={100}
+                shadow-camera-left={-50}
+                shadow-camera-right={50}
+                shadow-camera-top={50}
+                shadow-camera-bottom={-50}
             />
 
-            {/* Hemisphere light using the <hemisphereLight> JSX syntax */}
+            {/* Hemisphere light for sky and ground effect */}
             <hemisphereLight
-                args={[0xffffbb, 0x080820, 0.7]}
+                skyColor={0xffffbb} // Sky color
+                groundColor={0x080820} // Ground color
+                intensity={0.7}
+                position={[0, 50, 0]}
             />
         </>
     );

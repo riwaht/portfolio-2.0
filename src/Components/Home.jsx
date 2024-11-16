@@ -39,7 +39,6 @@ function Home() {
             const meshes = Array.isArray(meshName)
                 ? meshName.map((name) => modelRef.current.getObjectByName(name)).filter(Boolean) // Get each mesh
                 : []; // Ensure it's an array or fallback to empty
-            console.log(meshes); // Debug to check meshes
             setHighlightedMesh(meshes.length ? meshes : null); // Update state
         } else {
             setHighlightedMesh(null); // Clear highlight if no meshName
@@ -120,7 +119,6 @@ function Home() {
                     <Canvas shadows={{ type: THREE.PCFSoftShadowMap, mapSize: { width: 2048, height: 2048 } }} precision="high">
                         {!isWalkthroughActive && <Lighting />}
                         <SoftShadows size={20} samples={16} />
-                        <PostProcessing highlightedMeshes={highlightedMesh} />
                         <Model
                             ref={modelRef}
                             onLoad={handleModelLoad}
@@ -138,6 +136,7 @@ function Home() {
                         />
                         {isWalkthroughActive && (
                             <>
+                                <PostProcessing highlightedMeshes={highlightedMesh} />
                                 <LightingWalkthrough currentStep={currentStep} />
                                 <WalkthroughController
                                     steps={steps}

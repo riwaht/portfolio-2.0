@@ -148,7 +148,7 @@
     {
         "position": [15, 14, -7],
         "lookAt": [14, 13, 0],
-        "description": "Click on the 'Important!' folder to check my CV!",
+        "description": "Click on the 'Important!' folder to check my work!",
         "events" : {
             "clickFolder": false
         },
