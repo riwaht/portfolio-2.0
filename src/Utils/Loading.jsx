@@ -21,15 +21,16 @@ const Loading = ({ isLoading, isStarted, handleStart }) => {
         { progress: 100, message: "Our virtual team is working hard to make your room look amazing. We're also taking virtual bets on whether you'll love it or love it even more." }
     ];
 
-    // Define the backstories
+    /// Define the backstories
     const backstories = [
-        "Hi, I'm Riwa, a game development enthusiast with a passion for creating immersive 3D experiences.",
-        "Did you know? I developed a VR hand-tracking system using OpenCV and Unity. It was a fun challenge!",
-        "While you're waiting, here's a fun fact: I love combining tech and creativity to build cool interactive worlds.",
-        "I'm currently working on mastering game mechanics and gameplay programming.",
-        "One of my dreams? Creating unforgettable worlds for players at studios like Epic Games or Riot Games.",
-        "When I'm not coding, you might find me diving into the latest video games or exploring new AR/VR tech."
+        "Hi, I'm Riwa Hoteit, a developer passionate about creating interactive worlds and storytelling through code.",
+        "Fun fact: I developed 'Nightventures,' a project that uses machine learning to suggest clubs based on your music taste.",
+        "While you're waiting, did you know? I built 'Beirut,' a voice-activated assistant tailored for Lebanon, combining tech and cultural relevance.",
+        "I'm currently sharpening my gameplay programming skills and exploring ways to enhance immersive experiences.",
+        "One of my ambitions? To work on innovative projects at studios like Naughty Dog or Riot Games and leave my mark on the gaming industry.",
+        "When I’m not coding, I enjoy creating AR/VR systems, diving into my favorite manga, or exploring cutting-edge gaming technologies."
     ];
+
 
     const [message, setMessage] = useState(stages[0].message);
     const [backstory, setBackstory] = useState(backstories[0]);

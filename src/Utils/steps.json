@@ -5,7 +5,8 @@
         "description": "Welcome to Riwriw's house! This'll be your home for the next few days (or weeks).",
         "events" :{},
         "popupPosition": { "top": "37%", "left": "27%" },
-        "popupWidth": "40%"
+        "popupWidth": "40%",
+        "meshName": null
     },
     {
         "position": [40, 30, 50],
@@ -13,15 +14,19 @@
         "description": "Here is the kitchen, where you can cook your meals and enjoy a cup of coffee.",
         "events" : {},
         "popupPosition": { "top": "60%", "left": "20%" },
-        "popupWidth": "15%"
+        "popupWidth": "15%",
+        "meshName": null
     },
     {
         "position": [25, 15, 28],
         "lookAt": [12, 5, 0],
         "description": "This is the fridge, help yourself to anything inside.",
-        "events" : {},
+        "events" : {
+            "clickFridge": false
+        },
         "popupPosition": { "top": "60%", "left": "20%" },
-        "popupWidth": "15%"
+        "popupWidth": "15%",
+        "meshName": ["Fridge", "FridgeDoor"]
     },
     {
         "position": [17, 15, 30],
@@ -29,7 +34,8 @@
         "description": "This is the oven. where I make the best pancakes in the world.",
         "events" : {},
         "popupPosition": { "top": "25%", "left": "60%" },
-        "popupWidth": "15%"
+        "popupWidth": "15%",
+        "meshName": ["Stove"]
     },
     {
         "position": [40, 30, 50],
@@ -37,7 +43,8 @@
         "description": "Let's go to another room. Click next!",
         "events" : {},
         "popupPosition": { "top": "37%", "left": "27%" },
-        "popupWidth": "40%"
+        "popupWidth": "40%",
+        "meshName": null
     },
     {
         "position": [-50, 30, 50],
@@ -45,7 +52,8 @@
         "description": "This is the gym, where you can work out and stay fit.",
         "events" : {},
         "popupPosition": { "top": "60%", "left": "57%" },
-        "popupWidth": "20%"
+        "popupWidth": "20%",
+        "meshName": null
     },
     {
         "position": [-20, 10, 10],
@@ -53,7 +61,8 @@
         "description": "These are my boxing gloves, feel free to try them on.",
         "events" : {},
         "popupPosition": { "top": "20%", "left": "30%" },
-        "popupWidth": "15%"
+        "popupWidth": "15%",
+        "meshName": ["BoxingGlove"]
     },
     {
         "position": [-40, 10, 15],
@@ -61,7 +70,8 @@
         "description": "These are dip bars, try them out, but be careful.",
         "events" : {},
         "popupPosition": { "top": "20%", "left": "57%" },
-        "popupWidth": "30%"
+        "popupWidth": "30%",
+        "meshName": ["Dip_Bar"]
     },
     {
         "position": [-50, 30, 50],
@@ -69,7 +79,8 @@
         "description": "Let's go to another room. Click next!",
         "events" : {},
         "popupPosition": { "top": "37%", "left": "27%" },
-        "popupWidth": "40%"
+        "popupWidth": "40%",
+        "meshName": null
     },
     {
         "position": [-40, 30, -40],
@@ -77,7 +88,8 @@
         "description": "This is my garden, where I spend most of my time.",
         "events" : {},
         "popupPosition": { "top": "20%", "left": "5%" },
-        "popupWidth": "30%"
+        "popupWidth": "30%",
+        "meshName": null
     },
     {
         "position": [-15, 20, -33],
@@ -85,7 +97,8 @@
         "description": "Sunflowers are my favorite, what's yours?",
         "events" : {},
         "popupPosition": { "top": "30%", "left": "40%" },
-        "popupWidth": "30%"
+        "popupWidth": "30%",
+        "meshName": ["Sunflower"]
     },
     {
         "position": [-40, 20, -25],
@@ -93,7 +106,8 @@
         "description": "This is my mango tree, it's been here for years.",
         "events" : {},
         "popupPosition": { "top": "55%", "left": "20%" },
-        "popupWidth": "20%"
+        "popupWidth": "20%",
+        "meshName": ["Object_3003", "Object_3003_1", "Object_3003_2"]
     },
     {
         "position": [-40, 30, -40],
@@ -101,7 +115,8 @@
         "description": "Let's go to another room. Click next!",
         "events" : {},
         "popupPosition": { "top": "37%", "left": "27%" },
-        "popupWidth": "40%"
+        "popupWidth": "40%",
+        "meshName": null
     },
     {
         "position": [40, 30, -30],
@@ -109,7 +124,8 @@
         "description": "Finally, this is my bedroom, where I sleep and dream.",
         "events" : {},
         "popupPosition": { "top": "15%", "left": "10%" },
-        "popupWidth": "30%"
+        "popupWidth": "30%",
+        "meshName": null
     },
     {
         "position": [15, 15, -32],
@@ -117,7 +133,8 @@
         "description": "One of my favorite things to do is read books, specifically manga.",
         "events" : {},
         "popupPosition": { "top": "30%", "left": "60%" },
-        "popupWidth": "20%"
+        "popupWidth": "20%",
+        "meshName": ["Tokyo_Ghoul_Manga"]
     },
     {
         "position": [20, 15, -17],
@@ -127,27 +144,30 @@
             "clickPC": false
         },
         "popupPosition": { "top": "10%", "left": "27%" },
-        "popupWidth": "40%"
+        "popupWidth": "40%",
+        "meshName": ["Screen2"]
     },
     {
         "position": [15, 14, -7],
         "lookAt": [14, 13, 0],
-        "description": "Click on the 'Important!' folder to check my CV!",
+        "description": "Click on the 'Important!' folder to check my work!",
         "events" : {
             "clickFolder": false
         },
         "popupPosition": { "top": "10%", "left": "26%" },
-        "popupWidth": "10%"
+        "popupWidth": "10%",
+        "meshName": null
     },
     {
         "position": [15, 14, -7],
         "lookAt": [14, 13, 0],
-        "description": "Click on my Linkedin to view it!",
+        "description": "Click on the Linkedin icon to view it!",
         "events" : {
             "clickLinkedin": false
         },
         "popupPosition": { "top": "20%", "left": "40%" },
-        "popupWidth": "10%"
+        "popupWidth": "10%",
+        "meshName": null
     },
     {
         "position": [15, 14, -7],
@@ -157,7 +177,8 @@
             "clickX": false
         },
         "popupPosition": { "top": "20%", "left": "40%" },
-        "popupWidth": "10%"
+        "popupWidth": "10%",
+        "meshName": null
     },
     {
         "position": [40, 30, -30],
@@ -167,7 +188,8 @@
             "exitWalkthrough": false
         },
         "popupPosition": { "top": "37%", "left": "27%" },
-        "popupWidth": "40%"
+        "popupWidth": "40%",
+        "meshName": null
     }
 ]
 
