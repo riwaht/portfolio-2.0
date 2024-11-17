@@ -1,62 +1,34 @@
 import React, { useRef } from 'react';
-import { useHelper } from '@react-three/drei';
-import { DirectionalLightHelper, PointLightHelper } from 'three';
+import { Environment, useHelper } from '@react-three/drei';
+import { DirectionalLightHelper, PointLightHelper, HemisphereLight } from 'three';
 
-function Lighting({ isDebugMode = false }) {
+function Lighting() {
     const pointLightRef = useRef();
     const dirLightRef = useRef();
 
-    // Use helpers for debugging
-    if (isDebugMode) {
-        useHelper(dirLightRef, DirectionalLightHelper, 5);
-        useHelper(pointLightRef, PointLightHelper, 2);
-    }
+    // Use helper to visualize the lights in the scene
+    useHelper(dirLightRef, DirectionalLightHelper, 1);
+    useHelper(pointLightRef, PointLightHelper, 1);
 
     return (
         <>
-            {/* Ambient light for baseline illumination */}
-            <ambientLight color={0xffffff} intensity={0.3} />
-
-            {/* Point light acting as a light bulb */}
+            {/* Point light (simulating light bulb) */}
             <pointLight
-                ref={pointLightRef}
-                color={0xff4400}
+                color={0x800020}
                 castShadow
-                intensity={1.5}
+                intensity={300}
                 position={[27, 22, -20]}
-                shadow-mapSize-width={1024}
-                shadow-mapSize-height={1024}
-            />
-            <pointLight
-                castShadow
-                intensity={100}
-                decay={2}
-                distance={50}
-                position={[8, 15, 8]}
-            />
-            <pointLight
-                castShadow
-                intensity={50}
-                decay={2}
-                distance={10}
-                position={[12, 5, 12]}
             />
 
-            {/* Directional light for sunlight-like effect */}
-            <directionalLight
-                ref={dirLightRef}
-                color={0xffffff}
+            <pointLight
                 castShadow
-                intensity={1}
-                position={[10, 50, 20]}
+                intensity={300}
+                position={[27, 22, -20]}
             />
 
-            {/* Hemisphere light for sky and ground effect */}
+            {/* Hemisphere light using the <hemisphereLight> JSX syntax */}
             <hemisphereLight
-                skyColor={0xffffbb} // Sky color
-                groundColor={0x080820} // Ground color
-                intensity={0.5}
-                position={[0, 50, 0]}
+                args={[0xffffbb, 0x080820, 0.7]}
             />
         </>
     );

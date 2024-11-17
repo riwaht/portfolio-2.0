@@ -28,7 +28,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const hiddenObjects = ['defaultMaterial', 'defaultMaterial001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'WhiteWalls', 'GardenWall', 'Floor001'];
 
     const handleFridgeClick = useCallback(() => {
-        if (!currentKitchenSteps.includes(currentStep)) {
+        if ((isWalkthroughActive && !currentKitchenSteps.includes(currentStep)) || (!isWalkthroughActive && pcZoomed)) {
             return;
         }
 
@@ -89,9 +89,10 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     };
 
     const handleScreenClick = useCallback(() => {
-        if (!currentBedroomSteps.includes(currentStep)) {
+        if (isWalkthroughActive && !currentBedroomSteps.includes(currentStep)) {
             return;
         }
+        
         completeEvent('clickPC', 15);
         if (!showImportantBoxes && !showRandomBoxes) {
             setShowFolderBoxes(true);
