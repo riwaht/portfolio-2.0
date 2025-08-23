@@ -1,11 +1,42 @@
 @import url("https://fonts.cdnfonts.com/css/satoshi");
 
+:root {
+  /* Light Mode Colors */
+  --bg-primary: #F8F5F2;
+  --bg-secondary: #F2E6D8;
+  --bg-accent: #D8C6A3;
+  --text-primary: #2F4858;
+  --text-secondary: #33658A;
+  --accent-primary: #2D6AF6;
+  --accent-secondary: #F6AE2D;
+  --nav-bg: rgba(248, 245, 242, 0.95);
+  --card-bg: #FFFFFF;
+  --border-color: rgba(47, 72, 88, 0.1);
+}
+
+[data-theme="dark"] {
+  /* Dark Mode Colors */
+  --bg-primary: #2F4858;
+  --bg-secondary: #33658A;
+  --bg-accent: #86BBD8;
+  --text-primary: #F8F5F2;
+  --text-secondary: #86BBD8;
+  --accent-primary: #F6AE2D;
+  --accent-secondary: #86BBD8;
+  --nav-bg: rgba(47, 72, 88, 0.95);
+  --card-bg: #33658A;
+  --border-color: rgba(134, 187, 216, 0.2);
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: "Satoshi", sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Only hide overflow for house page */
@@ -17,8 +48,9 @@ html.house-page {
 .container {
   width: 100vw;
   height: 100vh;
-  background-color: #eeebd3; /* Dark background */
+  background-color: var(--bg-primary);
   position: relative;
+  transition: background-color 0.3s ease;
 }
 
 .header {
@@ -188,19 +220,21 @@ html.page-view {
 
 .page-container {
   min-height: 100vh;
-  background-color: #D4E6B5;
+  background-color: var(--bg-primary);
   font-family: "Satoshi", sans-serif;
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease;
 }
 
 /* Navbar Styles */
 .navbar {
-  background-color: rgba(175, 201, 126, 0.95);
+  background-color: var(--nav-bg);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(175, 201, 126, 0.3);
+  box-shadow: 0 2px 8px rgba(47, 72, 88, 0.05);
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background-color 0.3s ease;
 }
 
 .nav-container {
@@ -213,16 +247,22 @@ html.page-view {
   height: 70px;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .nav-logo a {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #F49E4C;
+  color: var(--accent-primary);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .nav-logo a:hover {
-  color: #D4E6B5;
+  color: var(--text-primary);
 }
 
 .nav-menu {
@@ -239,7 +279,7 @@ html.page-view {
 
 .nav-link {
   text-decoration: none;
-  color: #D4E6B5;
+  color: var(--text-primary);
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -248,26 +288,56 @@ html.page-view {
 }
 
 .nav-link:hover {
-  color: #F49E4C;
-  background-color: rgba(244, 158, 76, 0.1);
+  color: var(--accent-primary);
+  background-color: var(--border-color);
 }
 
 .nav-link.active {
-  color: #F49E4C;
-  background-color: rgba(244, 158, 76, 0.1);
+  color: var(--accent-primary);
+  background-color: var(--border-color);
   font-weight: 600;
+}
+
+/* Dark Mode Toggle */
+.theme-toggle {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  height: 36px;
+  color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--card-bg);
+}
+
+.theme-icon {
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: inherit;
 }
 
 /* Landing Hero Section */
 .landing-hero {
-  height: 100vh;
+  height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  background: linear-gradient(135deg, #D4E6B5 0%, #AFC97E 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   overflow: hidden;
+  transition: background 0.3s ease;
 }
 
 .hero-background {
@@ -275,16 +345,17 @@ html.page-view {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 70px);
   z-index: 1;
   pointer-events: auto;
+  overflow: hidden;
 }
 
 .bg-code {
   position: absolute;
   font-family: 'Courier New', monospace;
   font-weight: 400;
-  color: #394648;
+  color: var(--text-primary);
   user-select: none;
   pointer-events: none;
   white-space: pre;
@@ -393,7 +464,7 @@ html.page-view {
 
 .hero-title {
   font-size: 4.5rem;
-  color: #394648;
+  color: var(--text-primary);
   margin: 0;
   font-weight: 700;
   text-align: center;
@@ -401,6 +472,7 @@ html.page-view {
   z-index: 100;
   position: relative;
   pointer-events: none;
+  transition: color 0.3s ease;
 }
 
 .scroll-indicator {
@@ -411,7 +483,7 @@ html.page-view {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #394648;
+  color: var(--text-primary);
   font-weight: 500;
   cursor: pointer;
   opacity: 0.8;
@@ -428,10 +500,11 @@ html.page-view {
 .scroll-arrow {
   width: 2px;
   height: 30px;
-  background-color: #F49E4C;
+  background-color: var(--accent-primary);
   margin-top: 10px;
   position: relative;
   animation: bounce 2s infinite;
+  transition: background-color 0.3s ease;
 }
 
 .scroll-arrow::after {
@@ -443,7 +516,8 @@ html.page-view {
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 8px solid #F49E4C;
+  border-top: 8px solid var(--accent-primary);
+  transition: border-color 0.3s ease;
 }
 
 @keyframes bounce {
@@ -463,52 +537,85 @@ html.page-view {
   max-width: 1000px;
   margin: 0 auto;
   padding: 4rem 2rem;
-  background-color: #D4E6B5;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 /* Two Column About Layout */
 .about-two-column {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: auto 2fr;
   gap: 4rem;
-  align-items: start;
+  align-items: stretch;
+  margin-top: 1rem;
 }
 
 .about-photo {
-  position: sticky;
-  top: 2rem;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  width: 280px;
+  flex-shrink: 0;
 }
 
 .photo-placeholder {
   width: 100%;
   aspect-ratio: 3/4;
-  background-color: rgba(175, 201, 126, 0.2);
+  background-color: var(--border-color);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #394648;
+  color: var(--text-secondary);
   font-style: italic;
-  border: 1px dashed #AFC97E;
+  border: 1px dashed var(--accent-primary);
+  transition: all 0.3s ease;
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px var(--border-color);
+}
+
+.profile-photo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--border-color);
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  min-height: 300px;
 }
 
 .about-text p {
   font-size: 1.1rem;
-  color: #394648;
+  color: var(--text-primary);
   line-height: 1.7;
   margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
 }
 
 .page-links {
   margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(175, 201, 126, 0.3);
+  border-top: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
 }
 
 .page-links p {
   font-size: 1rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 }
 
 .link-grid {
@@ -519,10 +626,10 @@ html.page-view {
 
 .simple-link {
   display: inline-block;
-  color: #AFC97E;
+  color: var(--accent-primary);
   text-decoration: none;
   padding: 0.5rem 1rem;
-  border: 1px solid #AFC97E;
+  border: 1px solid var(--accent-primary);
   border-radius: 4px;
   text-align: center;
   font-weight: 500;
@@ -531,28 +638,29 @@ html.page-view {
 }
 
 .simple-link:hover {
-  background-color: #AFC97E;
-  color: white;
+  background-color: var(--accent-primary);
+  color: var(--card-bg);
 }
 
 .about-section {
   margin-bottom: 3rem;
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 20px var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .about-section h2 {
   font-size: 1.8rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
 
 .about-section p {
   font-size: 1.1rem;
-  color: #394648;
+  color: var(--text-primary);
   line-height: 1.7;
   margin-bottom: 1.5rem;
 }
@@ -565,15 +673,15 @@ html.page-view {
 }
 
 .skill-category {
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
-  border-left: 4px solid #F49E4C;
+  border-left: 4px solid var(--accent-primary);
 }
 
 .skill-category h3 {
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-size: 1.3rem;
   font-weight: 600;
@@ -587,40 +695,40 @@ html.page-view {
 
 .skill-category li {
   padding: 0.3rem 0;
-  color: #394648;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 .cta-section {
   text-align: center;
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 2.5rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
-  border: 2px solid #F49E4C;
+  border: 2px solid var(--accent-primary);
 }
 
 .cta-section p {
   font-size: 1.1rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
 .cta-button {
   display: inline-block;
   background-color: transparent;
-  color: #AFC97E;
+  color: var(--accent-primary);
   padding: 0.7rem 1.5rem;
   text-decoration: none;
   border-radius: 4px;
   font-weight: 500;
   font-size: 1rem;
-  border: 1px solid #AFC97E;
+  border: 1px solid var(--accent-primary);
   transition: all 0.2s ease;
 }
 
 .cta-button:hover {
-  background-color: #AFC97E;
+  background-color: var(--accent-primary);
   color: white;
 }
 
@@ -634,7 +742,7 @@ html.page-view {
 .blog-header {
   text-align: center;
   margin-bottom: 4rem;
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
@@ -642,14 +750,14 @@ html.page-view {
 
 .blog-header h1 {
   font-size: 2.5rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .blog-header p {
   font-size: 1.1rem;
-  color: #394648;
+  color: var(--text-primary);
 }
 
 .blog-posts {
@@ -660,11 +768,11 @@ html.page-view {
 }
 
 .blog-post-card {
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
-  border-left: 4px solid #F49E4C;
+  border-left: 4px solid var(--accent-primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -678,41 +786,41 @@ html.page-view {
   justify-content: space-between;
   margin-bottom: 1rem;
   font-size: 0.9rem;
-  color: #394648;
+  color: var(--text-primary);
   opacity: 0.7;
 }
 
 .post-title {
   font-size: 1.4rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .post-excerpt {
-  color: #394648;
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
 .read-more {
-  color: #F49E4C;
+  color: var(--accent-primary);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
 .read-more:hover {
-  color: #AFC97E;
+  color: var(--accent-primary);
 }
 
 .blog-cta {
   text-align: center;
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
-  color: #394648;
+  color: var(--text-primary);
 }
 
 /* Projects Page Styles */
@@ -725,7 +833,7 @@ html.page-view {
 .projects-header {
   text-align: center;
   margin-bottom: 4rem;
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
@@ -733,14 +841,14 @@ html.page-view {
 
 .projects-header h1 {
   font-size: 2.5rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .projects-header p {
   font-size: 1.1rem;
-  color: #394648;
+  color: var(--text-primary);
   max-width: 700px;
   margin: 0 auto;
 }
@@ -753,11 +861,11 @@ html.page-view {
 }
 
 .project-card {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
-  border-top: 4px solid #F49E4C;
+  border-top: 4px solid var(--accent-primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -785,13 +893,13 @@ html.page-view {
 
 .project-info h3 {
   font-size: 1.4rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .project-info p {
-  color: #394648;
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
@@ -804,8 +912,8 @@ html.page-view {
 }
 
 .tech-tag {
-  background-color: rgba(244, 158, 76, 0.1);
-  color: #F49E4C;
+  background-color: var(--border-color);
+  color: var(--accent-primary);
   padding: 0.3rem 0.8rem;
   border-radius: 15px;
   font-size: 0.9rem;
@@ -830,44 +938,44 @@ html.page-view {
 
 .demo-link {
   background-color: transparent;
-  color: #AFC97E;
-  border: 1px solid #AFC97E;
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
 }
 
 .demo-link:hover {
-  background-color: #AFC97E;
+  background-color: var(--accent-primary);
   color: white;
 }
 
 .code-link {
   background-color: transparent;
-  color: #394648;
-  border: 1px solid #394648;
+  color: var(--text-primary);
+  border: 1px solid var(--text-primary);
 }
 
 .code-link:hover {
-  background-color: #394648;
+  background-color: var(--text-primary);
   color: white;
 }
 
 .projects-documents {
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
   text-align: center;
-  border: 2px solid #F49E4C;
+  border: 2px solid var(--accent-primary);
 }
 
 .projects-documents h2 {
   font-size: 1.8rem;
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .projects-documents p {
-  color: #394648;
+  color: var(--text-primary);
   margin-bottom: 2rem;
   font-size: 1.1rem;
 }
@@ -881,27 +989,28 @@ html.page-view {
 
 .doc-link {
   background-color: transparent;
-  color: #AFC97E;
+  color: var(--accent-primary);
   padding: 0.7rem 1.2rem;
   text-decoration: none;
   border-radius: 4px;
   font-weight: 500;
   transition: all 0.2s ease;
-  border: 1px solid #AFC97E;
+  border: 1px solid var(--accent-primary);
   font-size: 0.95rem;
 }
 
 .doc-link:hover {
-  background-color: #AFC97E;
+  background-color: var(--accent-primary);
   color: white;
 }
 
 /* Footer Styles */
 .footer {
-  background-color: #AFC97E;
-  color: #D4E6B5;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   padding: 3rem 2rem 2rem;
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 .footer-content {
@@ -922,27 +1031,27 @@ html.page-view {
   justify-content: center;
   width: 50px;
   height: 50px;
-  background-color: rgba(212, 230, 181, 0.1);
+  background-color: var(--border-color);
   border-radius: 50%;
-  color: #D4E6B5;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 1.5rem;
   transition: all 0.3s ease;
-  border: 2px solid rgba(212, 230, 181, 0.3);
+  border: 2px solid var(--border-color);
 }
 
 .social-icon:hover {
-  background-color: #F49E4C;
-  color: white;
+  background-color: var(--accent-primary);
+  color: var(--card-bg);
   transform: translateY(-3px);
-  border-color: #F49E4C;
+  border-color: var(--accent-primary);
 }
 
 .footer-text {
   font-size: 0.9rem;
   opacity: 0.7;
   margin-top: 1rem;
-  color: #394648;
+  color: var(--text-primary);
 }
 
 /* House page specific navbar overlay */
@@ -952,8 +1061,9 @@ html.page-view {
   left: 0;
   right: 0;
   z-index: 2000;
-  background-color: rgba(175, 201, 126, 0.9);
+  background-color: var(--nav-bg);
   backdrop-filter: blur(15px);
+  transition: background-color 0.3s ease;
 }
 
 /* Responsive Design */
@@ -1011,8 +1121,19 @@ html.page-view {
   }
   
   .about-photo {
-    position: static;
-    order: 2;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .about-text {
+    min-height: auto;
+  }
+  
+  .profile-photo {
+    aspect-ratio: 3/4;
+    height: auto;
+    min-height: auto;
   }
   
   .about-text {

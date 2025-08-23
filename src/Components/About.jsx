@@ -73,8 +73,9 @@ function About() {
   name: 'Riwa',
   background: 'Lebanese-Canadian',
   skills: ['Python', 'Java', 'SQL', 'FastAPI', 'Node.js'],
-  recentRole: 'SWE Intern at Snowflake',
-  focus: 'Developer Platforms & API Infrastructure'
+  currentRole: 'SWE Intern at Snowflake (ongoing)',
+  focus: 'Developer Platforms & API Infrastructure',
+  loves: ['coding', 'traveling', 'discovering new cultures']
 };`}
                     </div>
                     <div className="bg-code bg-code-2">
@@ -115,18 +116,6 @@ def test_resource_visibility():
     result = conn.execute('SHOW TABLES').fetchall()
     assert len(result) > 0`}
                     </div>
-                    <div className="bg-code bg-code-6">
-                        {`// OpenAPI spec integration with Java backend
-@RestController
-@RequestMapping("/api/v1")
-public class ResourceController {
-  
-  @GetMapping("/resources")
-  public ResponseEntity<List<Resource>> getResources() {
-    return ResponseEntity.ok(resourceService.findAll());
-  }
-}`}
-                    </div>
                     <div className="bg-code bg-code-7">
                         {`-- Feature gating with SQL parameters
 SELECT * FROM preview_features pf
@@ -145,27 +134,22 @@ def deploy_api_infrastructure():
     tf.apply(var=config)`}
                     </div>
                     <div className="bg-code bg-code-9">
-                        {`// Client codegen for developer tooling
-const generatePythonClient = (openApiSpec) => {
-  const endpoints = parseEndpoints(openApiSpec);
-  return endpoints.map(endpoint => 
-    generatePythonMethod(endpoint)
-  ).join('\n');
+                        {`// Travel planning meets tech optimization
+const nextDestination = {
+  location: 'exploring...',
+  apiIntegration: true,
+  culturalImmersion: 'high',
+  codingFromCafes: true,
+  debugSessionsWithMountainViews: 'preferred'
 };`}
                     </div>
                     <div className="bg-code bg-code-10">
-                        {`# Performance monitoring for API endpoints
-import time
-from functools import wraps
-
-def monitor_api_performance(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = func(*args, **kwargs)
-        logger.info(f"API call took {time.time() - start:.2f}s")
-        return result
-    return wrapper`}
+                        {`# Building developer tools that work
+@app.middleware('http')
+async def add_cors_header(request: Request, call_next):
+    response = await call_next(request)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response`}
                     </div>
                     <div className="bg-code bg-code-11">
                         {`// TOPS Algorithm Implementation (Academic Project)
@@ -194,35 +178,27 @@ public class AtmosphericController : MonoBehaviour {
             <div className="about-content" id="about-section">
                 <div className="about-two-column">
                     <div className="about-photo">
-                        <div className="photo-placeholder">
-                            <span>photo coming soon</span>
-                        </div>
+                        <img 
+                            src="/Images/riwa-photo.jpg" 
+                            alt="Riwa Hoteit" 
+                            className="profile-photo"
+                        />
                     </div>
-                    
                     <div className="about-text">
                         <p>
-                            i'm a lebanese-canadian computer engineering student passionate about developer platforms and api infrastructure. 
-                            recently completed my software engineer internship at snowflake, previously worked as a simulation engineer at inmind.ai.
+                            hey! i'm a lebanese-canadian computer engineering student who loves building things that make developers' lives easier. 
+                            currently doing my software engineering internship at snowflake working on api infrastructure, and previously worked as a simulation engineer at inmind.ai.
                         </p>
                         
                         <p>
-                            i specialize in building rest apis, python backends, database integration, and developer tooling. 
-                            on the side, i develop games in unity and explore 3d web technologies.
+                            i specialize in crafting rest apis, backends, and developer tooling that just works. 
+                            when i'm not coding, you'll find me developing games in unity, testing random apis, traveling, boxing, or organizing my entire life in notion (yes, i'm that person who creates templates for everything!).
                         </p>
                         
                         <p>
-                            president of google developer student club and founding president of ieee women in engineering at lau. 
-                            passionate about connecting systems, optimizing performance, and creating seamless developer experiences.
+                            at uni, i led google developer student club, founded ieee women in engineering, and was a notion campus leader. 
+                            i'm passionate about connecting systems, creating seamless developer experiences, and inspiring others to dive into tech!
                         </p>
-                        
-                        <div className="page-links">
-                            <p>explore my work:</p>
-                            <div className="link-grid">
-                                <a href="/projects" className="simple-link">< projects /></a>
-                                <a href="/blog" className="simple-link">< blog /></a>
-                                <a href="/house" className="simple-link">< experience /></a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

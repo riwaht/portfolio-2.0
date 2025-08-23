@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import DarkModeToggle from './DarkModeToggle';
 import '../styles.css';
 
 function Navbar() {
@@ -18,18 +19,21 @@ function Navbar() {
                 <div className="nav-logo">
                     <Link to="/">Riwa Hoteit</Link>
                 </div>
-                <ul className="nav-menu">
-                    {navItems.map((item) => (
-                        <li key={item.path} className="nav-item">
-                            <Link 
-                                to={item.path} 
-                                className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
-                            >
-                                {item.label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                <div className="nav-right">
+                    <ul className="nav-menu">
+                        {navItems.map((item) => (
+                            <li key={item.path} className="nav-item">
+                                <Link 
+                                    to={item.path} 
+                                    className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                                >
+                                    {item.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <DarkModeToggle />
+                </div>
             </div>
         </nav>
     );
