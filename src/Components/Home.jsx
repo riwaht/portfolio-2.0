@@ -19,17 +19,24 @@ function Home() {
     const modelRef = useRef();
     const audioRef = useRef(); 
     const Model = React.lazy(() => import('./Model'));
+    
+    // Check if user completed walkthrough before (only persist completed state)
+    const walkthroughCompleted = sessionStorage.getItem('house-walkthrough-completed') === 'true';
+    
     const [currentStep, setCurrentStep] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [completedEvents, setCompletedEvents] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [isStarted, setIsStarted] = useState(false);
-    const [isWalkthroughActive, setIsWalkthroughActive] = useState(true);
+    const [isWalkthroughActive, setIsWalkthroughActive] = useState(!walkthroughCompleted);
     const [pcZoomed, setPcZoomed] = useState(false);
     const [highlightedMesh, setHighlightedMesh] = useState(null);
+    const [showExitExperienceConfirm, setShowExitExperienceConfirm] = useState(false);
 
     const exitWalkthrough = () => {
         setIsWalkthroughActive(false);
+        // Mark walkthrough as completed so user can skip it next time
+        sessionStorage.setItem('house-walkthrough-completed', 'true');
     };
 
     const { description, events, meshName } = steps[currentStep] || {};
@@ -100,6 +107,24 @@ function Home() {
     const handleStart = () => {
         setIsStarted(true);
     };
+
+    // Block navigation when walkthrough is active and user has made progress
+    useEffect(() => {
+        const hasProgress = currentStep > 0 || isStarted;
+        
+        if (isWalkthroughActive && hasProgress && !walkthroughCompleted) {
+            const handleBeforeUnload = (e) => {
+                e.preventDefault();
+                e.returnValue = '';
+            };
+            
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            
+            return () => {
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+            };
+        }
+    }, [isWalkthroughActive, currentStep, isStarted, walkthroughCompleted]);
 
     return (
         <div className="container">

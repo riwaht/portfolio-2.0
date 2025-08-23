@@ -71,20 +71,9 @@ const Loading = ({ isLoading, isStarted, handleStart }) => {
 
             {/* Only show the Start button when loading is done */}
             {!isLoading && !isStarted && (
-                <button onClick={handleStartClick} style={{
-                    position: 'absolute',
-                    bottom: '30%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    padding: '10px 20px',
-                    backgroundColor: '#00c49a',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    zIndex: 1000,
-                    fontFamily: "Satoshi, sans-serif",
-                }}>START</button>
+                <button onClick={handleStartClick} className="loading-start-button">
+                    START
+                </button>
             )}
         </div>
     );

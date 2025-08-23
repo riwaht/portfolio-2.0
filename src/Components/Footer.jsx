@@ -7,16 +7,16 @@ function Footer() {
             <div className="footer-content">
                 <div className="social-links">
                     <a 
-                        href="#" 
+                        href="https://github.com/riwaht" 
                         className="social-icon" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        title="Reddit"
+                        title="GitHub"
                     >
-                        <i className="fab fa-reddit"></i>
+                        <i className="fab fa-github"></i>
                     </a>
                     <a 
-                        href="#" 
+                        href="https://linkedin.com/in/riwa-hoteit" 
                         className="social-icon" 
                         target="_blank" 
                         rel="noopener noreferrer"

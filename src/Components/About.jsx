@@ -176,6 +176,12 @@ public class AtmosphericController : MonoBehaviour {
             
             {/* About content section */}
             <div className="about-content" id="about-section">
+                <div className="about-intro">
+                    <div className="section-title">
+                        about me
+                    </div>
+                </div>
+                
                 <div className="about-two-column">
                     <div className="about-photo">
                         <img 

@@ -7,39 +7,59 @@ function Projects() {
     const projects = [
         {
             id: 1,
-            title: "snowflake api expansion",
-            description: "expanded rest and python api capabilities at snowflake, implementing preview feature gating, header-level role/warehouse support, and terraform compatibility.",
-            technologies: ["python", "java", "snowflake", "openapi", "terraform"],
-            image: "/public/Images/MainScreen.png",
-            demoLink: "#",
-            codeLink: "#"
+            title: "Beirut (mobile frontend)",
+            description: "React Native + Expo app for restaurant discovery in Lebanon. I built the mobile UI, navigation flow, auth, and data views, and wired it to the org's backend APIs.",
+            technologies: ["react native", "expo", "typescript", "axios"],
+            image: "/Images/beirut-mobile.png",
+            codeLink: "https://github.com/BeirutSE/Beirut-Frontend"
         },
         {
             id: 2,
-            title: "beirut restaurant platform",
-            description: "full-stack mobile platform for lebanon restaurant discovery with node.js/mysql backend, gpt-3.5 integration, and automated notion cms sync.",
-            technologies: ["react native", "node.js", "mysql", "gpt-3.5", "notion api"],
-            image: "/public/Images/ImportantImage.png",
-            demoLink: "#",
-            codeLink: "#"
+            title: "Beirut: LLM assistant backend",
+            description: "Service that answers user queries about venues and menus using an LLM. Handles prompt building, retrieval, and response shaping for the mobile client.",
+            technologies: ["node.js", "typescript", "openai", "express"],
+            image: "/Images/beirut-llm.png",
+            codeLink: "https://github.com/riwaht/beirut-chatbot-llm-proj"
         },
         {
             id: 3,
-            title: "tops algorithm visualizer",
-            description: "interactive web application implementing the tops algorithm for atpg with real-time graph rendering, fault sensitization, and d-frontier propagation.",
-            technologies: ["react", "javascript", "algorithm visualization", "d3.js"],
-            image: "/public/Images/RandomImage.png",
-            demoLink: "#",
-            codeLink: "#"
+            title: "Notion ↔ Revolut server",
+            description: "Sync + automation service that mirrors financial events into Notion and surfaces Notion data into workflows. Built the endpoints, webhooks, and schema mapping.",
+            technologies: ["node.js", "express", "notion api", "revolut api", "webhooks"],
+            image: "/Images/notion-revolut.png",
+            codeLink: "https://github.com/riwaht/notion-revolut-server"
         },
         {
             id: 4,
-            title: "static bloom (side project)",
-            description: "atmospheric horror game inspired by little nightmares, developed in unity during spare time. features custom blender assets and atmospheric gameplay.",
-            technologies: ["unity", "c#", "blender", "personal project"],
-            image: "/public/Images/MainScreen.png",
-            demoLink: "#",
-            codeLink: "#"
+            title: "Portfolio (3D + web)",
+            description: "Your current 3D house experience plus the new multi-page site structure. Built with React/Three.js and a clean content layer for case studies.",
+            technologies: ["react", "three.js", "r3f", "vite"],
+            image: "/Images/MainScreen.png",
+            codeLink: "https://github.com/riwaht/portfolio-2.0"
+        },
+        {
+            id: 5,
+            title: "RiwaBot (Discord bot)",
+            description: "Discord4J bot in Java. Event-driven command handling, embeds, and modular features; built with Gradle and environment-based token management.",
+            technologies: ["java", "discord4j", "gradle"],
+            image: "/Images/discord-bot.png",
+            codeLink: "https://github.com/riwaht/RiwaBot"
+        },
+        {
+            id: 6,
+            title: "Static Bloom (Game)",
+            description: "Atmospheric horror game inspired by Little Nightmares. Custom Blender assets and Unity gameplay systems; lighting and environmental storytelling focused.",
+            technologies: ["unity", "c#", "blender"],
+            image: "/Images/static-bloom.png",
+            codeLink: "https://github.com/riwaht/RiwasGame"
+        },
+        {
+            id: 7,
+            title: "TOPS algorithm visualizer",
+            description: "Interactive visualization of the TOPS ATPG algorithm with step-by-step fault sensitization and D-frontier propagation.",
+            technologies: ["react", "javascript", "d3.js"],
+            image: "/Images/tops.png",
+            codeLink: "https://github.com/riwaht/tops-algorithm"
         }
     ];
 
@@ -47,9 +67,19 @@ function Projects() {
         <div className="page-container">
             <Navbar />
             <div className="projects-content">
-                <div className="projects-header">
-                    <h1>things i've built</h1>
-                    <p>from rest apis to developer platforms, mobile backends to infrastructure tooling - here's what i've been working on</p>
+                <div className="professional-experience-compact">
+                    <p>swe intern at snowflake • former simulation engineer at inmind.ai • coding instructor</p>
+                    <div className="experience-links">
+                        <a href="/public/PC Documents/Riwa Hoteit, CV.pdf" target="_blank" rel="noopener noreferrer">resume</a>
+                        <span>•</span>
+                        <a href="mailto:riwa.hoteit@lau.edu">contact</a>
+                    </div>
+                </div>
+                
+                <div className="projects-intro">
+                    <blockquote className="projects-title">
+                        things i've built
+                    </blockquote>
                 </div>
                 
                 <div className="projects-grid">
@@ -67,35 +97,18 @@ function Projects() {
                                     ))}
                                 </div>
                                 <div className="project-links">
-                                    <a href={project.demoLink} className="project-link demo-link">
-                                        live demo
-                                    </a>
-                                    <a href={project.codeLink} className="project-link code-link">
+                                    {project.demoLink && (
+                                        <a href={project.demoLink} className="project-link demo-link" target="_blank" rel="noopener noreferrer">
+                                            live demo
+                                        </a>
+                                    )}
+                                    <a href={project.codeLink} className="project-link code-link" target="_blank" rel="noopener noreferrer">
                                         view code
                                     </a>
                                 </div>
                             </div>
                         </div>
                     ))}
-                </div>
-                
-                <div className="projects-documents">
-                    <h2>professional experience</h2>
-                    <p>recent swe intern at snowflake (2025) • former simulation engineer at inmind.ai (2023-2025) • coding instructor at geek express</p>
-                    <div className="document-links">
-                        <a href="/public/PC Documents/Riwa Hoteit, CV.pdf" className="doc-link" target="_blank" rel="noopener noreferrer">
-                            complete resume
-                        </a>
-                        <a href="https://linkedin.com/in/riwa-hoteit" className="doc-link" target="_blank" rel="noopener noreferrer">
-                            linkedin profile
-                        </a>
-                        <a href="https://github.com/riwa-hoteit" className="doc-link" target="_blank" rel="noopener noreferrer">
-                            github projects
-                        </a>
-                        <a href="mailto:riwa.hoteit@lau.edu" className="doc-link" target="_blank" rel="noopener noreferrer">
-                            get in touch
-                        </a>
-                    </div>
                 </div>
             </div>
             

@@ -154,8 +154,8 @@
         "events" : {
             "clickFolder": false
         },
-        "popupPosition": { "top": "10%", "left": "26%" },
-        "popupWidth": "10%",
+        "popupPosition": { "top": "70%", "left": "5%" },
+        "popupWidth": "25%",
         "meshName": null
     },
     {

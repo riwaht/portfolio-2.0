@@ -116,7 +116,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const BoxCollider = ({ position, color, onClick, size }) => (
         <mesh position={position} onClick={onClick} >
             <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={0} />
+            <meshStandardMaterial color={color} transparent opacity={0.3} />
         </mesh>
     );
     const folderBoxes = [
