@@ -1594,10 +1594,9 @@ html.page-view {
   border-radius: 4px;
   transition: background-color 0.3s ease;
   z-index: 1001;
-  position: absolute;
+  position: fixed;
   right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 19px;
 }
 
 .mobile-menu-toggle:hover {
@@ -1662,39 +1661,14 @@ html.page-view {
   right: 0;
 }
 
-.mobile-menu-header {
-  display: flex;
-  justify-content: flex-start;
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-}
 
-.mobile-menu-close {
-  background: none;
-  border: none;
-  font-size: 18px;
-  color: var(--text-primary);
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  font-weight: 300;
-  line-height: 1;
-}
-
-.mobile-menu-close:hover {
-  background-color: var(--border-color);
-}
 
 .mobile-nav-menu {
   list-style: none;
   margin: 0;
   padding: 2rem 0;
   flex: 1;
+  padding-top: 3rem;
 }
 
 .mobile-nav-item {

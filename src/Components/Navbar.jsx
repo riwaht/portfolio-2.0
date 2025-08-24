@@ -91,15 +91,6 @@ function Navbar({ onNavigationAttempt }) {
             
             {/* Mobile Navigation Menu */}
             <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-                <div className="mobile-menu-header">
-                    <button 
-                        className="mobile-menu-close"
-                        onClick={closeMobileMenu}
-                        aria-label="Close mobile menu"
-                    >
-                        ×
-                    </button>
-                </div>
                 <ul className="mobile-nav-menu">
                     {navItems.map((item) => (
                         <li key={item.path} className="mobile-nav-item">
