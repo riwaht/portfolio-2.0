@@ -898,16 +898,7 @@ html.page-view {
   margin-bottom: 1.5rem;
 }
 
-.read-more {
-  color: var(--accent-primary);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
 
-.read-more:hover {
-  color: var(--accent-primary);
-}
 
 .blog-cta {
   text-align: center;
