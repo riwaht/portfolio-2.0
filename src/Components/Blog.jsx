@@ -30,8 +30,9 @@ function Blog() {
             id: 1,
             title: "Designing a Narrative Puzzle-Platformer: Building Worlds Through Silence and Motion",
             date: "June 2025",
-            readTime: "9 min read",
-            excerpt: "I’ve been working on a narrative-driven puzzle-platformer inspired by Inside, Limbo, and Fahrenheit 451. Instead of dialogue, the game tells its story through movement, puzzles, and environments. Here’s a look at how I’m building a world where silence speaks louder than words.",
+            readTime: "5 min read",
+            tags: ["Game Development", "Technical"],
+            excerpt: "I've been working on a narrative-driven puzzle-platformer inspired by Inside, Limbo, and Fahrenheit 451. Instead of dialogue, the game tells its story through movement, puzzles, and environments. Here's a look at how I'm building a world where silence speaks louder than words.",
             content: `
                 <h2>The Vision</h2>
                 <p>The idea was simple: build a game where the story unfolds without a single line of dialogue. Inspired by titles like <em>Inside</em> and <em>Limbo</em>, and layered with the emotional weight of <em>Fahrenheit 451</em>, I wanted to create a platformer where silence, atmosphere, and the player’s imagination become the narrative engine.</p>
@@ -74,80 +75,71 @@ function Blog() {
         },
         {
             id: 2,
-            title: "Bridging Financial Data: How I Built a Notion-Revolut Integration",
+            title: "Bridging Financial Data: How I Built a Notion-Bank Sync Tool",
             date: "August 2025",
             readTime: "6 min read",
-            excerpt: "Ever wished your financial transactions could automatically sync to your Notion workspace? I built a server that bridges Revolut and Notion APIs, creating seamless financial tracking workflows.",
+            tags: ["Backend", "FastAPI", "Automation"],
+            excerpt: "Ever wished your bank transactions could automatically sync to Notion? I built a small FastAPI backend that links TrueLayer and Notion to give me complete control over how my financial data is categorized and visualized.",
             content: `
-                <h2>The Problem</h2>
-                <p>As someone who organizes everything in Notion (yes, I'm that person who creates templates for everything!), I was frustrated by manually tracking my Revolut transactions. I wanted my financial data to automatically flow into my Notion budgeting system.</p>
-                
-                <h2>The Solution</h2>
-                <p>I built a Node.js server that acts as a bridge between Revolut's API and Notion's database API. The system handles real-time transaction syncing and provides automation workflows.</p>
-                
-                <h2>Technical Architecture</h2>
-                <p>The integration consists of three main components:</p>
-                <ul>
-                    <li><strong>Webhook Handler:</strong> Receives real-time transaction events from Revolut</li>
-                    <li><strong>Data Transformer:</strong> Maps Revolut transaction data to Notion database schema</li>
-                    <li><strong>Sync Engine:</strong> Handles API rate limits and ensures data consistency</li>
-                </ul>
-                
-                <h2>The Implementation</h2>
-                <p>Here's how the webhook handling works:</p>
-                <pre><code>// Webhook endpoint for Revolut transactions
-app.post('/webhook/revolut', async (req, res) => {
-  const transaction = req.body;
-  
-  // Transform Revolut data to Notion format
-  const notionPage = {
-    parent: { database_id: process.env.NOTION_DB_ID },
-    properties: {
-      'Amount': { number: transaction.amount },
-      'Merchant': { title: [{ text: { content: transaction.merchant } }] },
-      'Date': { date: { start: transaction.created_at } },
-      'Category': { select: { name: categorizeTransaction(transaction) } }
-    }
-  };
-  
-  // Create page in Notion
-  await notion.pages.create(notionPage);
-  res.sendStatus(200);
-});</code></pre>
-                
-                <h2>Handling the Challenges</h2>
-                <p><strong>1. API Rate Limits</strong><br/>
-                Both Revolut and Notion have rate limits. I implemented a queue system with exponential backoff to handle bulk syncing gracefully.</p>
-                
-                <p><strong>2. Data Consistency</strong><br/>
-                Financial data requires perfect accuracy. I added transaction ID tracking and reconciliation logic to prevent duplicates.</p>
-                
-                <p><strong>3. Schema Mapping</strong><br/>
-                Revolut's rich transaction data needed to be mapped to Notion's property types. I created flexible schema mappers that could be configured per workspace.</p>
-                
-                <h2>Automation Workflows</h2>
-                <p>Beyond basic syncing, I added smart categorization:</p>
-                <ul>
-                    <li>Automatic expense categorization based on merchant data</li>
-                    <li>Monthly budget tracking with progress indicators</li>
-                    <li>Recurring transaction detection and tagging</li>
-                    <li>Multi-currency conversion and tracking</li>
-                </ul>
-                
-                <h2>The Result</h2>
-                <p>Now my Notion workspace automatically updates with every transaction. I can see spending patterns, track budgets, and generate reports without any manual data entry. The system processes hundreds of transactions monthly with 99.9% accuracy.</p>
-                
-                <h2>What I Learned</h2>
-                <p>This project taught me the power of API integrations in creating seamless user experiences. Sometimes the best solutions come from connecting existing tools in new ways rather than building from scratch.</p>
-                
-                <p>It also reinforced my love for automation. There's something magical about systems that just work in the background, making your life easier without you even thinking about it.</p>
+              <h2>The Problem</h2>
+              <p>As someone who tracks everything in Notion — from tasks to goals to even memories — managing my expenses separately through banking apps never felt complete. I wanted my financial transactions to show up in Notion automatically, categorized, converted, and ready to analyze.</p>
+          
+              <h2>The Solution</h2>
+              <p>I built a FastAPI backend that connects to my bank via <a href="https://truelayer.com" target="_blank">TrueLayer</a> (I use Revolut) and syncs transactions to Notion. The system handles categorization, multi-currency conversion, and supports multiple bank accounts with ease.</p>
+          
+              <h2>Technical Architecture</h2>
+              <p>The system is designed to be modular and flexible, with these main components:</p>
+              <ul>
+                <li><strong>TrueLayer Integration:</strong> Handles OAuth2, token refresh, and transaction fetching</li>
+                <li><strong>Category Mapper:</strong> Uses keyword matching + Sentence Transformers for semantic classification</li>
+                <li><strong>Currency Converter:</strong> Fetches and caches live USD exchange rates using <code>forex-python</code></li>
+                <li><strong>Notion Sync:</strong> Creates or updates database entries for expenses and income</li>
+              </ul>
+          
+              <h2>The Implementation</h2>
+              <p>I wanted the codebase to remain small and focused, so I avoided unnecessary abstractions or frameworks. The main sync logic is just a few Python modules working together:</p>
+              <pre><code class="language-python"># Example: Categorizing and syncing a transaction
+          from revolut_server.src.revolut.notion_revolut_connector import sync_transactions
+          
+          @app.post("/sync")
+          async def trigger_sync():
+              results = sync_transactions()
+              return {"status": "ok", "synced": results}</code></pre>
+          
+              <h2>Handling the Challenges</h2>
+              <p><strong>1. Categorization with Semantics</strong><br/>
+              Not every transaction has a clean merchant name or obvious keyword. To make categorization smarter, I used Sentence Transformers to compare descriptions semantically against each category's embeddings. It’s surprisingly good at figuring out what “Zakopane ski rental” means.</p>
+          
+              <p><strong>2. Multi-Currency Support</strong><br/>
+              Since I'm living in Poland but earn in USD, accurate currency conversion was essential. Transactions are converted to USD using real-time rates, with fallback caching in case the API is down.</p>
+          
+              <p><strong>3. Portability</strong><br/>
+              The system works across all connected bank accounts and doesn't require any Revolut-specific features. It can support any bank TrueLayer connects to, and the Notion field mappings are fully customizable.</p>
+          
+              <h2>Automation Workflows</h2>
+              <ul>
+                <li>Semantic + keyword-based expense categorization</li>
+                <li>Multi-account support via TrueLayer</li>
+                <li>Daily sync via cron or Make.com</li>
+                <li>USD currency standardization</li>
+                <li>Optional dual-database setup for income and expenses</li>
+              </ul>
+          
+              <h2>The Result</h2>
+              <p>Every day, my Notion workspace updates with the latest transactions — no more manual copying or guessing where my money went. It’s simple, fast, and tailored to my setup.</p>
+          
+              <h2>What I Learned</h2>
+              <p>This project reminded me how powerful small automation tools can be. By combining a few APIs and keeping the system modular, I built something I actually use every day. I’m deliberately keeping the scope limited — no bloated dashboards or 3rd-party dependencies — but I’m always open to suggestions or improvements.</p>
+          
+              <p>It’s still a work in progress, but it’s already saved me hours of tracking and budgeting time. If you like automating personal finance or organizing everything in Notion like I do, feel free to check it out or reach out!</p>
             `
-        },
+          },          
         {
             id: 3,
             title: "My First Coding Project: Talking to Myself Through a Discord Bot",
             date: "February 2021",
-            readTime: "7 min read",
+            readTime: "5 min read",
+            tags: ["Backend", "Non-Technical"],
             excerpt: "Before APIs, internships, or even proper side projects, there was one chaotic Discord bot. It was my very first coding project, built with Discord4J, and it taught me more about reading documentation (and patience) than anything else.",
             content: `
                 <h2>The Context</h2>
@@ -215,6 +207,13 @@ app.post('/webhook/revolut', async (req, res) => {
                             </div>
                             <h2 className="post-title">{post.title}</h2>
                             <p className="post-excerpt">{post.excerpt}</p>
+                            {post.tags && (
+                                <div className="post-tags">
+                                    {post.tags.map((tag, index) => (
+                                        <span key={index} className="post-tag">{tag}</span>
+                                    ))}
+                                </div>
+                            )}
                             <button 
                                 className="read-more" 
                                 onClick={() => setSelectedPost(post)}

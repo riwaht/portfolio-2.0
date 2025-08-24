@@ -50,7 +50,7 @@ function Projects() {
             title: "Static Bloom (Game)",
             description: "Atmospheric horror game inspired by Little Nightmares. Custom Blender assets and Unity gameplay systems; lighting and environmental storytelling focused.",
             technologies: ["unity", "c#", "blender"],
-            image: "/Images/static-bloom.png",
+            image: "/Images/static-bloom.jpg",
             codeLink: "https://github.com/riwaht/RiwasGame"
         },
         {
@@ -58,7 +58,7 @@ function Projects() {
             title: "TOPS algorithm visualizer",
             description: "Interactive visualization of the TOPS ATPG algorithm with step-by-step fault sensitization and D-frontier propagation.",
             technologies: ["react", "javascript", "d3.js"],
-            image: "/Images/tops.png",
+            image: "/Images/tops.gif",
             codeLink: "https://github.com/riwaht/tops-algorithm"
         }
     ];
