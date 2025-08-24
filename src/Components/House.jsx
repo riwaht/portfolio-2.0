@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stats, SoftShadows } from '@react-three/drei';
 import LightingWalkthrough from './LightingWalkthrough';
 import Lighting from './Lighting';
+import Navbar from './Navbar';
 import ModelController from '../Controllers/ModelController';
 import '../styles.css';
 import steps from '../Utils/steps.json';
@@ -15,7 +16,9 @@ import * as THREE from 'three';
 import AudioPlayer from '../Utils/AudioPlayer';
 import PostProcessing from '../Utils/Postprocessing';
 
-function Home() {
+function House() {
+    const [showExitExperienceConfirm, setShowExitExperienceConfirm] = useState(false);
+    const [pendingNavigationPath, setPendingNavigationPath] = useState(null);
     const modelRef = useRef();
     const audioRef = useRef(); 
     const Model = React.lazy(() => import('./Model'));
@@ -31,7 +34,6 @@ function Home() {
     const [isWalkthroughActive, setIsWalkthroughActive] = useState(!walkthroughCompleted);
     const [pcZoomed, setPcZoomed] = useState(false);
     const [highlightedMesh, setHighlightedMesh] = useState(null);
-    const [showExitExperienceConfirm, setShowExitExperienceConfirm] = useState(false);
 
     const exitWalkthrough = () => {
         setIsWalkthroughActive(false);
@@ -126,8 +128,54 @@ function Home() {
         }
     }, [isWalkthroughActive, currentStep, isStarted, walkthroughCompleted]);
 
+    // Handle navigation attempts during active walkthrough
+    const handleNavigationAttempt = (targetPath) => {
+        const hasProgress = currentStep > 0 || isStarted;
+        
+        if (isWalkthroughActive && hasProgress && !walkthroughCompleted) {
+            setPendingNavigationPath(targetPath);
+            setShowExitExperienceConfirm(true);
+            return false; // Block navigation
+        }
+        return true; // Allow navigation
+    };
+
+    const confirmExitExperience = () => {
+        setShowExitExperienceConfirm(false);
+        // Allow navigation by resetting walkthrough state
+        setIsWalkthroughActive(false);
+        setIsStarted(false);
+        setCurrentStep(0);
+        setCompletedEvents({});
+        
+        // Navigate to the originally intended path
+        if (pendingNavigationPath) {
+            window.location.href = pendingNavigationPath;
+            setPendingNavigationPath(null);
+        }
+    };
+
+    const cancelExitExperience = () => {
+        setShowExitExperienceConfirm(false);
+        setPendingNavigationPath(null);
+    };
+
+    // Add house-page class to body for overflow control
+    useEffect(() => {
+        document.body.classList.add('house-page');
+        document.documentElement.classList.add('house-page');
+        
+        return () => {
+            document.body.classList.remove('house-page');
+            document.documentElement.classList.remove('house-page');
+        };
+    }, []);
+
     return (
         <div className="container">
+            <div className="house-navbar">
+                <Navbar onNavigationAttempt={handleNavigationAttempt} />
+            </div>
             <Suspense fallback={<Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}>
                 {!isStarted && <Loading isLoading={isLoading} isStarted={isStarted} handleStart={handleStart} />}
                 {isStarted && <AudioPlayer ref={audioRef} />}
@@ -199,10 +247,40 @@ function Home() {
                     </button>
                 )}
             </Suspense>
+            
+            {/* Experience Exit Confirmation Modal */}
+            {showExitExperienceConfirm && (
+                <div className="house-experience-exit-modal-overlay">
+                    <div className="house-experience-exit-modal">
+                        <div className="house-experience-exit-modal-header">
+                            <h3>Leave Experience?</h3>
+                        </div>
+                        <div className="house-experience-exit-modal-content">
+                            <p>You're currently in the middle of the house walkthrough experience.</p>
+                            <p><strong>If you leave now, your progress will be lost</strong> and you'll need to start over from the beginning.</p>
+                        </div>
+                        <div className="house-experience-exit-modal-actions">
+                            <button 
+                                className="house-experience-exit-modal-stay"
+                                onClick={cancelExitExperience}
+                            >
+                                Stay & Continue
+                            </button>
+                            <button 
+                                className="house-experience-exit-modal-leave"
+                                onClick={confirmExitExperience}
+                            >
+                                Leave & Lose Progress
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            
             <SpeedInsights />
             <Analytics />
         </div>
     );
 }
 
-export default Home;
+export default House;

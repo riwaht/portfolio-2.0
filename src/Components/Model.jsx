@@ -113,10 +113,21 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
         }
     });
 
-    const BoxCollider = ({ position, color, onClick, size }) => (
-        <mesh position={position} onClick={onClick} >
+    const BoxCollider = ({ position, color, onClick, size = [0.5, 0.5, 0.5] }) => (
+        <mesh 
+            position={position} 
+            onClick={onClick}
+            onPointerOver={(e) => {
+                e.stopPropagation();
+                document.body.style.cursor = 'pointer';
+            }}
+            onPointerOut={(e) => {
+                e.stopPropagation();
+                document.body.style.cursor = 'auto';
+            }}
+        >
             <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={0} />
+            <meshStandardMaterial color={color} />
         </mesh>
     );
     const folderBoxes = [

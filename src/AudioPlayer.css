@@ -1,18 +1,19 @@
 .media-controls {
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.95); /* Light background */
-  border: none;
-  border-radius: 20px; /* Rounded corners */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px var(--border-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 20px 30px;
   position: absolute;
-  top: 20px;
+  top: 90px; /* 70px navbar + 20px margin */
   left: 20px;
-  z-index: 1000;
-  max-width: 350px; /* Limit width */
+  z-index: 1100; /* Higher than navbar */
+  max-width: 350px;
+  transition: all 0.3s ease;
 }
 
 .media-buttons {
@@ -31,47 +32,61 @@
 }
 
 .media-button {
-  background-color: rgba(0, 123, 255, 0.1); /* Light blue background */
-  border: none;
-  border-radius: 50%; /* Circular buttons */
+  background-color: var(--border-color);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
   width: 50px;
-  padding: 0; /* Remove any extra padding */
-  transition: background-color 0.3s, color 0.3s;
-  box-sizing: border-box; /* Ensure padding doesn’t add to button size */
+  min-width: 50px;
+  min-height: 50px;
+  padding: 0;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .media-button:hover {
-  background-color: #007bff; /* Blue background on hover */
-  .button-icons {
-    color: white; /* White text on hover */
-  }
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.media-button:hover .button-icons {
+  color: var(--card-bg);
 }
 
 .button-icons {
-  color: #007bff; /* Blue color for icons */
+  color: var(--text-primary);
   font-size: 24px;
+  transition: color 0.3s ease;
 }
 
 .play-button .button-icons {
-  background: linear-gradient(to bottom left, #00c49a, #007bff); /* Gradient for play button */
+  background: var(--accent-primary);
   border-radius: 50%;
-  padding: 17px; /* Increase padding slightly for balance */
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow on play button */
+  padding: 17px;
+  color: var(--card-bg);
+  box-shadow: 0 4px 8px var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .play-button:hover {
-  background-color: transparent; /* Prevent hover color from showing behind */
+  background-color: transparent;
+}
+
+.play-button:hover .button-icons {
+  background: var(--text-primary);
+  color: var(--card-bg);
 }
 
 .button-text {
-  color: #007BFF;
+  color: var(--text-secondary);
   font-size: 12px;
   margin-top: 5px;
+  transition: color 0.3s ease;
 }
 
 .media-progress {
@@ -83,7 +98,7 @@
 }
 
 .progress-bar-wrapper {
-  background-color: rgba(0, 0, 0, 0.1); /* Light background for the progress bar */
+  background-color: var(--border-color);
   border-radius: 5px;
   height: 6px;
   flex-grow: 1;
@@ -93,16 +108,18 @@
 }
 
 .progress-bar {
-  background: linear-gradient(to right, #00c49a, #007BFF); /* Gradient for progress bar */
+  background: var(--accent-primary);
   height: 100%;
-  width: 50%; /* Update based on time progress */
+  width: 50%;
   border-radius: 5px;
+  transition: width 0.1s ease;
 }
 
 .progress-time-current,
 .progress-time-total {
   font-size: 14px;
-  color: #007BFF;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .audio-player {
