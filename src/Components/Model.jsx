@@ -108,7 +108,8 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             camera.position.lerp(new THREE.Vector3(15, 14, -7), 0.1);
             camera.lookAt(new THREE.Vector3(14, 13, 0));
         } else {
-            camera.position.lerp(new THREE.Vector3(40, 30, -30), 0.1);
+            // Moved camera further back for better visibility on MacBook screens
+            camera.position.lerp(new THREE.Vector3(50, 35, -40), 0.1);
             camera.lookAt(new THREE.Vector3(0, 0, 0));
         }
     });
@@ -127,7 +128,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             }}
         >
             <boxGeometry args={size} />
-            <meshStandardMaterial color={color} />
+            <meshStandardMaterial color={color} transparent opacity={0}/>
         </mesh>
     );
     const folderBoxes = [
