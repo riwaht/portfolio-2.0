@@ -61,7 +61,7 @@ function WalkthroughUI({ currentStep, stepDescription, nextStep, prevStep, isTra
                     style={{ position: 'absolute', top: popupPosition.top, left: popupPosition.left, width: popupWidth }}
                 >
                     <p>{stepDescription}</p>
-                    <div className="button">
+                    <div className="navigation-buttons">
                         <button onClick={handlePrev} disabled={currentStep === 0 || isTransitioning}>
                             Back
                         </button>

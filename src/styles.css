@@ -1808,32 +1808,34 @@ html.page-view {
   
   /* Mobile-friendly popups for 3D experience */
   .popup {
-    margin: 0 1rem;
-    padding: 1rem 1.5rem;
-    font-size: 0.95rem;
-    max-width: calc(100vw - 2rem);
+    margin: 0 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    max-width: calc(100vw - 1.5rem);
     box-sizing: border-box;
     position: fixed !important;
     transform: translateX(-50%) !important;
     left: 50% !important;
     top: auto !important;
-    bottom: 20% !important;
+    bottom: 18% !important;
     width: auto !important;
-    max-height: 40vh;
+    max-height: 35vh;
     overflow-y: auto;
+    border-radius: 10px;
   }
   
   .navigation-buttons {
     flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: 1.25rem;
   }
   
   .popup button {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
     margin: 0;
     width: 100%;
+    border-radius: 6px;
   }
   
   /* Mobile loading screen improvements */
@@ -2078,9 +2080,23 @@ html.page-view {
   
   .popup {
     margin: 0 0.5rem;
-    padding: 1rem;
-    font-size: 0.85rem;
+    padding: 0.75rem;
+    font-size: 0.8rem;
     max-width: calc(100vw - 1rem);
     bottom: 15%;
+    max-height: 30vh;
+    border-radius: 8px;
+  }
+  
+  .popup button {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    min-height: 44px; /* iOS minimum touch target */
+  }
+  
+  .navigation-buttons {
+    gap: 1.25rem;
+    margin-top: 1.5rem;
   }
 }

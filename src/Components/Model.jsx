@@ -105,8 +105,23 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
 
     useFrame(() => {
         if (pcZoomed) {
-            camera.position.lerp(new THREE.Vector3(15, 14, -7), 0.1);
-            camera.lookAt(new THREE.Vector3(14, 13, 0));
+            // Detect if device is mobile/tablet for better PC zoom positioning
+            const isMobile = window.innerWidth <= 768;
+            const isSmallMobile = window.innerWidth <= 480;
+            
+            if (isSmallMobile) {
+                // Much further back for small mobile screens to show both folders
+                camera.position.lerp(new THREE.Vector3(18, 16, -5), 0.1);
+                camera.lookAt(new THREE.Vector3(14, 13, 0));
+            } else if (isMobile) {
+                // Moderate zoom for tablets to show folders better  
+                camera.position.lerp(new THREE.Vector3(16, 15, -6), 0.1);
+                camera.lookAt(new THREE.Vector3(14, 13, 0));
+            } else {
+                // Original close zoom for desktop
+                camera.position.lerp(new THREE.Vector3(15, 14, -7), 0.1);
+                camera.lookAt(new THREE.Vector3(14, 13, 0));
+            }
         } else {
             // Moved camera further back for better visibility on MacBook screens
             camera.position.lerp(new THREE.Vector3(50, 35, -40), 0.1);
