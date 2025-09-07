@@ -70,7 +70,7 @@ function Projects() {
                 <div className="professional-experience-compact">
                     <p>swe intern at snowflake • former simulation engineer at inmind.ai • coding instructor</p>
                     <div className="experience-links">
-                        <a href="/public/PC Documents/Riwa Hoteit, CV.pdf" target="_blank" rel="noopener noreferrer">resume</a>
+                        <a href="/PC Documents/Riwa Hoteit, CV.pdf" target="_blank" rel="noopener noreferrer">resume</a>
                         <span>•</span>
                         <a href="mailto:riwa.hoteit@lau.edu">contact</a>
                     </div>
