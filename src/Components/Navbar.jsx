@@ -48,12 +48,9 @@ function Navbar({ onNavigationAttempt }) {
         <nav className="navbar">
             <div className="nav-container">
                 <div className="nav-logo">
-                    <button
-                        onClick={(e) => handleNavClick(e, '/')}
-                        className="nav-logo-button"
-                    >
+                    <span className="nav-logo-text">
                         Riwa Hoteit
-                    </button>
+                    </span>
                 </div>
                 
                 {/* Mobile Menu Button */}

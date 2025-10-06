@@ -25,7 +25,7 @@ function Footer() {
                         <i className="fab fa-linkedin"></i>
                     </a>
                     <a 
-                        href="#" 
+                        href="https://www.instagram.com/riwaht/" 
                         className="social-icon" 
                         target="_blank" 
                         rel="noopener noreferrer"
