@@ -563,16 +563,20 @@ html.page-view {
 
 
 .hero-title {
-  font-size: 4.5rem;
+  font-size: 2.8rem;
   color: var(--text-primary);
   margin: 0;
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 100;
   position: relative;
   pointer-events: none;
   transition: color 0.3s ease;
+}
+
+.hero-title .riwa-name {
+  pointer-events: auto;
 }
 
 .scroll-indicator {
@@ -1876,9 +1880,14 @@ html.page-view {
   }
   
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     padding: 0 1rem;
     text-align: center;
+  }
+  
+  .role-item {
+    font-size: 0.82em;
+    margin-left: 2.2em;
   }
   
   .blog-header h1,
@@ -2050,10 +2059,130 @@ html.page-view {
   }
 }
 
+/* Typing Cursor Animation */
+.typing-cursor {
+  animation: blink 1s infinite;
+  color: var(--accent-primary);
+  font-weight: normal;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Progressive Dropdown Animation */
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  position: relative;
+}
+
+.main-line {
+  margin-bottom: 0.5rem;
+  align-self: center;
+}
+
+.riwa-name {
+  color: var(--accent-primary);
+  font-weight: 700;
+  display: inline-block;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1000;
+}
+
+.riwa-name.clickable {
+  cursor: pointer;
+  opacity: 0.9;
+  pointer-events: auto;
+  z-index: 1001;
+  transition: all 0.3s ease;
+}
+
+.riwa-name.clickable::after {
+  content: '•';
+  margin-left: 0.3rem;
+  color: var(--accent-primary);
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+.riwa-name.clickable:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.role-item.slide-up-out {
+  animation: slideUpOut 0.5s ease-in-out forwards;
+}
+
+@keyframes slideUpOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+
+.roles-dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: 100%;
+  margin-left: 0;
+}
+
+.role-item {
+  color: var(--accent-secondary);
+  font-weight: 500;
+  font-size: 0.85em;
+  white-space: nowrap;
+  position: relative;
+  margin-left: 2.5em; /* Align with 'R' in Riwa */
+}
+
+.role-item::before {
+  content: ">";
+  color: var(--accent-primary);
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.slide-in {
+  animation: slideInFromLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Hero title needs relative positioning for dropdown */
+.hero-title {
+  position: relative;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* Additional mobile-specific improvements for very small screens */
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+  
+  .role-item {
+    font-size: 0.8em;
+    margin-left: 2em; /* Slightly less indent on mobile */
   }
   
   .blog-modal-overlay {

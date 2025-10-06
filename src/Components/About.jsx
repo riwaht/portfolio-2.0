@@ -1,12 +1,229 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import '../styles.css';
 
 function About() {
+    const [displayText, setDisplayText] = useState('');
+    const [isTyping, setIsTyping] = useState(true);
+    const [animationPhase, setAnimationPhase] = useState('initial'); // 'initial', 'roles'
+    const [visibleRoles, setVisibleRoles] = useState([]); // Array of currently visible roles
+    
+    const [showCursor, setShowCursor] = useState(true);
+    const [animationCompleted, setAnimationCompleted] = useState(false); // Track if initial animation is done
+
     const scrollToAbout = () => {
         document.getElementById('about-section').scrollIntoView({ behavior: 'smooth' });
     };
+
+    const animateRolesOut = (callback) => {
+        // Get all role items and apply slide-up-out animation with staggered delays
+        const roleItems = document.querySelectorAll('.role-item');
+        
+        if (roleItems.length === 0) {
+            callback();
+            return;
+        }
+
+        roleItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add('slide-up-out');
+            }, index * 150); // 150ms delay between each role for smoother stagger
+        });
+
+        // Clear roles after all animations complete - add extra buffer time
+        const totalAnimationTime = (roleItems.length - 1) * 150 + 800; // stagger delay + animation duration + buffer
+        setTimeout(callback, totalAnimationTime);
+    };
+
+    const handleRiwaClick = (e) => {
+        e.preventDefault();
+        
+        if (animationCompleted && animationPhase === 'roles') {
+            // Restart the animation
+            setAnimationCompleted(false);
+            setVisibleRoles([]);
+            
+            setTimeout(() => {
+                let currentIndex = 0;
+                
+                const addNextRoleRestart = () => {
+                    if (currentIndex < roles.length && roles[currentIndex] !== undefined) {
+                        const roleToAdd = roles[currentIndex];
+                        
+                        setVisibleRoles(prev => {
+                            const newRoles = [...prev, roleToAdd];
+                            return newRoles;
+                        });
+                        
+                        currentIndex++;
+                        
+                        // Schedule next role if there are more
+                        if (currentIndex < roles.length) {
+                            setTimeout(addNextRoleRestart, 1000);
+                        } else {
+                            setTimeout(() => {
+                                animateRolesOut(() => {
+                                    setVisibleRoles([]);
+                                    setAnimationCompleted(true);
+                                });
+                            }, 2000);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            animateRolesOut(() => {
+                                setVisibleRoles([]);
+                                setAnimationCompleted(true);
+                            });
+                        }, 2000);
+                    }
+                };
+                
+                // Start the restart sequence
+                addNextRoleRestart();
+            }, 200); // Small delay for smooth restart
+        }
+    };
+
+    // Animation sequences
+    const initialSequence = [
+        { text: "hi, i'm a software engin-", action: 'type', delay: 1200 },
+        { text: "hi, i'm a ", action: 'backspace', delay: 600 },
+        { text: "hi, i'm a game develop-", action: 'type', delay: 1200 },
+        { text: "hi, i'm ", action: 'backspace', delay: 600 },
+        { text: "hi, i'm Riwa.", action: 'type', delay: 1000 }
+    ];
+
+    const roles = [
+        'a software engineer',
+        'a game developer',
+        'a creative thinker',
+        'a tech enthusiast'
+    ];
+
+    const totalCycleLength = roles.length; // Just roles, no "Riwa" in cycle
+
+    // Initial typewriter animation with corrections
+    useEffect(() => {
+        if (animationPhase !== 'initial') return;
+
+        let sequenceIndex = 0;
+        let currentText = '';
+        
+        const animate = () => {
+            if (sequenceIndex >= initialSequence.length) {
+                setAnimationPhase('roles');
+                return;
+            }
+
+            const currentStep = initialSequence[sequenceIndex];
+            
+            if (currentStep.action === 'type') {
+                // Typing animation
+                let charIndex = currentText.length;
+                const typeChar = () => {
+                    if (charIndex < currentStep.text.length) {
+                        currentText = currentStep.text.slice(0, charIndex + 1);
+                        setDisplayText(currentText);
+                        charIndex++;
+                        setTimeout(typeChar, 60); // Faster typing
+                    } else {
+                        // Ensure we have the exact target text
+                        currentText = currentStep.text;
+                        setDisplayText(currentText);
+                        // Finished typing this text, wait then move to next step
+                        setTimeout(() => {
+                            sequenceIndex++;
+                            animate();
+                        }, currentStep.delay);
+                    }
+                };
+                typeChar();
+                
+            } else if (currentStep.action === 'backspace') {
+                // Backspace animation - delete letter by letter
+                const backspaceChar = () => {
+                    if (currentText.length > currentStep.text.length) {
+                        currentText = currentText.slice(0, -1);
+                        setDisplayText(currentText);
+                        setTimeout(backspaceChar, 40); // Slightly slower for visibility
+                    } else {
+                        // Ensure we set the exact target text
+                        currentText = currentStep.text;
+                        setDisplayText(currentText);
+                        // Finished backspacing, wait then move to next step
+                        setTimeout(() => {
+                            sequenceIndex++;
+                            animate();
+                        }, currentStep.delay);
+                    }
+                };
+                backspaceChar();
+            }
+        };
+
+        const timer = setTimeout(animate, 800); // Start after 0.8 seconds
+        return () => clearTimeout(timer);
+    }, [animationPhase]);
+
+    // Role cycling animation with bounce effect
+    useEffect(() => {
+        if (animationPhase !== 'roles') return;
+
+        // Start building dropdown immediately after roles phase begins
+        const startCycling = setTimeout(() => {
+            // Hide cursor smoothly
+            setShowCursor(false);
+            
+            // Ensure clean state before starting
+            setVisibleRoles([]);
+            
+            // Start adding roles after cursor fades
+            setTimeout(() => {
+                let currentIndex = 0;
+                
+                const addNextRole = () => {
+                    if (currentIndex < roles.length && roles[currentIndex] !== undefined) {
+                        const roleToAdd = roles[currentIndex];
+                        
+                        setVisibleRoles(prev => {
+                            const newRoles = [...prev, roleToAdd];
+                            return newRoles;
+                        });
+                        
+                        currentIndex++;
+                        
+                        // Schedule next role if there are more
+                        if (currentIndex < roles.length) {
+                            setTimeout(addNextRole, 1000);
+                        } else {
+                            setTimeout(() => {
+                                animateRolesOut(() => {
+                                    setVisibleRoles([]);
+                                    setAnimationCompleted(true);
+                                });
+                            }, 2000);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            animateRolesOut(() => {
+                                setVisibleRoles([]);
+                                setAnimationCompleted(true);
+                            });
+                        }, 2000);
+                    }
+                };
+                
+                // Start the sequence
+                addNextRole();
+            }, 300); // Smooth transition after cursor fades
+            
+        }, 500); // Start sooner for smoother transition
+
+        return () => {
+            clearTimeout(startCycling);
+        };
+    }, [animationPhase]);
 
     useEffect(() => {
         const heroBackground = document.getElementById('hero-background');
@@ -167,7 +384,47 @@ public class AtmosphericController : MonoBehaviour {
 }`}
                     </div>
                 </div>
-                <h1 className="hero-title">hi, i'm Riwa!</h1>
+                <h1 className="hero-title">
+                    {animationPhase === 'initial' ? (
+                        <>
+                            {displayText.includes('Riwa.') ? (
+                                <>
+                                    hi, i'm <span className="riwa-name"> Riwa.</span>
+                                </>
+                            ) : (
+                                displayText
+                            )}
+                            {showCursor && <span className="typing-cursor">|</span>}
+                        </>
+                    ) : (
+                        <>
+                            <div className="dropdown-container">
+                                <div className="main-line">
+                                    hi, i'm <span 
+                                        className={`riwa-name ${animationCompleted ? 'clickable' : ''}`}
+                                        onClick={handleRiwaClick}
+                                    >
+                                        Riwa.
+                                    </span>
+                                    {showCursor && <span className="typing-cursor">|</span>}
+                                </div>
+                                {visibleRoles.length > 0 && !animationCompleted && (
+                                    <div className="roles-dropdown">
+                                        {visibleRoles.filter(role => role && role.trim() !== '').map((role, index) => (
+                                            <div 
+                                                key={`${index}-${role}`} 
+                                                className="role-item slide-in"
+                                                style={{ animationDelay: `${index * 0.1}s` }}
+                                            >
+                                                {role}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </h1>
                 <div className="scroll-indicator" onClick={scrollToAbout}>
                     <span>scroll to discover more</span>
                     <div className="scroll-arrow"></div>
