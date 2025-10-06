@@ -18,8 +18,7 @@ function Navbar({ onNavigationAttempt }) {
 
     const navItems = [
         { path: '/', label: '< about />' },
-        { path: '/projects', label: '< projects />' },
-        { path: '/blog', label: '< blog />' },
+        { path: '/projects', label: '< work />' },
         { path: '/house', label: '< experience />' }
     ];
 

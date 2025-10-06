@@ -1326,14 +1326,16 @@ html.page-view {
 
 /* Compact professional experience at top */
 .professional-experience-compact {
-  margin-bottom: 3rem;
-  padding-bottom: 1rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+  padding: 2rem 2rem 1rem 2rem;
   border-bottom: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+  text-align: center;
 }
 
 .professional-experience-compact p {
@@ -2098,5 +2100,250 @@ html.page-view {
   .navigation-buttons {
     gap: 1.25rem;
     margin-top: 1.5rem;
+  }
+}
+
+/* Two-Column Work Layout */
+.work-columns-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.projects-column,
+.blog-column {
+  flex: 1;
+  min-height: 70vh;
+}
+
+.column-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.column-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Compact Project Cards */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.project-card-compact {
+  display: flex;
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.project-card-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(47, 72, 88, 0.15);
+  border-color: var(--accent-primary);
+}
+
+.project-image-compact {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.project-image-compact img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-info-compact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-title-compact {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.project-description-compact {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-technologies-compact {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tech-tag-compact {
+  background: var(--accent-secondary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  border: none;
+}
+
+.tech-more {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+
+/* Compact Blog Posts */
+.blog-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blog-post-card-compact {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.blog-post-card-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(47, 72, 88, 0.15);
+  border-color: var(--accent-primary);
+}
+
+.post-meta-compact {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
+.post-date-compact,
+.post-read-time-compact {
+  font-weight: 500;
+}
+
+.post-title-compact {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-excerpt-compact {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-tags-compact {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.post-tag-compact {
+  background: var(--accent-secondary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  border: none;
+}
+
+.tag-more {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+
+.blog-cta-compact {
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.blog-cta-compact p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .work-columns-container {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .projects-column,
+  .blog-column {
+    min-height: auto;
+  }
+  
+  .column-title {
+    font-size: 1.25rem;
+  }
+  
+  .project-card-compact {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .project-image-compact {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
   }
 }
