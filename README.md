@@ -8,7 +8,7 @@ When I’m not coding, you’ll probably find me exploring anime, working on a g
 ---
 
 ## 💼 Experiences
-- Software engineering internships and projects in backend, frontend, and infrastructure
+- Software Engineer at Mistral (Paris) - fullstack work on many cool projects
 - Work across APIs, interactive web apps, and creative coding
 - Passion for problem solving, performance, and user-friendly design
 

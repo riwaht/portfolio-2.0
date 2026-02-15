@@ -192,7 +192,7 @@ function ProjectsAndBlog() {
           
               <p>It's still a work in progress, but it's already saved me hours of tracking and budgeting time. If you like automating personal finance or organizing everything in Notion like I do, feel free to check it out or reach out!</p>
             `
-          },          
+        },
         {
             id: 3,
             title: "My First Coding Project: Talking to Myself Through a Discord Bot",
@@ -235,20 +235,20 @@ function ProjectsAndBlog() {
         
                 <p><em>If I could add a gif here, it would be the bot happily spamming "Hello world" in chat while my friends begged me to turn it off.</em></p>
             `
-        }        
+        }
     ];
 
     return (
         <div className="page-container">
             <Navbar />
-            
+
             {/* Professional Experience Header */}
             <div className="professional-experience-compact">
-                <p>swe intern at snowflake • former simulation engineer at inmind.ai • coding instructor</p>
+                <p>software engineer at mistral • former swe intern at snowflake • coding instructor</p>
                 <div className="experience-links">
                     <a href="/PC Documents/Riwa Hoteit, CV.pdf" target="_blank" rel="noopener noreferrer">resume</a>
                     <span>•</span>
-                    <a href="mailto:riwa.hoteit@lau.edu">contact</a>
+                    <a href="mailto:riwa.hoteit@gmail.com">contact</a>
                 </div>
             </div>
 
@@ -259,13 +259,13 @@ function ProjectsAndBlog() {
                     <div className="column-header">
                         <h2 className="column-title">things i've built</h2>
                     </div>
-                    
+
                     <div className="projects-list">
                         {projects.map((project) => (
-                            <a 
-                                key={project.id} 
-                                href={project.codeLink} 
-                                target="_blank" 
+                            <a
+                                key={project.id}
+                                href={project.codeLink}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="project-card-compact"
                             >
@@ -292,7 +292,7 @@ function ProjectsAndBlog() {
                     <div className="column-header">
                         <h2 className="column-title">thoughts & insights</h2>
                     </div>
-                    
+
                     <div className="blog-posts-list">
                         {blogPosts
                             .sort((a, b) => {
@@ -304,41 +304,41 @@ function ProjectsAndBlog() {
                                 return parseDate(b.date) - parseDate(a.date); // Most recent first
                             })
                             .map((post) => (
-                            <article 
-                                key={post.id} 
-                                className="blog-post-card-compact"
-                                onClick={() => setSelectedPost(post)}
-                            >
-                                <div className="post-meta-compact">
-                                    <span className="post-date-compact">{post.date}</span>
-                                    <span className="post-read-time-compact">{post.readTime}</span>
-                                </div>
-                                <h3 className="post-title-compact">{post.title}</h3>
-                                <p className="post-excerpt-compact">{post.excerpt}</p>
-                                {post.tags && (
-                                    <div className="post-tags-compact">
-                                        {post.tags.slice(0, 2).map((tag, index) => (
-                                            <span key={index} className="post-tag-compact">{tag}</span>
-                                        ))}
-                                        {post.tags.length > 2 && <span className="tag-more">+{post.tags.length - 2}</span>}
+                                <article
+                                    key={post.id}
+                                    className="blog-post-card-compact"
+                                    onClick={() => setSelectedPost(post)}
+                                >
+                                    <div className="post-meta-compact">
+                                        <span className="post-date-compact">{post.date}</span>
+                                        <span className="post-read-time-compact">{post.readTime}</span>
                                     </div>
-                                )}
-                            </article>
-                        ))}
-                        
+                                    <h3 className="post-title-compact">{post.title}</h3>
+                                    <p className="post-excerpt-compact">{post.excerpt}</p>
+                                    {post.tags && (
+                                        <div className="post-tags-compact">
+                                            {post.tags.slice(0, 2).map((tag, index) => (
+                                                <span key={index} className="post-tag-compact">{tag}</span>
+                                            ))}
+                                            {post.tags.length > 2 && <span className="tag-more">+{post.tags.length - 2}</span>}
+                                        </div>
+                                    )}
+                                </article>
+                            ))}
+
                         <div className="blog-cta-compact">
                             <p>more posts coming soon...</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             {/* Blog Post Modal - Notion-style center peek */}
             {selectedPost && (
                 <div className="blog-modal-overlay" onClick={() => setSelectedPost(null)}>
                     <div className="blog-modal" onClick={(e) => e.stopPropagation()}>
-                        <button 
-                            className="blog-modal-close" 
+                        <button
+                            className="blog-modal-close"
                             onClick={() => setSelectedPost(null)}
                             aria-label="Close modal"
                         >
@@ -352,14 +352,14 @@ function ProjectsAndBlog() {
                                 <span>{selectedPost.readTime}</span>
                             </div>
                         </div>
-                        <div 
-                            className="blog-modal-content" 
+                        <div
+                            className="blog-modal-content"
                             dangerouslySetInnerHTML={{ __html: selectedPost.content }}
                         />
                     </div>
                 </div>
             )}
-            
+
             <Footer />
         </div>
     );

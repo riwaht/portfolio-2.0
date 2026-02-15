@@ -290,26 +290,26 @@ function About() {
   name: 'Riwa',
   background: 'Lebanese-Canadian',
   skills: ['Python', 'Java', 'SQL', 'FastAPI', 'Node.js'],
-  currentRole: 'SWE Intern at Snowflake (ongoing)',
-  focus: 'Developer Platforms & API Infrastructure',
+  currentRole: 'Software Engineer at Mistral (Paris)',
+  focus: 'Fullstack Development',
   loves: ['coding', 'traveling', 'discovering new cultures']
 };`}
                     </div>
                     <div className="bg-code bg-code-2">
-                        {`# Expanding REST API capabilities at Snowflake
+                        {`# Building AI infrastructure at Mistral
 from fastapi import FastAPI, Header
 app = FastAPI()
 
-@app.post("/api/v2/query/execute")
-async def execute_query(warehouse: str = Header(None)):
-    return await process_with_terraform_support()`}
+@app.post("/api/v1/chat/completions")
+async def chat_completions(model: str = Header(None)):
+    return await process_inference_request()`}
                     </div>
                     <div className="bg-code bg-code-3">
-                        {`// Database integration and optimization
-const dbConfig = {
-  host: 'snowflake.compute.amazonaws.com',
-  warehouse: process.env.WAREHOUSE,
-  role: process.env.ROLE,
+                        {`// Model serving infrastructure
+const modelConfig = {
+  host: 'api.mistral.ai',
+  model: process.env.MODEL_ID,
+  endpoint: process.env.ENDPOINT,
   connectionPool: { max: 20, min: 5 }
 };`}
                     </div>
@@ -326,12 +326,12 @@ app.get('/api/restaurants', async (req, res) => {
                     <div className="bg-code bg-code-5">
                         {`# Python testing for API validation
 import pytest
-from snowflake.connector import connect
+from mistralai.client import MistralClient
 
-def test_resource_visibility():
-    conn = connect(warehouse='DEV_WH', role='API_ROLE')
-    result = conn.execute('SHOW TABLES').fetchall()
-    assert len(result) > 0`}
+def test_model_inference():
+    client = MistralClient(api_key='test_key')
+    response = client.chat(model='mistral-large')
+    assert response.choices[0].message is not None`}
                     </div>
                     <div className="bg-code bg-code-7">
                         {`-- Feature gating with SQL parameters
@@ -450,7 +450,7 @@ public class AtmosphericController : MonoBehaviour {
                     <div className="about-text">
                         <p>
                             hey! i'm a lebanese-canadian computer engineering student who loves building things that make developers' lives easier. 
-                            currently doing my software engineering internship at snowflake working on api infrastructure, and previously worked as a simulation engineer at inmind.ai.
+                            currently working as a software engineer at mistral in paris, doing fullstack work on many cool projects. previously interned at snowflake and worked as a simulation engineer at inmind.ai.
                         </p>
                         
                         <p>
