@@ -2536,3 +2536,404 @@ html.page-view {
     margin: 0 auto;
   }
 }
+
+/* ========================================
+   Journey Page
+   ======================================== */
+
+.journey-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  gap: 2rem;
+  min-height: calc(100vh - 170px);
+  align-items: flex-start;
+}
+
+/* Map Panel */
+.journey-map-panel {
+  flex: 3;
+  position: sticky;
+  top: 90px;
+  height: calc(100vh - 130px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journey-map {
+  width: 100%;
+  height: 100%;
+}
+
+.journey-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.journey-landmasses .country-path {
+  fill: var(--bg-secondary);
+  stroke: var(--border-color);
+  stroke-width: 0.15;
+  transition: fill 0.3s ease;
+}
+
+/* Animated travel path */
+.journey-travel-path {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 0.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.6;
+  animation: drawJourneyPath 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes drawJourneyPath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Location pins */
+.journey-pin {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.journey-pin:hover .journey-pin-dot {
+  r: 0.9;
+}
+
+.journey-pin:hover .journey-pin-label {
+  opacity: 1;
+}
+
+.journey-pin.selected .journey-pin-dot {
+  r: 0.9;
+}
+
+.journey-pin.selected .journey-pin-label {
+  opacity: 1;
+}
+
+.journey-pin-dot {
+  fill: var(--accent-primary);
+  stroke: var(--card-bg);
+  stroke-width: 0.15;
+  transition: r 0.3s ease, fill 0.3s ease;
+}
+
+.journey-pin-home .journey-pin-dot {
+  fill: var(--accent-secondary);
+}
+
+.journey-pin-current .journey-pin-dot {
+  fill: var(--accent-primary);
+}
+
+.journey-pin-work .journey-pin-dot {
+  fill: var(--accent-primary);
+}
+
+.journey-pin-travel .journey-pin-dot {
+  fill: var(--text-secondary);
+}
+
+.journey-pin-label {
+  font-size: 1.4px;
+  fill: var(--text-primary);
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Pulse animation for current location */
+.journey-pin-pulse {
+  fill: var(--accent-primary);
+  opacity: 0;
+  animation: pinPulse 2s ease-in-out infinite;
+}
+
+@keyframes pinPulse {
+  0% { opacity: 0.5; r: 0.8; }
+  100% { opacity: 0; r: 2.5; }
+}
+
+/* Sub-locations (Japan cities) */
+.journey-sub-locations {
+  animation: fadeInSub 0.3s ease forwards;
+}
+
+@keyframes fadeInSub {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.journey-sub-line {
+  stroke: var(--text-secondary);
+  stroke-width: 0.08;
+  stroke-dasharray: 0.3 0.15;
+  opacity: 0.5;
+}
+
+.journey-sub-dot {
+  fill: var(--text-secondary);
+  stroke: var(--card-bg);
+  stroke-width: 0.08;
+}
+
+.journey-sub-label {
+  font-size: 1px;
+  fill: var(--text-secondary);
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+/* Timeline Panel */
+.journey-timeline-panel {
+  flex: 2;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.journey-timeline-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.journey-timeline-panel::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.journey-timeline-header h2 {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.journey-timeline-list {
+  position: relative;
+}
+
+/* Timeline entry */
+.journey-timeline-entry {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.journey-timeline-entry:hover {
+  background: var(--card-bg);
+}
+
+.journey-timeline-entry.selected {
+  background: var(--card-bg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Timeline dot */
+.journey-timeline-dot {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  margin-top: 0.15rem;
+}
+
+.journey-timeline-entry.selected .journey-timeline-dot,
+.journey-timeline-entry:hover .journey-timeline-dot {
+  background: var(--accent-primary);
+  color: var(--card-bg);
+}
+
+.journey-type-current .journey-timeline-dot {
+  background: var(--accent-primary);
+  color: var(--card-bg);
+}
+
+.journey-type-home .journey-timeline-dot {
+  background: var(--accent-secondary);
+  color: var(--card-bg);
+}
+
+/* Connecting line between dots */
+.journey-timeline-entry:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(1.25rem + 15px);
+  top: calc(1.25rem + 32px + 4px);
+  bottom: -4px;
+  width: 2px;
+  background: var(--border-color);
+}
+
+.journey-dot-icon {
+  line-height: 1;
+}
+
+/* Timeline content */
+.journey-timeline-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.journey-timeline-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.journey-date {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: 'Satoshi', sans-serif;
+}
+
+.journey-type-tag {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--accent-primary);
+  background: rgba(45, 106, 246, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .journey-type-tag {
+  background: rgba(246, 174, 45, 0.12);
+}
+
+.journey-timeline-location {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem 0;
+  letter-spacing: -0.01em;
+}
+
+.journey-timeline-description {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* Sub-location tags */
+.journey-sub-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.journey-sub-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  font-family: 'Satoshi', sans-serif;
+}
+
+/* Professional badges */
+.journey-pro-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.journey-pro-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--card-bg);
+  background: var(--accent-primary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  font-family: 'Satoshi', sans-serif;
+}
+
+/* Journey responsive */
+@media (max-width: 768px) {
+  .journey-container {
+    flex-direction: column-reverse;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .journey-map-panel {
+    position: relative;
+    top: 0;
+    height: 40vh;
+    min-height: 250px;
+  }
+
+  .journey-timeline-panel {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .journey-timeline-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .journey-timeline-entry:not(:last-child)::after {
+    left: calc(1.25rem + 15px);
+  }
+}
+
+@media (max-width: 480px) {
+  .journey-container {
+    padding: 0.75rem;
+  }
+
+  .journey-map-panel {
+    height: 35vh;
+    min-height: 200px;
+  }
+
+  .journey-timeline-entry {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .journey-timeline-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .journey-timeline-entry:not(:last-child)::after {
+    left: calc(1rem + 13px);
+  }
+}
