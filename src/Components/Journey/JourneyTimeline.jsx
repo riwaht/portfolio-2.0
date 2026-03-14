@@ -1,29 +1,7 @@
-import React, { useRef, useEffect } from 'react';
-import { journeyPoints } from '../../Utils/journeyData';
+import React from 'react';
+import { journeyPoints, getJourneyStats } from '../../Utils/journeyData';
 
-function JourneyTimeline({ selectedPointId, onSelectPoint }) {
-  const entryRefs = useRef({});
-
-  // Scroll to selected entry when map pin is clicked
-  useEffect(() => {
-    if (selectedPointId && entryRefs.current[selectedPointId]) {
-      entryRefs.current[selectedPointId].scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-    }
-  }, [selectedPointId]);
-
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case 'home': return '\u2302';
-      case 'work': return '\u2692';
-      case 'travel': return '\u2708';
-      case 'current': return '\u2726';
-      default: return '\u25CF';
-    }
-  };
-
+function JourneyTimeline({ activePointId, registerRef }) {
   const getTypeLabel = (type) => {
     switch (type) {
       case 'home': return 'home';
@@ -34,49 +12,59 @@ function JourneyTimeline({ selectedPointId, onSelectPoint }) {
     }
   };
 
+  const activeIdx = journeyPoints.findIndex(p => p.id === activePointId);
+  const stats = getJourneyStats();
+
   return (
     <div className="journey-timeline">
-      <div className="journey-timeline-header">
-        <h2>the journey so far</h2>
-      </div>
-      <div className="journey-timeline-list">
-        {journeyPoints.map((point) => (
+      <div className="journey-scroll-spacer-top" />
+
+      {journeyPoints.map((point, i) => {
+        const isActive = activePointId === point.id;
+        const isPast = activeIdx >= 0 && i < activeIdx;
+
+        return (
           <div
             key={point.id}
-            ref={(el) => (entryRefs.current[point.id] = el)}
-            className={`journey-timeline-entry ${selectedPointId === point.id ? 'selected' : ''} journey-type-${point.type}`}
-            onClick={() => onSelectPoint(point.id)}
+            ref={(el) => registerRef(point.id, el)}
+            data-point-id={point.id}
+            className={`journey-scroll-entry${isActive ? ' active' : ''}${isPast ? ' past' : ''}`}
           >
-            <div className="journey-timeline-dot">
-              <span className="journey-dot-icon">{getTypeIcon(point.type)}</span>
-            </div>
-            <div className="journey-timeline-content">
-              <div className="journey-timeline-meta">
-                <span className="journey-date">{point.dateRange}</span>
-                <span className="journey-type-tag">{getTypeLabel(point.type)}</span>
+            <div className={`journey-scroll-card journey-card-${point.type}`}>
+              <div className="journey-card-accent" />
+              <div className="journey-card-body">
+                <div className="journey-card-header">
+                  <span className="journey-card-date">{point.dateRange}</span>
+                  <span className="journey-card-type">{getTypeLabel(point.type)}</span>
+                </div>
+                <h3 className="journey-card-location">{point.city}</h3>
+                <span className="journey-card-country">{point.country}</span>
+                <p className="journey-card-desc">{point.description}</p>
+                {point.professional && (
+                  <div className="journey-card-pros">
+                    {point.professional.map((pro, j) => (
+                      <span key={j} className="journey-card-pro">
+                        {pro.role} · {pro.company}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-              <h3 className="journey-timeline-location">{point.location}</h3>
-              <p className="journey-timeline-description">{point.description}</p>
-              {point.subLocations && (
-                <div className="journey-sub-tags">
-                  {point.subLocations.map((sub) => (
-                    <span key={sub.name} className="journey-sub-tag">{sub.name}</span>
-                  ))}
-                </div>
-              )}
-              {point.professional && (
-                <div className="journey-pro-badges">
-                  {point.professional.map((pro, i) => (
-                    <span key={i} className="journey-pro-badge">
-                      {pro.role} @ {pro.company}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
-        ))}
+        );
+      })}
+
+      {/* Mini stats */}
+      <div className="journey-stats">
+        <span className="journey-stat">{stats.cities} cities</span>
+        <span className="journey-stat-sep">·</span>
+        <span className="journey-stat">{stats.countries} countries</span>
+        <span className="journey-stat-sep">·</span>
+        <span className="journey-stat">{stats.continents} continents</span>
       </div>
+
+      <div className="journey-scroll-spacer-bottom" />
     </div>
   );
 }

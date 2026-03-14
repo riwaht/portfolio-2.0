@@ -2538,33 +2538,29 @@ html.page-view {
 }
 
 /* ========================================
-   Journey Page
+   Journey Page — Side-by-side layout
    ======================================== */
 
-.journey-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
+.journey-layout {
   display: flex;
-  gap: 2rem;
-  min-height: calc(100vh - 170px);
-  align-items: flex-start;
+  height: calc(100vh - 70px);
+  background: var(--bg-primary);
+  overflow: hidden;
 }
 
-/* Map Panel */
+/* ---- Map panel: sticky left side ---- */
 .journey-map-panel {
-  flex: 3;
+  flex: 1;
   position: sticky;
-  top: 90px;
-  height: calc(100vh - 130px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow: hidden;
 }
 
 .journey-map {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .journey-svg {
@@ -2572,139 +2568,32 @@ html.page-view {
   height: 100%;
 }
 
-.journey-landmasses .country-path {
-  fill: var(--bg-secondary);
-  stroke: var(--border-color);
-  stroke-width: 0.15;
-  transition: fill 0.3s ease;
-}
-
-/* Animated travel path */
-.journey-travel-path {
-  fill: none;
-  stroke: var(--accent-primary);
-  stroke-width: 0.25;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.6;
-  animation: drawJourneyPath 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-@keyframes drawJourneyPath {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Location pins */
-.journey-pin {
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.journey-pin:hover .journey-pin-dot {
-  r: 0.9;
-}
-
-.journey-pin:hover .journey-pin-label {
-  opacity: 1;
-}
-
-.journey-pin.selected .journey-pin-dot {
-  r: 0.9;
-}
-
-.journey-pin.selected .journey-pin-label {
-  opacity: 1;
-}
-
-.journey-pin-dot {
-  fill: var(--accent-primary);
-  stroke: var(--card-bg);
-  stroke-width: 0.15;
-  transition: r 0.3s ease, fill 0.3s ease;
-}
-
-.journey-pin-home .journey-pin-dot {
-  fill: var(--accent-secondary);
-}
-
-.journey-pin-current .journey-pin-dot {
-  fill: var(--accent-primary);
-}
-
-.journey-pin-work .journey-pin-dot {
-  fill: var(--accent-primary);
-}
-
-.journey-pin-travel .journey-pin-dot {
-  fill: var(--text-secondary);
-}
-
-.journey-pin-label {
-  font-size: 1.4px;
-  fill: var(--text-primary);
-  font-family: 'Satoshi', sans-serif;
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Vignette — soft fade at right edge to blend into timeline */
+.journey-map-vignette {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-}
-
-/* Pulse animation for current location */
-.journey-pin-pulse {
-  fill: var(--accent-primary);
-  opacity: 0;
-  animation: pinPulse 2s ease-in-out infinite;
-}
-
-@keyframes pinPulse {
-  0% { opacity: 0.5; r: 0.8; }
-  100% { opacity: 0; r: 2.5; }
-}
-
-/* Sub-locations (Japan cities) */
-.journey-sub-locations {
-  animation: fadeInSub 0.3s ease forwards;
-}
-
-@keyframes fadeInSub {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.journey-sub-line {
-  stroke: var(--text-secondary);
-  stroke-width: 0.08;
-  stroke-dasharray: 0.3 0.15;
+  background: linear-gradient(
+    to right,
+    transparent 60%,
+    var(--bg-primary) 100%
+  );
   opacity: 0.5;
 }
 
-.journey-sub-dot {
-  fill: var(--text-secondary);
-  stroke: var(--card-bg);
-  stroke-width: 0.08;
-}
-
-.journey-sub-label {
-  font-size: 1px;
-  fill: var(--text-secondary);
-  font-family: 'Satoshi', sans-serif;
-  font-weight: 500;
-  pointer-events: none;
-}
-
-/* Timeline Panel */
+/* ---- Timeline panel: scrollable right side ---- */
 .journey-timeline-panel {
-  flex: 2;
-  max-height: calc(100vh - 130px);
+  width: 380px;
+  flex-shrink: 0;
+  height: calc(100vh - 70px);
   overflow-y: auto;
+  padding: 0 1.5rem 0 1rem;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
 }
 
 .journey-timeline-panel::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 .journey-timeline-panel::-webkit-scrollbar-thumb {
@@ -2712,183 +2601,414 @@ html.page-view {
   border-radius: 2px;
 }
 
-.journey-timeline-header h2 {
+/* ---- Dot matrix with seasonal color shift ---- */
+.journey-land-dot {
+  fill: var(--text-secondary);
+  opacity: 0.12;
+  transition: fill 1.2s ease, opacity 1.2s ease;
+}
+
+.journey-land-dot.visited {
+  fill: var(--accent-primary);
+  opacity: 0.35;
+  transition: fill 1.2s ease, opacity 1.2s ease;
+}
+
+/* Seasonal tint — applied via --season-hue CSS variable */
+.journey-map[style*="--season-hue"] .journey-land-dot {
+  fill: hsl(var(--season-hue), 25%, 55%);
+  opacity: 0.14;
+}
+
+.journey-map[style*="--season-hue"] .journey-land-dot.visited {
+  fill: hsl(var(--season-hue), 45%, 50%);
+  opacity: 0.4;
+}
+
+/* ---- Travel path — progressive reveal ---- */
+.journey-travel-path {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 0.12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.65;
+}
+
+.journey-travel-path-glow {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 0.3;
+  stroke-linecap: round;
+  opacity: 0.15;
+}
+
+/* ---- Active pin ---- */
+.journey-pin-dot {
+  fill: var(--accent-primary);
+  stroke: none;
+  opacity: 1;
+}
+
+.journey-pin-home .journey-pin-dot {
+  fill: var(--accent-secondary);
+}
+
+.journey-pin-halo {
+  fill: var(--accent-primary);
+  opacity: 0.12;
+}
+
+.journey-pin-home .journey-pin-halo {
+  fill: var(--accent-secondary);
+}
+
+/* Ripple burst — two staggered rings */
+.journey-ripple {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 0.06;
+  opacity: 0;
+}
+
+.journey-pin-home .journey-ripple {
+  stroke: var(--accent-secondary);
+}
+
+.journey-ripple-1 {
+  animation: rippleBurst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.journey-ripple-2 {
+  animation: rippleBurst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+}
+
+@keyframes rippleBurst {
+  0% { r: 0.3; opacity: 0.5; stroke-width: 0.08; }
+  100% { r: 1.8; opacity: 0; stroke-width: 0.01; }
+}
+
+/* Label */
+.journey-pin-label {
+  font-size: 0.9px;
+  fill: var(--text-primary);
   font-family: 'Satoshi', sans-serif;
-  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 0 1.5rem 0;
-  letter-spacing: -0.02em;
+  pointer-events: none;
+  letter-spacing: 0.02px;
 }
 
-.journey-timeline-list {
+.journey-pin-label.active-label {
+  opacity: 1;
+  animation: labelFadeIn 0.4s ease forwards;
+}
+
+@keyframes labelFadeIn {
+  from { opacity: 0; transform: translateY(0.3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse — current location */
+.journey-pin-pulse {
+  fill: var(--accent-primary);
+  opacity: 0;
+  animation: pinPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pinPulse {
+  0% { opacity: 0.35; r: 0.5; }
+  100% { opacity: 0; r: 2; }
+}
+
+/* Sub-locations — staggered reveal */
+.journey-sub-item {
+  animation: subReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes subReveal {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.journey-sub-line {
+  stroke: var(--accent-primary);
+  stroke-width: 0.05;
+  stroke-dasharray: 0.2 0.1;
+  opacity: 0.3;
+}
+
+.journey-sub-dot {
+  fill: var(--accent-primary);
+  opacity: 0.55;
+}
+
+.journey-sub-label {
+  font-size: 0.85px;
+  fill: var(--text-primary);
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 500;
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* ---- Timeline entries ---- */
+.journey-timeline {
   position: relative;
 }
 
-/* Timeline entry */
-.journey-timeline-entry {
+/* Spacers — push first/last entry to panel center */
+.journey-scroll-spacer-top {
+  height: calc(50vh - 35px);
+}
+
+.journey-scroll-spacer-bottom {
+  height: calc(50vh - 35px);
+}
+
+/* Scroll entries */
+.journey-scroll-entry {
+  padding: 0.75rem 0 0.75rem 1rem;
+}
+
+/* ---- Cards — editorial style ---- */
+.journey-scroll-card {
   display: flex;
-  gap: 1rem;
-  padding: 1.25rem;
-  margin-bottom: 0.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.journey-timeline-entry:hover {
+  overflow: hidden;
+  border-radius: 10px;
   background: var(--card-bg);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+  opacity: 0.25;
+  transform: translateY(12px) scale(0.97);
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s ease;
+  width: 100%;
 }
 
-.journey-timeline-entry.selected {
-  background: var(--card-bg);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+.journey-scroll-entry.active .journey-scroll-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Timeline dot */
-.journey-timeline-dot {
+.journey-scroll-entry.past .journey-scroll-card {
+  opacity: 0.45;
+  transform: translateY(-4px) scale(0.98);
+}
+
+/* Accent bar — left edge color strip */
+.journey-card-accent {
+  width: 3px;
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  transition: all 0.3s ease;
-  margin-top: 0.15rem;
-}
-
-.journey-timeline-entry.selected .journey-timeline-dot,
-.journey-timeline-entry:hover .journey-timeline-dot {
   background: var(--accent-primary);
-  color: var(--card-bg);
+  opacity: 0.4;
+  transition: opacity 0.4s ease;
 }
 
-.journey-type-current .journey-timeline-dot {
-  background: var(--accent-primary);
-  color: var(--card-bg);
+.journey-scroll-entry.active .journey-card-accent {
+  opacity: 1;
 }
 
-.journey-type-home .journey-timeline-dot {
+.journey-card-home .journey-card-accent {
   background: var(--accent-secondary);
-  color: var(--card-bg);
 }
 
-/* Connecting line between dots */
-.journey-timeline-entry:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: calc(1.25rem + 15px);
-  top: calc(1.25rem + 32px + 4px);
-  bottom: -4px;
-  width: 2px;
-  background: var(--border-color);
+.journey-card-current .journey-card-accent {
+  background: var(--accent-primary);
 }
 
-.journey-dot-icon {
-  line-height: 1;
+.journey-card-work .journey-card-accent {
+  background: var(--accent-primary);
 }
 
-/* Timeline content */
-.journey-timeline-content {
+.journey-card-travel .journey-card-accent {
+  background: var(--text-secondary);
+}
+
+/* Card body */
+.journey-card-body {
+  padding: 1rem 1.15rem;
   flex: 1;
   min-width: 0;
 }
 
-.journey-timeline-meta {
+.journey-card-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.journey-card-date {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.journey-card-type {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 800;
+  color: var(--accent-primary);
+  opacity: 0.7;
+}
+
+.journey-card-location {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Country name below city */
+.journey-card-country {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-top: -0.15rem;
   margin-bottom: 0.3rem;
 }
 
-.journey-date {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-family: 'Satoshi', sans-serif;
-}
-
-.journey-type-tag {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-  color: var(--accent-primary);
-  background: rgba(45, 106, 246, 0.08);
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-}
-
-[data-theme="dark"] .journey-type-tag {
-  background: rgba(246, 174, 45, 0.12);
-}
-
-.journey-timeline-location {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
-  letter-spacing: -0.01em;
-}
-
-.journey-timeline-description {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.55;
-}
-
-/* Sub-location tags */
-.journey-sub-tags {
+/* Country trip itinerary: City → City → City */
+.journey-card-itinerary {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  align-items: center;
+  gap: 0.15rem;
+  margin-bottom: 0.35rem;
+}
+
+.journey-card-itinerary-city {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.journey-card-itinerary-sep {
+  color: var(--accent-primary);
+  opacity: 0.5;
+  font-size: 0.6rem;
+}
+
+.journey-card-desc {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* Sub-location pills (legacy, kept for map compatibility) */
+.journey-card-subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
   margin-top: 0.5rem;
 }
 
-.journey-sub-tag {
-  font-size: 0.65rem;
+.journey-card-sub {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.6rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-secondary);
-  padding: 0.15rem 0.5rem;
-  border-radius: 10px;
-  font-family: 'Satoshi', sans-serif;
+  padding: 0.12rem 0.45rem;
+  border-radius: 8px;
+  opacity: 0.8;
 }
 
 /* Professional badges */
-.journey-pro-badges {
+.journey-card-pros {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.5rem;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
 }
 
-.journey-pro-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.65rem;
+.journey-card-pro {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.6rem;
   font-weight: 700;
   color: var(--card-bg);
   background: var(--accent-primary);
-  padding: 0.2rem 0.6rem;
-  border-radius: 10px;
-  font-family: 'Satoshi', sans-serif;
+  padding: 0.15rem 0.5rem;
+  border-radius: 8px;
+  letter-spacing: 0.01em;
 }
 
-/* Journey responsive */
+.journey-card-home .journey-card-pro {
+  background: var(--accent-secondary);
+}
+
+/* Excursion cards — indented, subtler */
+.journey-scroll-entry.excursion {
+  padding-left: 1.5rem;
+}
+
+.journey-card-excursion {
+  border-left: 1px dashed var(--border-color);
+  border-radius: 0 10px 10px 0;
+}
+
+.journey-card-excursion .journey-card-accent {
+  display: none;
+}
+
+.journey-card-excursion-tag {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* Mini stats footer */
+.journey-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem 0 1rem;
+  opacity: 0.5;
+}
+
+.journey-stat {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+}
+
+.journey-stat-sep {
+  font-size: 0.5rem;
+  color: var(--text-secondary);
+  opacity: 0.4;
+}
+
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
-  .journey-container {
-    flex-direction: column-reverse;
-    padding: 1rem;
-    gap: 1rem;
+  .journey-layout {
+    flex-direction: column;
   }
 
   .journey-map-panel {
@@ -2899,41 +3019,50 @@ html.page-view {
   }
 
   .journey-timeline-panel {
+    width: 100%;
     max-height: none;
     overflow-y: visible;
+    padding: 1.5rem 1rem;
   }
 
-  .journey-timeline-header h2 {
-    font-size: 1.25rem;
+  .journey-scroll-spacer-top,
+  .journey-scroll-spacer-bottom {
+    height: 0;
   }
 
-  .journey-timeline-entry:not(:last-child)::after {
-    left: calc(1.25rem + 15px);
+  .journey-map-vignette {
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      var(--bg-primary) 100%
+    );
+    opacity: 0.5;
+  }
+
+  .journey-progress-track {
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .journey-container {
-    padding: 0.75rem;
-  }
-
   .journey-map-panel {
     height: 35vh;
     min-height: 200px;
   }
 
-  .journey-timeline-entry {
-    padding: 1rem;
-    gap: 0.75rem;
+  .journey-timeline-panel {
+    padding: 1rem 0.75rem;
   }
 
-  .journey-timeline-dot {
-    width: 28px;
-    height: 28px;
-    font-size: 0.75rem;
+  .journey-card-body {
+    padding: 0.85rem 1rem;
   }
 
-  .journey-timeline-entry:not(:last-child)::after {
-    left: calc(1rem + 13px);
+  .journey-card-location {
+    font-size: 0.88rem;
+  }
+
+  .journey-card-desc {
+    font-size: 0.74rem;
   }
 }

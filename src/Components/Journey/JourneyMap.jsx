@@ -1,212 +1,211 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { journeyPoints } from '../../Utils/journeyData';
+import { useRef, useEffect, useState, useMemo } from 'react';
+import { journeyPoints, getSeasonalHue } from '../../Utils/journeyData';
+import {
+  generateDotPaths,
+  VIEWBOX_W, VIEWBOX_H
+} from '../../Utils/worldDotMap';
 
-function JourneyMap({ selectedPointId, onSelectPoint }) {
+const ZOOM_W = VIEWBOX_W * 0.75;
+const ZOOM_H = VIEWBOX_H * 0.75;
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+// TODO: Fix coordinates for all points
+
+function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
+  const pathRef = useRef(null);
   const svgRef = useRef(null);
   const [pathLength, setPathLength] = useState(0);
-  const [expandedSub, setExpandedSub] = useState(null);
-  const pathRef = useRef(null);
+  const [pointLengths, setPointLengths] = useState([]);
 
-  // Build the travel path as SVG path string
+  const dotPaths = useMemo(() => generateDotPaths(), []);
+  const activeIdx = journeyPoints.findIndex(p => p.id === activePointId);
+  const pointCoords = useMemo(() => journeyPoints.map(p => p.coordinates), []);
+
+  const activeCoords = activeIdx >= 0 ? pointCoords[activeIdx] : null;
+  const seasonalHue = activeIdx >= 0 ? getSeasonalHue(journeyPoints[activeIdx].month) : null;
+
+  // Travel path connects all points in chronological order
   const travelPathD = useMemo(() => {
-    const points = journeyPoints.map(p => ({
-      x: p.coordinates.x,
-      y: p.coordinates.y
-    }));
-    if (points.length < 2) return '';
-
-    // Build smooth curved path
-    let d = `M ${points[0].x} ${points[0].y}`;
-    for (let i = 1; i < points.length; i++) {
-      const prev = points[i - 1];
-      const curr = points[i];
-      const midX = (prev.x + curr.x) / 2;
-      const midY = (prev.y + curr.y) / 2;
-      // Use quadratic bezier for smooth curves
-      d += ` Q ${prev.x + (curr.x - prev.x) * 0.3} ${prev.y + (curr.y - prev.y) * 0.1}, ${midX} ${midY}`;
-      d += ` T ${curr.x} ${curr.y}`;
+    if (pointCoords.length < 2) return '';
+    let d = `M ${pointCoords[0].x} ${pointCoords[0].y}`;
+    for (let i = 1; i < pointCoords.length; i++) {
+      const prev = pointCoords[i - 1];
+      const curr = pointCoords[i];
+      const dx = curr.x - prev.x;
+      const cx = prev.x + dx * 0.5;
+      const cy = prev.y - Math.abs(dx) * 0.12;
+      d += ` Q ${cx} ${cy}, ${curr.x} ${curr.y}`;
     }
     return d;
-  }, []);
+  }, [pointCoords]);
 
-  // Measure the actual path length for animation
+  // Measure path lengths
   useEffect(() => {
-    if (pathRef.current) {
-      const length = pathRef.current.getTotalLength();
-      setPathLength(length);
-    }
-  }, [travelPathD]);
+    const svg = svgRef.current;
+    const mainPath = pathRef.current;
+    if (!svg || !mainPath) return;
 
-  const handlePinClick = (point) => {
-    if (point.subLocations) {
-      setExpandedSub(expandedSub === point.id ? null : point.id);
-    }
-    onSelectPoint(point.id);
-  };
+    const total = mainPath.getTotalLength();
+    setPathLength(total);
 
-  const getPinClass = (point) => {
-    let cls = 'journey-pin';
-    if (point.type === 'current') cls += ' journey-pin-current';
-    if (point.type === 'home') cls += ' journey-pin-home';
-    if (point.type === 'work') cls += ' journey-pin-work';
-    if (point.type === 'travel') cls += ' journey-pin-travel';
-    if (selectedPointId === point.id) cls += ' selected';
-    return cls;
-  };
+    const lengths = [0];
+    for (let i = 1; i < pointCoords.length; i++) {
+      const prev = pointCoords[i - 1];
+      const curr = pointCoords[i];
+      const dx = curr.x - prev.x;
+      const cx = prev.x + dx * 0.5;
+      const cy = prev.y - Math.abs(dx) * 0.12;
+      const segPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      segPath.setAttribute('d', `M ${prev.x} ${prev.y} Q ${cx} ${cy}, ${curr.x} ${curr.y}`);
+      svg.appendChild(segPath);
+      const segLen = segPath.getTotalLength();
+      svg.removeChild(segPath);
+      lengths.push(lengths[i - 1] + segLen);
+    }
+    setPointLengths(lengths);
+  }, [travelPathD, pointCoords]);
+
+  // Path reveal offset — direct mapping from scroll progress
+  const pathOffset = useMemo(() => {
+    if (pathLength === 0 || pointLengths.length === 0) return pathLength;
+    const n = pointLengths.length;
+    const floatIdx = scrollProgress * (n - 1);
+    const lo = Math.floor(floatIdx);
+    const hi = Math.min(lo + 1, n - 1);
+    const t = floatIdx - lo;
+    const revealedLength = pointLengths[lo] + (pointLengths[hi] - pointLengths[lo]) * t;
+    return pathLength - revealedLength;
+  }, [scrollProgress, pathLength, pointLengths]);
+
+  // Smooth-damped viewBox
+  // Start centered on Beirut (first point)
+  const firstCoord = pointCoords[0] || { x: VIEWBOX_W / 2, y: VIEWBOX_H / 2 };
+  const initX = Math.max(0, Math.min(firstCoord.x - ZOOM_W / 2, VIEWBOX_W - ZOOM_W));
+  const initY = Math.max(0, Math.min(firstCoord.y - ZOOM_H / 2, VIEWBOX_H - ZOOM_H));
+  const targetVB = useRef({ x: initX, y: initY });
+  const currentVB = useRef({ x: initX, y: initY });
+  const animRef = useRef(null);
+  const [viewBox, setViewBox] = useState(`${initX} ${initY} ${ZOOM_W} ${ZOOM_H}`);
+
+  useEffect(() => {
+    if (pointCoords.length === 0) return;
+    const n = pointCoords.length;
+    const floatIdx = scrollProgress * (n - 1);
+    const lo = Math.floor(floatIdx);
+    const hi = Math.min(lo + 1, n - 1);
+    const t = floatIdx - lo;
+    const cx = lerp(pointCoords[lo].x, pointCoords[hi].x, t);
+    const cy = lerp(pointCoords[lo].y, pointCoords[hi].y, t);
+    let vx = cx - ZOOM_W / 2;
+    let vy = cy - ZOOM_H / 2;
+    vx = Math.max(0, Math.min(vx, VIEWBOX_W - ZOOM_W));
+    vy = Math.max(0, Math.min(vy, VIEWBOX_H - ZOOM_H));
+    targetVB.current = { x: vx, y: vy };
+  }, [scrollProgress, pointCoords]);
+
+  useEffect(() => {
+    const MIN_DAMPING = 0.03;
+    const MAX_DAMPING = 0.18;
+    const SPEED_THRESHOLD = 80;
+    const tick = () => {
+      const cur = currentVB.current;
+      const tgt = targetVB.current;
+      const speed = scrollSpeedRef ? scrollSpeedRef.current : 0;
+      const speedFactor = Math.min(speed / SPEED_THRESHOLD, 1);
+      const damping = MIN_DAMPING + (MAX_DAMPING - MIN_DAMPING) * speedFactor;
+      cur.x += (tgt.x - cur.x) * damping;
+      cur.y += (tgt.y - cur.y) * damping;
+      setViewBox(`${cur.x} ${cur.y} ${ZOOM_W} ${ZOOM_H}`);
+      animRef.current = requestAnimationFrame(tick);
+    };
+    animRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animRef.current);
+  }, [scrollSpeedRef]);
 
   return (
-    <div className="journey-map">
+    <div
+      className="journey-map"
+      style={seasonalHue !== null ? { '--season-hue': seasonalHue } : undefined}
+    >
       <svg
         ref={svgRef}
-        viewBox="0 0 100 80"
+        viewBox={viewBox}
         xmlns="http://www.w3.org/2000/svg"
         className="journey-svg"
+        preserveAspectRatio="xMidYMid meet"
       >
-        {/* Simplified world landmasses */}
-        <g className="journey-landmasses">
-          {/* UK & Ireland */}
-          <path d="M45.5,25 L46,24 L47,23.5 L47.5,24.5 L48,25.5 L48.5,27 L48,28.5 L47,29 L46,28.5 L45.5,27 Z" className="country-path" />
-          <path d="M44,25 L44.5,24.5 L45,25 L45,26.5 L44.5,27 L44,26 Z" className="country-path" />
+        <defs>
+          <filter id="pinGlow" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" />
+          </filter>
+          <filter id="pathGlow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
-          {/* France */}
-          <path d="M46,30 L48,29.5 L50,30 L51,31 L51,33 L50,34.5 L48,35 L46.5,34 L45.5,33 L45,31.5 Z" className="country-path" />
+        {/* Dot matrix landmasses — two paths instead of 5000 circles */}
+        <path d={dotPaths.normalPath} className="journey-land-dot" />
+        <path d={dotPaths.visitedPath} className="journey-land-dot visited" />
 
-          {/* Iberian Peninsula */}
-          <path d="M43,33 L46,32 L46.5,34 L46,36 L44.5,37.5 L42,37 L41,35.5 L42,34 Z" className="country-path" />
+        {/* Travel path — glow */}
+        {pathLength > 0 && (
+          <path
+            d={travelPathD}
+            className="journey-travel-path-glow"
+            filter="url(#pathGlow)"
+            style={{ strokeDasharray: pathLength, strokeDashoffset: pathOffset }}
+          />
+        )}
 
-          {/* Italy */}
-          <path d="M50,33 L51.5,33 L52,35 L51.5,37 L50.5,38.5 L50,37 L51,35 L50,33.5 Z" className="country-path" />
-
-          {/* Germany/Benelux */}
-          <path d="M48,28 L50,27.5 L52,28 L52.5,30 L51,31 L49,31 L48,30 Z" className="country-path" />
-
-          {/* Scandinavia */}
-          <path d="M50,18 L51,17 L52,18 L53,20 L52.5,23 L51.5,25 L50.5,26 L50,25 L49.5,23 L50,20 Z" className="country-path" />
-          <path d="M53,19 L55,18 L56,19 L55.5,21 L54,22 L53,21 Z" className="country-path" />
-
-          {/* Poland */}
-          <path d="M52,28 L54.5,27.5 L55.5,28.5 L55,30.5 L53,31 L52,30 Z" className="country-path" />
-
-          {/* Czech/Austria/Hungary region */}
-          <path d="M51,31 L53,30.5 L55,31 L55,32.5 L53,33.5 L51,33 Z" className="country-path" />
-
-          {/* Balkans/Greece */}
-          <path d="M53,33.5 L55,33 L56,34 L56.5,36 L55,38 L53.5,37 L53,35 Z" className="country-path" />
-
-          {/* Turkey */}
-          <path d="M56,34 L58,33.5 L61,34 L63,35 L62,36.5 L59,37 L57,36 L56,35 Z" className="country-path" />
-
-          {/* Lebanon/Middle East */}
-          <path d="M59,38 L60.5,37.5 L62,38 L62.5,40 L62,42 L61,43 L59.5,43 L58,42 L57.5,40 Z" className="country-path" />
-          <path d="M57.5,41 L59,40 L59.5,42 L59,43.5 L57.5,43 Z" className="country-path" />
-
-          {/* North Africa */}
-          <path d="M40,38 L45,37 L50,38 L55,39 L57,40 L56,43 L52,44 L46,44 L41,43 L39,41 Z" className="country-path" />
-
-          {/* Russia/Eastern Europe */}
-          <path d="M55,24 L60,22 L65,21 L70,22 L75,24 L78,27 L76,30 L70,31 L65,30 L60,29 L57,27 L55.5,25 Z" className="country-path" />
-
-          {/* Central Asia */}
-          <path d="M65,30 L70,29 L75,30 L78,32 L76,35 L72,36 L68,35 L65,33 Z" className="country-path" />
-
-          {/* China */}
-          <path d="M75,30 L80,29 L84,31 L87,33 L88,36 L86,39 L83,40 L79,39 L76,37 L75,34 Z" className="country-path" />
-
-          {/* Korea */}
-          <path d="M86,33 L87,32 L88,33 L88,35 L87,36 L86,35 Z" className="country-path" />
-
-          {/* Japan */}
-          <path d="M88,33 L89,32 L90,33 L90.5,35 L90,37 L89,39 L88,40 L87.5,38 L88,36 L88.5,34 Z" className="country-path" />
-          <path d="M87,39 L88,38.5 L88.5,40 L88,41 L87,40.5 Z" className="country-path" />
-
-          {/* India */}
-          <path d="M68,38 L72,37 L75,39 L76,42 L74,45 L71,46 L68,44 L67,41 Z" className="country-path" />
-
-          {/* Southeast Asia */}
-          <path d="M78,42 L82,41 L85,43 L84,46 L81,47 L78,45 Z" className="country-path" />
-        </g>
-
-        {/* Animated travel path */}
+        {/* Travel path — crisp */}
         {pathLength > 0 && (
           <path
             d={travelPathD}
             className="journey-travel-path"
-            style={{
-              strokeDasharray: pathLength,
-              strokeDashoffset: pathLength,
-            }}
+            style={{ strokeDasharray: pathLength, strokeDashoffset: pathOffset }}
           />
         )}
-        {/* Hidden path for measuring */}
-        <path
-          ref={pathRef}
-          d={travelPathD}
-          fill="none"
-          stroke="none"
-        />
 
-        {/* Location pins */}
-        {journeyPoints.map((point) => (
-          <g key={point.id} onClick={() => handlePinClick(point)} className={getPinClass(point)}>
-            {/* Pulse ring for current location */}
-            {point.type === 'current' && (
-              <circle
-                cx={point.coordinates.x}
-                cy={point.coordinates.y}
-                r="1.2"
-                className="journey-pin-pulse"
-              />
+        <path ref={pathRef} d={travelPathD} fill="none" stroke="none" />
+
+        {/* Single active pin — the path is the history, this dot is the present */}
+        {activeCoords && (
+          <g className={`journey-pin journey-pin-${journeyPoints[activeIdx].type}`} key={activePointId}>
+            {/* Ripple burst */}
+            <circle cx={activeCoords.x} cy={activeCoords.y} r="0.4" className="journey-ripple journey-ripple-1" />
+            <circle cx={activeCoords.x} cy={activeCoords.y} r="0.4" className="journey-ripple journey-ripple-2" />
+
+            {/* Glow halo */}
+            <circle cx={activeCoords.x} cy={activeCoords.y} r="1.2" filter="url(#pinGlow)" className="journey-pin-halo" />
+
+            {/* Current-location pulse */}
+            {journeyPoints[activeIdx].type === 'current' && (
+              <circle cx={activeCoords.x} cy={activeCoords.y} r="0.7" className="journey-pin-pulse" />
             )}
-            {/* Main pin */}
-            <circle
-              cx={point.coordinates.x}
-              cy={point.coordinates.y}
-              r={point.type === 'current' ? 0.8 : 0.6}
-              className="journey-pin-dot"
-            />
+
+            {/* Pin dot */}
+            <circle cx={activeCoords.x} cy={activeCoords.y} r="0.5" className="journey-pin-dot journey-pin-state-active" />
+
             {/* Label */}
             <text
-              x={point.coordinates.x}
-              y={point.coordinates.y - 1.5}
-              className="journey-pin-label"
+              x={activeCoords.x} y={activeCoords.y - 1.3}
+              className="journey-pin-label active-label"
               textAnchor="middle"
             >
-              {point.location.split(',')[0]}
+              {journeyPoints[activeIdx].city || journeyPoints[activeIdx].country}
             </text>
-
-            {/* Sub-locations (Japan) */}
-            {point.subLocations && expandedSub === point.id && (
-              <g className="journey-sub-locations">
-                {point.subLocations.map((sub) => (
-                  <g key={sub.name}>
-                    <line
-                      x1={point.coordinates.x}
-                      y1={point.coordinates.y}
-                      x2={point.coordinates.x + sub.offset.x}
-                      y2={point.coordinates.y + sub.offset.y}
-                      className="journey-sub-line"
-                    />
-                    <circle
-                      cx={point.coordinates.x + sub.offset.x}
-                      cy={point.coordinates.y + sub.offset.y}
-                      r="0.35"
-                      className="journey-sub-dot"
-                    />
-                    <text
-                      x={point.coordinates.x + sub.offset.x}
-                      y={point.coordinates.y + sub.offset.y - 0.8}
-                      className="journey-sub-label"
-                      textAnchor="middle"
-                    >
-                      {sub.name}
-                    </text>
-                  </g>
-                ))}
-              </g>
-            )}
           </g>
-        ))}
+        )}
       </svg>
+
+      <div className="journey-map-vignette" />
     </div>
   );
 }
