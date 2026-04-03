@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import House from '../Components/House.jsx';
+import '../styles.css';
+---
+
+<BaseLayout
+  title="House — Riwa Hoteit"
+  description="An interactive 3D house experience built with Three.js."
+  url="/house"
+  bodyClass="house-page"
+>
+  <House client:only="react" />
+</BaseLayout>

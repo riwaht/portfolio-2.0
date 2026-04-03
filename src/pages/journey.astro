@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Journey from '../Components/Journey.jsx';
+import '../styles.css';
+---
+
+<BaseLayout
+  title="Journey — Riwa Hoteit"
+  description="A visual timeline of places, experiences, and milestones."
+  url="/journey"
+>
+  <Journey client:load />
+</BaseLayout>

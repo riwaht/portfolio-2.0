@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import About from '../Components/About.jsx';
+import '../styles.css';
+---
+
+<BaseLayout
+  title="Riwa Hoteit"
+  description="Software engineer and creative developer. Building interactive experiences with React, Three.js, and more."
+  url="/"
+>
+  <About client:load />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Riwa Hoteit",
+    "url": "https://riwashouse.live",
+    "jobTitle": "Software Engineer",
+    "sameAs": [
+      "https://github.com/riwaht",
+      "https://linkedin.com/in/riwa-hoteit"
+    ]
+  })} />
+</BaseLayout>
