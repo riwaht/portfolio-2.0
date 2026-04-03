@@ -1,5 +1,5 @@
 import React from 'react';
-import { journeyPoints, getJourneyStats } from '../../Utils/journeyData';
+import { journeyPoints } from '../../Utils/journeyData';
 
 function JourneyTimeline({ activePointId, registerRef }) {
   const getTypeLabel = (type) => {
@@ -13,7 +13,6 @@ function JourneyTimeline({ activePointId, registerRef }) {
   };
 
   const activeIdx = journeyPoints.findIndex(p => p.id === activePointId);
-  const stats = getJourneyStats();
 
   return (
     <div className="journey-timeline">
@@ -55,14 +54,6 @@ function JourneyTimeline({ activePointId, registerRef }) {
         );
       })}
 
-      {/* Mini stats */}
-      <div className="journey-stats">
-        <span className="journey-stat">{stats.cities} cities</span>
-        <span className="journey-stat-sep">·</span>
-        <span className="journey-stat">{stats.countries} countries</span>
-        <span className="journey-stat-sep">·</span>
-        <span className="journey-stat">{stats.continents} continents</span>
-      </div>
 
       <div className="journey-scroll-spacer-bottom" />
     </div>

@@ -86,6 +86,16 @@ function ProjectsAndBlog() {
 
     const blogPosts = [
         {
+            id: 4,
+            title: "Spaces: A CLI Built for Humans and Agents",
+            date: "March 2026",
+            readTime: "4 min read",
+            tags: ["AI", "Mistral"],
+            excerpt: "Spaces is an internal platform tool that scaffolds projects, manages dev environments, and enables deployments. This post explores how designing a CLI to work with both human developers and AI agents led to better developer experience overall.",
+            externalUrl: "https://mistral.ai/news/spaces",
+            variant: "mistral"
+        },
+        {
             id: 1,
             title: "Designing a Narrative Puzzle-Platformer: Building Worlds Through Silence and Motion",
             date: "June 2025",
@@ -306,9 +316,18 @@ function ProjectsAndBlog() {
                             .map((post) => (
                                 <article
                                     key={post.id}
-                                    className="blog-post-card-compact"
-                                    onClick={() => setSelectedPost(post)}
+                                    className={`blog-post-card-compact${post.variant ? ` blog-card--${post.variant}` : ''}`}
+                                    onClick={() => {
+                                        if (post.externalUrl) {
+                                            window.open(post.externalUrl, '_blank', 'noopener,noreferrer');
+                                        } else {
+                                            setSelectedPost(post);
+                                        }
+                                    }}
                                 >
+                                    {post.variant === 'mistral' && (
+                                        <span className="blog-card-badge blog-card-badge--mistral">Published on Mistral</span>
+                                    )}
                                     <div className="post-meta-compact">
                                         <span className="post-date-compact">{post.date}</span>
                                         <span className="post-read-time-compact">{post.readTime}</span>
@@ -318,10 +337,13 @@ function ProjectsAndBlog() {
                                     {post.tags && (
                                         <div className="post-tags-compact">
                                             {post.tags.slice(0, 2).map((tag, index) => (
-                                                <span key={index} className="post-tag-compact">{tag}</span>
+                                                <span key={index} className={`post-tag-compact${post.variant ? ` post-tag--${post.variant}` : ''}`}>{tag}</span>
                                             ))}
                                             {post.tags.length > 2 && <span className="tag-more">+{post.tags.length - 2}</span>}
                                         </div>
+                                    )}
+                                    {post.externalUrl && (
+                                        <span className="blog-card-external-hint">↗ Read on mistral.ai</span>
                                     )}
                                 </article>
                             ))}
