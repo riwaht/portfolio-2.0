@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import DarkModeToggle from './DarkModeToggle';
 import '../styles.css';
 
 function Navbar({ onNavigationAttempt }) {
-    const location = useLocation();
-    const navigate = useNavigate();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const currentPath = typeof window !== 'undefined' ? window.currentPath : '/';
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -25,7 +23,7 @@ function Navbar({ onNavigationAttempt }) {
 
     const handleNavClick = (e, path) => {
         // If we're on the house page and there's a navigation attempt handler
-        if (onNavigationAttempt && location.pathname === '/house') {
+        if (onNavigationAttempt && currentPath === '/house') {
             const canNavigate = onNavigationAttempt(path);
             if (!canNavigate) {
                 e.preventDefault();
@@ -34,14 +32,13 @@ function Navbar({ onNavigationAttempt }) {
         }
         
         // Don't navigate if we're already on the target page
-        if (location.pathname === path) {
+        if (currentPath === path) {
             e.preventDefault();
             return;
         }
         
-        // Allow normal navigation
-        navigate(path);
-        // Close mobile menu after navigation
+        // Navigate via standard link (Astro MPA)
+        window.location.href = path;
         closeMobileMenu();
     };
 
@@ -72,7 +69,7 @@ function Navbar({ onNavigationAttempt }) {
                             <li key={item.path} className="nav-item">
                                 <button
                                     onClick={(e) => handleNavClick(e, item.path)}
-                                    className={`nav-link nav-link-button ${location.pathname === item.path ? 'active' : ''}`}
+                                    className={`nav-link nav-link-button ${currentPath === item.path ? 'active' : ''}`}
                                 >
                                     {item.label}
                                 </button>
@@ -93,7 +90,7 @@ function Navbar({ onNavigationAttempt }) {
                         <li key={item.path} className="mobile-nav-item">
                             <button
                                 onClick={(e) => handleNavClick(e, item.path)}
-                                className={`mobile-nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                                className={`mobile-nav-link ${currentPath === item.path ? 'active' : ''}`}
                             >
                                 {item.label}
                             </button>

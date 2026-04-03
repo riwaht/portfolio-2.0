@@ -1,0 +1,36 @@
+---
+import SEO from '../components/SEO.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  url: string;
+  type?: string;
+  bodyClass?: string;
+}
+
+const { title, description, image, url, type, bodyClass } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/house-icon.svg" />
+  <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <SEO title={title} description={description} image={image} url={url} type={type} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Riwa Hoteit",
+    "url": "https://riwashouse.live"
+  })} />
+</head>
+<body class:list={[bodyClass]}>
+  <slot />
+</body>
+</html>
