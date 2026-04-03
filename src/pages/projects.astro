@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectsAndBlog from '../Components/ProjectsAndBlog.jsx';
+import '../styles.css';
+---
+
+<BaseLayout
+  title="Projects — Riwa Hoteit"
+  description="A collection of software projects and blog posts by Riwa Hoteit."
+  url="/projects"
+>
+  <ProjectsAndBlog client:load />
+</BaseLayout>
