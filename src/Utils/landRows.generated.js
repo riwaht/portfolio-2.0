@@ -1,29 +1,7 @@
-// Dot matrix world map — auto-generated from Natural Earth 50m boundaries
-// Grid: 180 columns × 90 rows, standard equirectangular projection
-// Regenerate: node scripts/generateDotMap.mjs
+// Auto-generated from Natural Earth 110m — do not edit manually
+// Grid: 180 cols × 90 rows, equirectangular projection
+// col = (lon+180)/360 * 180, row = (90-lat)/180 * 90
 
-export const MAP_COLS = 180;
-export const MAP_ROWS = 90;
-export const DOT_SPACING = 0.54;
-export const DOT_OFFSET_X = 2;
-export const DOT_OFFSET_Y = 2;
-export const DOT_RADIUS = 0.17;
-
-// Same projection used for pins, visited regions, and the dot grid
-function lonToCol(lon) { return (lon + 180) / 360 * MAP_COLS; }
-function latToRow(lat) { return (90 - lat) / 180 * MAP_ROWS; }
-
-export function geoToGrid(lon, lat) {
-  return {
-    x: lonToCol(lon) * DOT_SPACING + DOT_OFFSET_X,
-    y: latToRow(lat) * DOT_SPACING + DOT_OFFSET_Y
-  };
-}
-
-export const VIEWBOX_W = MAP_COLS * DOT_SPACING + DOT_OFFSET_X * 2;
-export const VIEWBOX_H = MAP_ROWS * DOT_SPACING + DOT_OFFSET_Y * 2;
-
-// Land ranges — generated from Natural Earth 50m via scripts/generateDotMap.mjs
 export const landRows = [
   [],
   [],
@@ -116,52 +94,3 @@ export const landRows = [
   [[0,179]],
   [[0,179]],
 ];
-
-// Visited regions defined with geo bounding boxes — auto-converted to grid coords
-const visitedGeo = [
-  { name: 'Lebanon',        lonRange: [34.5, 37],   latRange: [33, 35] },
-  { name: 'Japan',           lonRange: [128, 146],   latRange: [30, 46] },
-  { name: 'Poland',          lonRange: [14, 24.5],   latRange: [49, 55] },
-  { name: 'Czech Republic',  lonRange: [12, 19],     latRange: [48.5, 51.5] },
-  { name: 'Hungary',         lonRange: [16, 23],     latRange: [45.5, 49] },
-  { name: 'Austria',         lonRange: [9.5, 17.5],  latRange: [46.5, 49] },
-  { name: 'United Kingdom',  lonRange: [-9, 2],      latRange: [50, 59] },
-  { name: 'France',          lonRange: [-5, 8.5],    latRange: [42, 51.5] },
-  { name: 'Italy',           lonRange: [6.5, 19],    latRange: [36, 47.5] },
-  { name: 'Denmark',         lonRange: [8, 15.5],    latRange: [54, 58] },
-  { name: 'Sweden',          lonRange: [11, 24],     latRange: [55, 69] },
-];
-
-export const visitedRegions = visitedGeo.map(r => ({
-  name: r.name,
-  colRange: [Math.floor(lonToCol(r.lonRange[0])), Math.ceil(lonToCol(r.lonRange[1]))],
-  rowRange: [Math.floor(latToRow(r.latRange[1])), Math.ceil(latToRow(r.latRange[0]))],
-}));
-
-// Generate dot path strings (2 paths for performance)
-export function generateDotPaths() {
-  const r = DOT_RADIUS;
-  let normalPath = '';
-  let visitedPath = '';
-
-  landRows.forEach((ranges, row) => {
-    ranges.forEach(([start, end]) => {
-      for (let col = start; col <= end; col++) {
-        const x = col * DOT_SPACING + DOT_OFFSET_X;
-        const y = row * DOT_SPACING + DOT_OFFSET_Y;
-        const isVisited = visitedRegions.some(
-          rv => col >= rv.colRange[0] && col <= rv.colRange[1] &&
-                row >= rv.rowRange[0] && row <= rv.rowRange[1]
-        );
-        const dot = `M${x-r},${y}a${r},${r} 0 1,0 ${r*2},0a${r},${r} 0 1,0 ${-r*2},0`;
-        if (isVisited) {
-          visitedPath += dot;
-        } else {
-          normalPath += dot;
-        }
-      }
-    });
-  });
-
-  return { normalPath, visitedPath };
-}

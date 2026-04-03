@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
-import { journeyPoints, getSeasonalHue } from '../../Utils/journeyData';
+import { journeyPoints, getSeasonalHue, getJourneyStats } from '../../Utils/journeyData';
 import {
   generateDotPaths,
   VIEWBOX_W, VIEWBOX_H
@@ -19,13 +19,16 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
   const svgRef = useRef(null);
   const [pathLength, setPathLength] = useState(0);
   const [pointLengths, setPointLengths] = useState([]);
+  const [segLengths, setSegLengths] = useState([]);
 
   const dotPaths = useMemo(() => generateDotPaths(), []);
+  const stats = useMemo(() => getJourneyStats(), []);
   const activeIdx = journeyPoints.findIndex(p => p.id === activePointId);
   const pointCoords = useMemo(() => journeyPoints.map(p => p.coordinates), []);
 
   const activeCoords = activeIdx >= 0 ? pointCoords[activeIdx] : null;
   const seasonalHue = activeIdx >= 0 ? getSeasonalHue(journeyPoints[activeIdx].month) : null;
+
 
   // Travel path connects all points in chronological order
   const travelPathD = useMemo(() => {
@@ -42,6 +45,24 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
     return d;
   }, [pointCoords]);
 
+  // Per-segment paths with seasonal colors
+  const segments = useMemo(() => {
+    if (pointCoords.length < 2) return [];
+    return journeyPoints.slice(1).map((point, i) => {
+      const prev = pointCoords[i];
+      const curr = pointCoords[i + 1];
+      const dx = curr.x - prev.x;
+      const cx = prev.x + dx * 0.5;
+      const cy = prev.y - Math.abs(dx) * 0.12;
+      const hue = getSeasonalHue(point.month);
+      return {
+        d: `M ${prev.x} ${prev.y} Q ${cx} ${cy}, ${curr.x} ${curr.y}`,
+        hue,
+        color: hue !== null ? `hsl(${hue}, 65%, 55%)` : null,
+      };
+    });
+  }, [pointCoords]);
+
   // Measure path lengths
   useEffect(() => {
     const svg = svgRef.current;
@@ -52,6 +73,7 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
     setPathLength(total);
 
     const lengths = [0];
+    const sLens = [];
     for (let i = 1; i < pointCoords.length; i++) {
       const prev = pointCoords[i - 1];
       const curr = pointCoords[i];
@@ -63,9 +85,11 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
       svg.appendChild(segPath);
       const segLen = segPath.getTotalLength();
       svg.removeChild(segPath);
+      sLens.push(segLen);
       lengths.push(lengths[i - 1] + segLen);
     }
     setPointLengths(lengths);
+    setSegLengths(sLens);
   }, [travelPathD, pointCoords]);
 
   // Path reveal offset — direct mapping from scroll progress
@@ -154,24 +178,49 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
         <path d={dotPaths.normalPath} className="journey-land-dot" />
         <path d={dotPaths.visitedPath} className="journey-land-dot visited" />
 
-        {/* Travel path — glow */}
-        {pathLength > 0 && (
-          <path
-            d={travelPathD}
-            className="journey-travel-path-glow"
-            filter="url(#pathGlow)"
-            style={{ strokeDasharray: pathLength, strokeDashoffset: pathOffset }}
-          />
-        )}
 
-        {/* Travel path — crisp */}
-        {pathLength > 0 && (
-          <path
-            d={travelPathD}
-            className="journey-travel-path"
-            style={{ strokeDasharray: pathLength, strokeDashoffset: pathOffset }}
-          />
-        )}
+        {/* Travel path — per-segment seasonal color */}
+        {segLengths.length > 0 && segments.map((seg, i) => {
+          const segLen = segLengths[i];
+          // How much of this segment is revealed
+          const n = pointLengths.length;
+          const floatIdx = scrollProgress * (n - 1);
+          // Segment i connects point i to point i+1
+          let revealFrac;
+          if (floatIdx >= i + 1) {
+            revealFrac = 1; // fully revealed
+          } else if (floatIdx <= i) {
+            revealFrac = 0; // hidden
+          } else {
+            revealFrac = floatIdx - i; // partial
+          }
+          const offset = segLen * (1 - revealFrac);
+          if (revealFrac === 0) return null;
+          const color = seg.color || 'var(--accent-primary)';
+          return (
+            <g key={i}>
+              <path
+                d={seg.d}
+                className="journey-travel-path-glow"
+                filter="url(#pathGlow)"
+                style={{
+                  strokeDasharray: segLen,
+                  strokeDashoffset: offset,
+                  stroke: color,
+                }}
+              />
+              <path
+                d={seg.d}
+                className="journey-travel-path"
+                style={{
+                  strokeDasharray: segLen,
+                  strokeDashoffset: offset,
+                  stroke: color,
+                }}
+              />
+            </g>
+          );
+        })}
 
         <path ref={pathRef} d={travelPathD} fill="none" stroke="none" />
 
@@ -206,6 +255,34 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
       </svg>
 
       <div className="journey-map-vignette" />
+
+      <div className="journey-legend">
+        <div className="journey-legend-stats">
+          <span className="journey-legend-stat">{stats.cities} cities</span>
+          <span className="journey-legend-sep">·</span>
+          <span className="journey-legend-stat">{stats.countries} countries</span>
+          <span className="journey-legend-sep">·</span>
+          <span className="journey-legend-stat">{stats.continents} continents</span>
+        </div>
+        <div className="journey-legend-seasons">
+          <span className="journey-legend-season">
+            <span className="journey-legend-swatch" style={{ background: 'hsl(210, 65%, 55%)' }} />
+            winter
+          </span>
+          <span className="journey-legend-season">
+            <span className="journey-legend-swatch" style={{ background: 'hsl(140, 65%, 55%)' }} />
+            spring
+          </span>
+          <span className="journey-legend-season">
+            <span className="journey-legend-swatch" style={{ background: 'hsl(35, 65%, 55%)' }} />
+            summer
+          </span>
+          <span className="journey-legend-season">
+            <span className="journey-legend-swatch" style={{ background: 'hsl(25, 65%, 55%)' }} />
+            autumn
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
