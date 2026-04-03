@@ -87,11 +87,11 @@ function ProjectsAndBlog() {
     const blogPosts = [
         {
             id: 4,
-            title: "Spaces: Collaborative AI Prototyping on Mistral",
+            title: "Spaces: A CLI Built for Humans and Agents",
             date: "March 2026",
             readTime: "4 min read",
             tags: ["AI", "Mistral"],
-            excerpt: "Spaces is a collaborative environment for building and sharing AI-powered apps using Mistral models. I wrote about how it works, what you can build, and why it matters for fast prototyping.",
+            excerpt: "Spaces is an internal platform tool that scaffolds projects, manages dev environments, and enables deployments. This post explores how designing a CLI to work with both human developers and AI agents led to better developer experience overall.",
             externalUrl: "https://mistral.ai/news/spaces",
             variant: "mistral"
         },
