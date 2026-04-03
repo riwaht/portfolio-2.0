@@ -3143,64 +3143,22 @@ html.page-view {
   opacity: 0.4;
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 768px) {
-  .journey-layout {
-    flex-direction: column;
-  }
-
-  .journey-map-panel {
-    position: relative;
-    top: 0;
-    height: 40vh;
-    min-height: 250px;
-  }
-
-  .journey-timeline-panel {
-    width: 100%;
-    max-height: none;
-    overflow-y: visible;
-    padding: 1.5rem 1rem;
-  }
-
-  .journey-scroll-spacer-top,
-  .journey-scroll-spacer-bottom {
-    height: 0;
-  }
-
-  .journey-map-vignette {
-    background: linear-gradient(
-      to bottom,
-      transparent 50%,
-      var(--bg-primary) 100%
-    );
-    opacity: 0.5;
-  }
-
-  .journey-progress-track {
-    display: none;
-  }
+/* ---- Mobile fallback ---- */
+.journey-mobile-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
 }
 
-@media (max-width: 480px) {
-  .journey-map-panel {
-    height: 35vh;
-    min-height: 200px;
-  }
-
-  .journey-timeline-panel {
-    padding: 1rem 0.75rem;
-  }
-
-  .journey-card-body {
-    padding: 0.85rem 1rem;
-  }
-
-  .journey-card-location {
-    font-size: 0.88rem;
-  }
-
-  .journey-card-desc {
-    font-size: 0.74rem;
-  }
+.journey-mobile-text {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  text-align: center;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
 }

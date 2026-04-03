@@ -6,6 +6,17 @@ import JourneyTimeline from './Journey/JourneyTimeline';
 import { journeyPoints } from '../Utils/journeyData';
 import '../styles.css';
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= breakpoint);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 function Journey() {
   const [activePointId, setActivePointId] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -13,8 +24,10 @@ function Journey() {
   const lastScrollTop = useRef(0);
   const entryRefs = useRef({});
   const timelinePanelRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const panel = timelinePanelRef.current;
     if (!panel) return;
     let ticking = false;
@@ -23,7 +36,6 @@ function Journey() {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        // Track scroll speed
         const delta = Math.abs(panel.scrollTop - lastScrollTop.current);
         lastScrollTop.current = panel.scrollTop;
         scrollSpeed.current = delta;
@@ -31,7 +43,6 @@ function Journey() {
         const panelRect = panel.getBoundingClientRect();
         const panelCenter = panelRect.top + panelRect.height / 2;
 
-        // Build array of { id, index, center distance }
         const entries = [];
         for (let i = 0; i < journeyPoints.length; i++) {
           const el = entryRefs.current[journeyPoints[i].id];
@@ -43,32 +54,24 @@ function Journey() {
 
         if (entries.length === 0) { ticking = false; return; }
 
-        // Find closest entry
         let closest = entries[0];
         for (const e of entries) {
           if (Math.abs(e.dist) < Math.abs(closest.dist)) closest = e;
         }
 
-        // Set active point
         if (Math.abs(closest.dist) < panelRect.height * 0.45) {
           setActivePointId(closest.id);
         } else {
           setActivePointId(null);
         }
 
-        // Calculate continuous progress (0 to 1)
-        // Base progress from the closest card's index
         const n = journeyPoints.length;
-        // Find which neighbor we're interpolating toward
         const baseProgress = closest.index / (n - 1);
 
-        // Interpolate: if scroll is between two cards, blend
         let neighbor = null;
         if (closest.dist > 0 && closest.index > 0) {
-          // Panel center is above the closest card center → blending with previous
           neighbor = entries.find(e => e.index === closest.index - 1);
         } else if (closest.dist < 0 && closest.index < n - 1) {
-          // Panel center is below → blending with next
           neighbor = entries.find(e => e.index === closest.index + 1);
         }
 
@@ -88,15 +91,15 @@ function Journey() {
     panel.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => panel.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isMobile]);
 
   const registerRef = useCallback((id, el) => {
     entryRefs.current[id] = el;
   }, []);
 
-  // Forward wheel events from the map panel to the timeline panel
   const mapPanelRef = useRef(null);
   useEffect(() => {
+    if (isMobile) return;
     const mapPanel = mapPanelRef.current;
     if (!mapPanel) return;
     const handler = (e) => {
@@ -108,7 +111,21 @@ function Journey() {
     };
     mapPanel.addEventListener('wheel', handler, { passive: false });
     return () => mapPanel.removeEventListener('wheel', handler);
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <div className="page-container">
+        <Navbar />
+        <div className="journey-mobile-fallback">
+          <p className="journey-mobile-text">
+            better to see it on your laptop for now
+          </p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
