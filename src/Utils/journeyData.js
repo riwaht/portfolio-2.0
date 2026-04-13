@@ -432,13 +432,37 @@ export const journeyPoints = [
     country: 'France',
     geo: { lon: 2.35, lat: 48.9 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
-    dateRange: 'Feb 2026 — Present',
+    dateRange: 'Feb 2026',
     month: 2,
-    type: 'current',
+    type: 'work',
     description: 'Now based in Paris, building the future of AI at Mistral AI. Croissants for breakfast, code all day, Seine walks at sunset.',
     professional: [
       { role: 'Software Engineer', company: 'Mistral AI' }
     ],
+  },
+  {
+    id: 'london-apr-2026',
+    city: 'London',
+    country: 'United Kingdom',
+    geo: { lon: -0.1, lat: 51.5 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Apr 2026',
+    month: 4,
+    type: 'travel',
+    description: 'A quick trip to see family and experience London again. Loved it. Bought some really cool vinyls and Hirono merch.',
+    professional: null,
+  },
+  {
+    id: 'paris-apr-2026',
+    city: 'Paris',
+    country: 'France',
+    geo: { lon: 2.35, lat: 48.9 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Apr 2026 — Present',
+    month: 4,
+    type: 'current',
+    description: 'Back in Paris. Building, exploring, living.',
+    professional: null,
   }
 ];
 
