@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DarkModeToggle from './DarkModeToggle';
 import '../styles.css';
 
+const normalizePath = (path) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
+
 function Navbar({ onNavigationAttempt }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const currentPath = typeof window !== 'undefined' ? window.currentPath : '/';
+    // Start empty so SSR and first client render agree (no hydration mismatch),
+    // then resolve the real path on mount so the active link is correct.
+    const [currentPath, setCurrentPath] = useState('');
+
+    useEffect(() => {
+        setCurrentPath(normalizePath(window.location.pathname));
+    }, []);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
