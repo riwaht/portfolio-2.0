@@ -9,6 +9,27 @@ const images = [
     '/Images/RandomImage.png',
 ];
 
+const BoxCollider = ({ position, color, onClick, size = [0.5, 0.5, 0.5] }) => (
+    <mesh
+        position={position}
+        onClick={(e) => {
+            e.stopPropagation();
+            onClick(e);
+        }}
+        onPointerOver={(e) => {
+            e.stopPropagation();
+            document.body.style.cursor = 'pointer';
+        }}
+        onPointerOut={(e) => {
+            e.stopPropagation();
+            document.body.style.cursor = 'auto';
+        }}
+    >
+        <boxGeometry args={size} />
+        <meshStandardMaterial color={color} transparent opacity={0}/>
+    </mesh>
+);
+
 // Use forwardRef to properly assign the ref
 const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, currentStep, ...props }, ref) => {
     // Use useGLTF with draco loader
@@ -108,13 +129,13 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             // Detect if device is mobile/tablet for better PC zoom positioning
             const isMobile = window.innerWidth <= 768;
             const isSmallMobile = window.innerWidth <= 480;
-            
+
             if (isSmallMobile) {
                 // Much further back for small mobile screens to show both folders
                 camera.position.lerp(new THREE.Vector3(18, 16, -5), 0.1);
                 camera.lookAt(new THREE.Vector3(14, 13, 0));
             } else if (isMobile) {
-                // Moderate zoom for tablets to show folders better  
+                // Moderate zoom for tablets to show folders better
                 camera.position.lerp(new THREE.Vector3(16, 15, -6), 0.1);
                 camera.lookAt(new THREE.Vector3(14, 13, 0));
             } else {
@@ -129,23 +150,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
         }
     });
 
-    const BoxCollider = ({ position, color, onClick, size = [0.5, 0.5, 0.5] }) => (
-        <mesh 
-            position={position} 
-            onClick={onClick}
-            onPointerOver={(e) => {
-                e.stopPropagation();
-                document.body.style.cursor = 'pointer';
-            }}
-            onPointerOut={(e) => {
-                e.stopPropagation();
-                document.body.style.cursor = 'auto';
-            }}
-        >
-            <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={0}/>
-        </mesh>
-    );
     const folderBoxes = [
         { show: showFolderBoxes, position: [17, 14.7, -4], color: "red", onClick: () => handleImageClick('important') },
         { show: showFolderBoxes, position: [17, 14, -4], color: "blue", onClick: () => handleImageClick('random') },

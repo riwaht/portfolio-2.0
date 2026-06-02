@@ -34,9 +34,11 @@ function House() {
     const [isWalkthroughActive, setIsWalkthroughActive] = useState(!walkthroughCompleted);
     const [pcZoomed, setPcZoomed] = useState(false);
     const [highlightedMesh, setHighlightedMesh] = useState(null);
+    const [showScrollHint, setShowScrollHint] = useState(false);
 
     const exitWalkthrough = () => {
         setIsWalkthroughActive(false);
+        setShowScrollHint(true);
         // Mark walkthrough as completed so user can skip it next time
         sessionStorage.setItem('house-walkthrough-completed', 'true');
     };
@@ -234,17 +236,18 @@ function House() {
                     />
                 )}
                 {pcZoomed && (
-                    <button
-                        onClick={handleBackClick}
-                        style={{
-                            position: 'absolute',
-                            top: '10px',
-                            right: '10px',
-                            zIndex: 1000,
-                        }}
-                    >
-                        Back
+                    <button className="pc-back-btn" onClick={handleBackClick}>
+                        <i className="fas fa-arrow-left"></i> Back
                     </button>
+                )}
+                {showScrollHint && (
+                    <div
+                        className="scroll-hint"
+                        onAnimationEnd={() => setShowScrollHint(false)}
+                    >
+                        <i className="fas fa-computer-mouse"></i>
+                        Scroll to look around
+                    </div>
                 )}
             </Suspense>
             
