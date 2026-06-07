@@ -3,7 +3,6 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { interactableByMesh } from '../Utils/interactables';
-import Hotspots from './Hotspots';
 
 const images = [
     '/Images/MainScreen.png',
@@ -321,7 +320,6 @@ const Model = forwardRef(({ onLoad, focusTarget, setFocusTarget, onHoverChange, 
                         ))}
                         <mesh geometry={nodes.Mesh1_GRANITE_0.geometry} material={materials.GRANITE} receiveShadow />
                         <mesh geometry={nodes.Mesh1_GRANITE_0_1.geometry} material={materials['GRANITE.001']} receiveShadow />
-                        <Hotspots scene={scene} onSelect={focusInteractable} visible={!focusTarget} />
                     </group>
                 </primitive>
             }

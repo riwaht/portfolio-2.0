@@ -128,10 +128,10 @@
   opacity: 0;
 }
 
-/* Expandable progress bar — smooth collapse */
+/* Expandable progress bar + hints — smooth collapse */
 .media-expandable {
   width: 100%;
-  max-height: 60px;
+  max-height: 140px;
   opacity: 1;
   overflow: hidden;
   margin-top: 8px;
@@ -144,6 +144,33 @@
   max-height: 0;
   opacity: 0;
   margin-top: 0;
+}
+
+/* Discovery hints, shown inside the player */
+.media-hints {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.media-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Satoshi", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.media-hint-icon {
+  width: 13px;
+  color: var(--accent-primary);
+  flex-shrink: 0;
 }
 
 /* Progress bar row */
