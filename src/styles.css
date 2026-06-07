@@ -96,6 +96,112 @@ html.house-page {
   margin-top: 15px; /* Add space above the buttons */
 }
 
+/* --- Free-roam interactive house: hotspot markers, info card, back button --- */
+
+/* Glowing dot marker floating on each interactive object */
+.house-hotspot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: "Satoshi", sans-serif;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.house-hotspot-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+  animation: house-hotspot-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.house-hotspot-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--accent-primary);
+  border-radius: 999px;
+  padding: 3px 10px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.house-hotspot:hover .house-hotspot-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.house-hotspot:hover .house-hotspot-dot {
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-primary) 45%, transparent);
+}
+
+@keyframes house-hotspot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+  }
+  50% {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 9px color-mix(in srgb, var(--accent-primary) 0%, transparent);
+  }
+}
+
+/* Info card shown when a hotspot is focused */
+.house-infocard {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  max-width: 420px;
+  width: min(90vw, 420px);
+  z-index: 1100;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.house-infocard-title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.house-infocard-desc {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.house-infocard .navigation-buttons {
+  justify-content: center;
+}
+
+.house-infocard .navigation-buttons button {
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+/* Back button to exit a focused view (used by the PC) */
+.house-back-button {
+  position: absolute;
+  top: 80px;
+  right: 16px;
+  z-index: 1100;
+  min-width: 90px;
+  flex: 0 0 auto;
+}
+
 button {
   background-color: var(--accent-primary);
   color: var(--card-bg);

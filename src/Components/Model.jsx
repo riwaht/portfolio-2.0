@@ -2,6 +2,8 @@ import React, { forwardRef, useEffect, useMemo, useState, useRef, useCallback } 
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useThree, useFrame } from '@react-three/fiber';
+import { interactableByMesh } from '../Utils/interactables';
+import Hotspots from './Hotspots';
 
 const images = [
     '/Images/MainScreen.png',
@@ -9,8 +11,19 @@ const images = [
     '/Images/RandomImage.png',
 ];
 
+// Reused vectors so the camera useFrame doesn't allocate every frame.
+const _camPos = new THREE.Vector3();
+const _camLook = new THREE.Vector3();
+
+const pickResponsive = (focusResponsive) => {
+    const w = window.innerWidth;
+    if (w <= 480) return focusResponsive.small;
+    if (w <= 768) return focusResponsive.mobile;
+    return focusResponsive.desktop;
+};
+
 // Use forwardRef to properly assign the ref
-const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, currentStep, ...props }, ref) => {
+const Model = forwardRef(({ onLoad, focusTarget, setFocusTarget, onHoverChange, ...props }, ref) => {
     // Use useGLTF with draco loader
     const { nodes, materials, scene } = useGLTF('/Models/house-transformed.glb', true, '/draco-gltf/');
     const receiveOnlyMeshes = ['Floor001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'GardenWall', 'WhiteWalls', 'Cube072', 'Cube072_1'];
@@ -19,30 +32,79 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     const [showImportantBoxes, setShowImportantBoxes] = useState(false);
     const [showRandomBoxes, setShowRandomBoxes] = useState(false);
     const [imageIndex, setImageIndex] = React.useState(0);
-    const { camera, gl } = useThree();
+    const { camera } = useThree();
     const [fridgeOpen, setFridgeOpen] = useState(false);
     const [doorRotation, setDoorRotation] = useState(0);
     const [doorPosition, setDoorPosition] = useState(0);
-    const currentKitchenSteps = [1, 2, 3, 4];
-    const currentBedroomSteps = [13, 14, 15, 16, 17, 18, 19];
+    const hoveredIdRef = useRef(null);
     const hiddenObjects = ['defaultMaterial', 'defaultMaterial001', 'Mesh1_GRANITE_0', 'Mesh1_GRANITE_0_1', 'WhiteWalls', 'GardenWall', 'Floor001'];
 
-    const handleFridgeClick = useCallback(() => {
-        if ((isWalkthroughActive && !currentKitchenSteps.includes(currentStep)) || (!isWalkthroughActive && pcZoomed)) {
-            return;
-        }
+    // Resolve an interactable's mesh names into live scene objects (for the outline).
+    const resolveMeshes = useCallback((item) => {
+        if (!scene) return [];
+        return item.meshNames
+            .map((name) => scene.getObjectByName(name))
+            .filter(Boolean);
+    }, [scene]);
 
-        setFridgeOpen((prev) => !prev);
-        if (isWalkthroughActive) {
-            // set timeout for 2 seconds to allow the walkthrough to finish
-            setTimeout(() => {
-                completeEvent('clickFridge', 2);
-                setFridgeOpen(false);
+    // Focus a hotspot: drive the camera + run any special behavior.
+    const focusInteractable = useCallback((item) => {
+        setFocusTarget(item);
+        if (item.action === 'fridge') {
+            setFridgeOpen(true);
+        }
+        if (item.action === 'pc') {
+            if (!showImportantBoxes && !showRandomBoxes) {
+                setShowFolderBoxes(true);
             }
-                , 2000);
         }
-    }, [completeEvent, isWalkthroughActive]);
+    }, [setFocusTarget, showImportantBoxes, showRandomBoxes]);
 
+    // Reset transient object state whenever focus is cleared.
+    useEffect(() => {
+        if (!focusTarget) {
+            setShowFolderBoxes(false);
+            setShowImportantBoxes(false);
+            setShowRandomBoxes(false);
+            setImageIndex(0);
+            setFridgeOpen(false);
+        }
+    }, [focusTarget]);
+
+    // --- Hover / click dispatcher on the whole model (raycast by mesh name) ---
+    const handlePointerMove = useCallback((e) => {
+        if (focusTarget) return; // no hover highlight while focused
+        const item = interactableByMesh[e.object.name];
+        if (item) {
+            e.stopPropagation();
+            if (hoveredIdRef.current !== item.id) {
+                hoveredIdRef.current = item.id;
+                document.body.style.cursor = 'pointer';
+                onHoverChange(resolveMeshes(item));
+            }
+        } else if (hoveredIdRef.current) {
+            hoveredIdRef.current = null;
+            document.body.style.cursor = 'auto';
+            onHoverChange(null);
+        }
+    }, [focusTarget, onHoverChange, resolveMeshes]);
+
+    const handlePointerOut = useCallback(() => {
+        if (hoveredIdRef.current) {
+            hoveredIdRef.current = null;
+            document.body.style.cursor = 'auto';
+            onHoverChange(null);
+        }
+    }, [onHoverChange]);
+
+    const handlePrimitiveClick = useCallback((e) => {
+        const item = interactableByMesh[e.object.name];
+        if (!item) return;
+        e.stopPropagation();
+        focusInteractable(item);
+    }, [focusInteractable]);
+
+    // Fridge door open/close animation.
     useFrame(() => {
         const targetRotation = fridgeOpen ? Math.PI / 2 : 0;
         setDoorRotation((prev) => THREE.MathUtils.lerp(prev, targetRotation, 0.1));
@@ -65,10 +127,9 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             );
             return texture;
         });
-    }, [images]);
+    }, []);
 
     const handleLinkedinClick = () => {
-        completeEvent('clickLinkedin', 17);
         window.open('https://www.linkedin.com/in/riwa-hoteit-7236b6204/', '_blank');
     };
 
@@ -88,50 +149,27 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
         window.open('/PC Documents/Blender Portfolio.pdf', '_blank');
     };
 
-    const handleScreenClick = useCallback(() => {
-        if (isWalkthroughActive && !currentBedroomSteps.includes(currentStep)) {
-            return;
-        }
-        
-        completeEvent('clickPC', 15);
-        if (!showImportantBoxes && !showRandomBoxes) {
-            setShowFolderBoxes(true);
-        }
-
-        if (!isWalkthroughActive && camera) {
-            setPcZoomed(true);
-        }
-    }, [completeEvent, isWalkthroughActive, pcZoomed, setPcZoomed, showImportantBoxes, showRandomBoxes, camera]);
-
+    // Camera: lerp to the focused hotspot (PC uses responsive framing), else the
+    // default free-roam overview.
     useFrame(() => {
-        if (pcZoomed) {
-            // Detect if device is mobile/tablet for better PC zoom positioning
-            const isMobile = window.innerWidth <= 768;
-            const isSmallMobile = window.innerWidth <= 480;
-            
-            if (isSmallMobile) {
-                // Much further back for small mobile screens to show both folders
-                camera.position.lerp(new THREE.Vector3(18, 16, -5), 0.1);
-                camera.lookAt(new THREE.Vector3(14, 13, 0));
-            } else if (isMobile) {
-                // Moderate zoom for tablets to show folders better  
-                camera.position.lerp(new THREE.Vector3(16, 15, -6), 0.1);
-                camera.lookAt(new THREE.Vector3(14, 13, 0));
-            } else {
-                // Original close zoom for desktop
-                camera.position.lerp(new THREE.Vector3(15, 14, -7), 0.1);
-                camera.lookAt(new THREE.Vector3(14, 13, 0));
+        if (focusTarget) {
+            let { position, lookAt } = focusTarget.focus;
+            if (focusTarget.action === 'pc' && focusTarget.focusResponsive) {
+                const r = pickResponsive(focusTarget.focusResponsive);
+                position = r.position;
+                lookAt = r.lookAt;
             }
+            camera.position.lerp(_camPos.set(position[0], position[1], position[2]), 0.1);
+            camera.lookAt(_camLook.set(lookAt[0], lookAt[1], lookAt[2]));
         } else {
-            // Moved camera further back for better visibility on MacBook screens
-            camera.position.lerp(new THREE.Vector3(50, 35, -40), 0.1);
-            camera.lookAt(new THREE.Vector3(0, 0, 0));
+            camera.position.lerp(_camPos.set(50, 35, -40), 0.1);
+            camera.lookAt(_camLook.set(0, 0, 0));
         }
     });
 
     const BoxCollider = ({ position, color, onClick, size = [0.5, 0.5, 0.5] }) => (
-        <mesh 
-            position={position} 
+        <mesh
+            position={position}
             onClick={onClick}
             onPointerOver={(e) => {
                 e.stopPropagation();
@@ -143,7 +181,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             }}
         >
             <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={0}/>
+            <meshStandardMaterial color={color} transparent opacity={0} />
         </mesh>
     );
     const folderBoxes = [
@@ -177,7 +215,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
         switch (type) {
             case 'important':
                 setImageIndex(1);
-                completeEvent('clickFolder', 16);
                 setShowImportantBoxes(true);
                 setShowRandomBoxes(false);
                 setShowFolderBoxes(false);
@@ -190,7 +227,6 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                 break;
             case 'exit':
                 setImageIndex(0);
-                completeEvent('clickX', 18);
                 setShowFolderBoxes(true);
                 setShowImportantBoxes(false);
                 setShowRandomBoxes(false);
@@ -198,7 +234,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
             default:
                 console.warn('Unknown image type:', type);
         }
-    }, [completeEvent]);
+    }, []);
 
 
     useEffect(() => {
@@ -213,7 +249,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
         if (showImportantBoxes || showRandomBoxes) {
             setShowFolderBoxes(false);
         }
-    }, [imageIndex, materials, textures]);
+    }, [imageIndex, materials, textures, showImportantBoxes, showRandomBoxes]);
 
     // Loop over nodes and apply shadow settings based on object name
     useMemo(() => {
@@ -240,13 +276,20 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
     return (
         <>
             {!onLoad ? null :
-                <primitive object={scene} dispose={null} ref={ref} {...props}>
+                <primitive
+                    object={scene}
+                    dispose={null}
+                    ref={ref}
+                    onPointerMove={handlePointerMove}
+                    onPointerOut={handlePointerOut}
+                    onClick={handlePrimitiveClick}
+                    {...props}
+                >
                     <group {...props} dispose={null}>
                         <mesh
                             name="FridgeDoor"
                             geometry={nodes.defaultMaterial.geometry}
                             material={materials.Frige_Door}
-                            onClick={handleFridgeClick}
                             position={[26.006 + doorPosition, 9.21, 8.651]}
                             rotation={[0, doorRotation, 0]}
                         />
@@ -259,8 +302,8 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         <mesh geometry={nodes.WhiteWalls.geometry} material={materials.PaletteMaterial001} receiveShadow />
                         <mesh geometry={nodes.GardenWall.geometry} material={nodes.GardenWall.material} receiveShadow />
                         <mesh geometry={nodes.Floor001.geometry} material={materials.Parquet} receiveShadow />
-                        <mesh geometry={nodes.Screen2.geometry} material={materials['Screen.002']} onClick={handleScreenClick} />
-                        <mesh geometry={nodes.Screen.geometry} material={materials['Screen.001']} onClick={handleScreenClick} />
+                        <mesh name="Screen2" geometry={nodes.Screen2.geometry} material={materials['Screen.002']} />
+                        <mesh name="Screen" geometry={nodes.Screen.geometry} material={materials['Screen.001']} />
                         {folderBoxes.map((box, index) => (
                             box.show && (
                                 <BoxCollider
@@ -274,6 +317,7 @@ const Model = forwardRef(({ onLoad, isTransitioning, completeEvent, isWalkthroug
                         ))}
                         <mesh geometry={nodes.Mesh1_GRANITE_0.geometry} material={materials.GRANITE} receiveShadow />
                         <mesh geometry={nodes.Mesh1_GRANITE_0_1.geometry} material={materials['GRANITE.001']} receiveShadow />
+                        <Hotspots scene={scene} onSelect={focusInteractable} visible={!focusTarget} />
                     </group>
                 </primitive>
             }

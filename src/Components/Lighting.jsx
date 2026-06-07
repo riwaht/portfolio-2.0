@@ -1,35 +1,22 @@
-import React, { useRef } from 'react';
-import { Environment, useHelper } from '@react-three/drei';
-import { DirectionalLightHelper, PointLightHelper, HemisphereLight } from 'three';
+import React from 'react';
 
+// Free-roam lighting. The whole house is visible at once now (no room-by-room
+// walkthrough), so this lights every quadrant brightly instead of one room.
+// three r164 uses physically-correct lights, hence the high point-light values.
 function Lighting() {
-    const pointLightRef = useRef();
-    const dirLightRef = useRef();
-
-    // Use helper to visualize the lights in the scene
-    useHelper(dirLightRef, DirectionalLightHelper, 1);
-    useHelper(pointLightRef, PointLightHelper, 1);
-
     return (
         <>
-            {/* Point light (simulating light bulb) */}
-            <pointLight
-                color={0x800020}
-                castShadow
-                intensity={300}
-                position={[27, 22, -20]}
-            />
+            <ambientLight intensity={0.8} />
+            <hemisphereLight args={[0xffffff, 0x444466, 1.0]} />
 
-            <pointLight
-                castShadow
-                intensity={300}
-                position={[27, 22, -20]}
-            />
+            {/* General sun-like fill */}
+            <directionalLight intensity={1.4} position={[40, 70, 40]} castShadow />
 
-            {/* Hemisphere light using the <hemisphereLight> JSX syntax */}
-            <hemisphereLight
-                args={[0xffffbb, 0x080820, 0.7]}
-            />
+            {/* One bright bulb above each room quadrant */}
+            <pointLight intensity={1600} position={[25, 28, 25]} castShadow />
+            <pointLight intensity={1600} position={[-25, 28, 25]} />
+            <pointLight intensity={1600} position={[-22, 32, -22]} />
+            <pointLight intensity={1600} position={[25, 28, -25]} />
         </>
     );
 }
