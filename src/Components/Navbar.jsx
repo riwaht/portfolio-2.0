@@ -26,7 +26,7 @@ function Navbar({ onNavigationAttempt }) {
         { path: '/', label: '< about />' },
         { path: '/projects', label: '< work />' },
         { path: '/journey', label: '< journey />' },
-        { path: '/house', label: '< experience />' }
+        { path: '/house', label: '< experience />', wip: true }
     ];
 
     const handleNavClick = (e, path) => {
@@ -80,6 +80,7 @@ function Navbar({ onNavigationAttempt }) {
                                     className={`nav-link nav-link-button ${currentPath === item.path ? 'active' : ''}`}
                                 >
                                     {item.label}
+                                    {item.wip && <span className="wip-badge">WIP</span>}
                                 </button>
                             </li>
                         ))}
@@ -101,6 +102,7 @@ function Navbar({ onNavigationAttempt }) {
                                 className={`mobile-nav-link ${currentPath === item.path ? 'active' : ''}`}
                             >
                                 {item.label}
+                                {item.wip && <span className="wip-badge">WIP</span>}
                             </button>
                         </li>
                     ))}

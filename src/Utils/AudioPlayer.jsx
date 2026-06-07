@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBackward, faPlay, faPause, faForward } from "@fortawesome/free-solid-svg-icons";
+import { faBackward, faPlay, faPause, faForward, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "../AudioPlayer.css";
 
 // Forward the ref to the component
@@ -8,6 +8,7 @@ const AudioPlayer = React.forwardRef((props, ref) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [minimized, setMinimized] = useState(false);
 
     // Using the forwarded ref instead of the local useRef
     const audioRef = ref || useRef(null);
@@ -58,45 +59,39 @@ const AudioPlayer = React.forwardRef((props, ref) => {
     };
 
     return (
-        <div className="media-controls">
-            <div className="media-buttons">
-                {/* Each button and text wrapped in a container */}
-                <div className="media-button-container">
-                    <button className="rewind-button media-button" onClick={handleRewindButton}>
-                        <FontAwesomeIcon icon={faBackward} className="button-icons" />
-                    </button>
-                    <span className="button-text">Rewind</span>
-                </div>
+        <div className={`media-controls${minimized ? ' media-controls-minimized' : ''}`}>
+            <button className="media-minimize-btn" onClick={() => setMinimized(!minimized)} aria-label={minimized ? 'Expand player' : 'Minimize player'}>
+                <FontAwesomeIcon icon={minimized ? faPlus : faMinus} />
+            </button>
 
-                <div className="media-button-container">
-                    <button className="play-button media-button" onClick={togglePlayPause}>
-                        <FontAwesomeIcon
-                            icon={isPlaying ? faPause : faPlay}
-                            className={`button-icons ${isPlaying ? "delta" : ""}`}
-                        />
-                    </button>
-                    <span className="button-text">{isPlaying ? "Pause" : "Play"}</span>
-                </div>
-
-                <div className="media-button-container">
-                    <button className="fast-forward-button media-button" onClick={handleForwardButton}>
-                        <FontAwesomeIcon icon={faForward} className="button-icons" />
-                    </button>
-                    <span className="button-text">Forward</span>
-                </div>
+            <div className="media-transport">
+                <button className="rewind-button media-button media-collapsible" onClick={handleRewindButton} aria-label="Rewind 5 seconds">
+                    <FontAwesomeIcon icon={faBackward} className="button-icons" />
+                </button>
+                <button className="play-button media-button" onClick={togglePlayPause}>
+                    <FontAwesomeIcon
+                        icon={isPlaying ? faPause : faPlay}
+                        className={`button-icons ${isPlaying ? "delta" : ""}`}
+                    />
+                </button>
+                <button className="fast-forward-button media-button media-collapsible" onClick={handleForwardButton} aria-label="Forward 5 seconds">
+                    <FontAwesomeIcon icon={faForward} className="button-icons" />
+                </button>
             </div>
 
-            <div className="media-progress">
-                <div className="progress-time-current">{formatTime(currentTime)}</div>
-                <div className="progress-bar-wrapper" onClick={handleProgressBarClick}>
-                    <div
-                        className="progress-bar"
-                        style={{
-                            width: `${(currentTime / duration) * 100}%`,
-                        }}
-                    ></div>
+            <div className="media-expandable">
+                <div className="media-progress">
+                    <div className="progress-time-current">{formatTime(currentTime)}</div>
+                    <div className="progress-bar-wrapper" onClick={handleProgressBarClick}>
+                        <div
+                            className="progress-bar"
+                            style={{
+                                width: `${(currentTime / duration) * 100}%`,
+                            }}
+                        ></div>
+                    </div>
+                    <div className="progress-time-total">{formatTime(duration)}</div>
                 </div>
-                <div className="progress-time-total">{formatTime(duration)}</div>
             </div>
 
             <audio

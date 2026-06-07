@@ -24,9 +24,14 @@ function House() {
     const [focusTarget, setFocusTarget] = useState(null);
     // Meshes to outline on hover (set from Model's pointer dispatcher).
     const [hoveredMeshes, setHoveredMeshes] = useState(null);
+    // One-time "scroll to look around" hint shown on entry.
+    const [showScrollHint, setShowScrollHint] = useState(false);
 
     const handleModelLoad = () => setIsLoading(false);
-    const handleStart = () => setIsStarted(true);
+    const handleStart = () => {
+        setIsStarted(true);
+        setShowScrollHint(true);
+    };
     const clearFocus = useCallback(() => setFocusTarget(null), []);
 
     // Add house-page class to body for overflow control
@@ -83,13 +88,19 @@ function House() {
                 )}
 
                 {/* The PC uses its own on-screen UI, so just offer a way back out */}
-                {isStarted && focusTarget && (
-                    <button
-                        className="house-back-button"
-                        onClick={clearFocus}
-                    >
-                        Back
+                {isStarted && focusTarget && focusTarget.action === 'pc' && (
+                    <button className="pc-back-btn" onClick={clearFocus}>
+                        <i className="fas fa-arrow-left"></i> Back
                     </button>
+                )}
+                {showScrollHint && (
+                    <div
+                        className="scroll-hint"
+                        onAnimationEnd={() => setShowScrollHint(false)}
+                    >
+                        <i className="fas fa-computer-mouse"></i>
+                        Scroll to look around
+                    </div>
                 )}
             </Suspense>
 

@@ -22,6 +22,27 @@ const pickResponsive = (focusResponsive) => {
     return focusResponsive.desktop;
 };
 
+const BoxCollider = ({ position, color, onClick, size = [0.5, 0.5, 0.5] }) => (
+    <mesh
+        position={position}
+        onClick={(e) => {
+            e.stopPropagation();
+            onClick(e);
+        }}
+        onPointerOver={(e) => {
+            e.stopPropagation();
+            document.body.style.cursor = 'pointer';
+        }}
+        onPointerOut={(e) => {
+            e.stopPropagation();
+            document.body.style.cursor = 'auto';
+        }}
+    >
+        <boxGeometry args={size} />
+        <meshStandardMaterial color={color} transparent opacity={0} />
+    </mesh>
+);
+
 // Use forwardRef to properly assign the ref
 const Model = forwardRef(({ onLoad, focusTarget, setFocusTarget, onHoverChange, ...props }, ref) => {
     // Use useGLTF with draco loader
@@ -167,23 +188,6 @@ const Model = forwardRef(({ onLoad, focusTarget, setFocusTarget, onHoverChange, 
         }
     });
 
-    const BoxCollider = ({ position, color, onClick, size = [0.5, 0.5, 0.5] }) => (
-        <mesh
-            position={position}
-            onClick={onClick}
-            onPointerOver={(e) => {
-                e.stopPropagation();
-                document.body.style.cursor = 'pointer';
-            }}
-            onPointerOut={(e) => {
-                e.stopPropagation();
-                document.body.style.cursor = 'auto';
-            }}
-        >
-            <boxGeometry args={size} />
-            <meshStandardMaterial color={color} transparent opacity={0} />
-        </mesh>
-    );
     const folderBoxes = [
         { show: showFolderBoxes, position: [17, 14.7, -4], color: "red", onClick: () => handleImageClick('important') },
         { show: showFolderBoxes, position: [17, 14, -4], color: "blue", onClick: () => handleImageClick('random') },

@@ -1,228 +1,243 @@
 .media-controls {
+  position: absolute;
+  top: 90px;
+  left: 20px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  box-shadow: 0 8px 30px var(--border-color);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px var(--border-color);
+  padding: 14px 20px;
+  width: 220px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              border-radius 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.media-controls-minimized {
+  width: auto;
+  padding: 10px 14px;
+  border-radius: 24px;
+}
+
+/* Minimize / expand — top-right corner */
+.media-minimize-btn {
   position: absolute;
-  top: 90px; /* 70px navbar + 20px margin */
-  left: 20px;
-  z-index: 1100; /* Higher than navbar */
-  max-width: 350px;
-  transition: all 0.3s ease;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 10px;
+  padding: 2px 6px;
+  margin: 0;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+  flex: 0 0 auto;
+  z-index: 1;
 }
 
-.media-buttons {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 10px;
+.media-minimize-btn:hover {
+  color: var(--accent-primary);
 }
 
-.media-button-container {
+/* Transport row: rewind + play + forward */
+.media-transport {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 0 10px;
+  justify-content: center;
+  gap: 8px;
 }
 
+/* Shared button base — override global button styles */
 .media-button {
-  background-color: var(--border-color);
-  border: 1px solid var(--border-color);
+  background: none;
+  border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
-  width: 50px;
-  min-width: 50px;
-  min-height: 50px;
+  height: 36px;
+  width: 36px;
   padding: 0;
-  transition: all 0.3s ease;
+  margin: 0;
+  transition: all 0.2s ease;
   box-sizing: border-box;
   cursor: pointer;
-  flex-shrink: 0;
+  flex: 0 0 auto;
 }
 
 .media-button:hover {
-  background-color: var(--accent-primary);
-  border-color: var(--accent-primary);
+  background-color: var(--border-color);
 }
 
 .media-button:hover .button-icons {
-  color: var(--card-bg);
+  color: var(--accent-primary);
 }
 
 .button-icons {
-  color: var(--text-primary);
-  font-size: 24px;
-  transition: color 0.3s ease;
+  color: var(--text-secondary);
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+/* Play button — forced circle */
+.play-button {
+  background: var(--accent-primary);
+  height: 42px;
+  width: 42px;
+  min-width: 42px;
+  max-width: 42px;
+  flex: 0 0 42px;
 }
 
 .play-button .button-icons {
-  background: var(--accent-primary);
-  border-radius: 50%;
-  padding: 17px;
+  background: none;
+  border-radius: 0;
+  padding: 0;
   color: var(--card-bg);
-  box-shadow: 0 4px 8px var(--border-color);
-  transition: all 0.3s ease;
+  box-shadow: none;
+  font-size: 14px;
+  width: 14px;
+  transition: all 0.2s ease;
 }
 
 .play-button:hover {
-  background-color: transparent;
+  background-color: var(--text-primary);
 }
 
 .play-button:hover .button-icons {
-  background: var(--text-primary);
   color: var(--card-bg);
 }
 
-.button-text {
-  color: var(--text-secondary);
-  font-size: 12px;
-  margin-top: 5px;
-  transition: color 0.3s ease;
+/* Collapsible rewind/forward — animate out when minimized */
+.media-collapsible {
+  overflow: hidden;
+  opacity: 1;
+  max-width: 36px;
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.media-controls-minimized .media-collapsible {
+  max-width: 0;
+  opacity: 0;
+}
+
+/* Expandable progress bar — smooth collapse */
+.media-expandable {
+  width: 100%;
+  max-height: 60px;
+  opacity: 1;
+  overflow: hidden;
+  margin-top: 8px;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.media-controls-minimized .media-expandable {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+/* Progress bar row */
 .media-progress {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: 15px;
 }
 
 .progress-bar-wrapper {
   background-color: var(--border-color);
-  border-radius: 5px;
-  height: 6px;
+  border-radius: 3px;
+  height: 4px;
   flex-grow: 1;
-  margin: 0 10px;
+  margin: 0 8px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
 
 .progress-bar {
   background: var(--accent-primary);
   height: 100%;
-  width: 50%;
-  border-radius: 5px;
+  border-radius: 3px;
   transition: width 0.1s ease;
 }
 
 .progress-time-current,
 .progress-time-total {
-  font-size: 14px;
+  font-size: 11px;
   color: var(--text-secondary);
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
-.audio-player {
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-/* Mobile responsive audio player */
+/* Mobile responsive */
 @media (max-width: 768px) {
   .media-controls {
-    max-width: 280px;
+    width: 200px;
     padding: 12px 16px;
     top: 80px;
     left: 10px;
-    right: 10px;
-    width: auto;
-    transform: none;
   }
-  
+
   .media-button {
-    height: 40px;
-    width: 40px;
-    min-width: 40px;
-    min-height: 40px;
+    height: 32px;
+    width: 32px;
   }
-  
+
+  .play-button {
+    height: 38px;
+    width: 38px;
+    min-width: 38px;
+    max-width: 38px;
+    flex: 0 0 38px;
+  }
+
+  .media-collapsible {
+    max-width: 32px;
+  }
+
   .button-icons {
-    font-size: 18px;
-  }
-  
-  .play-button .button-icons {
-    padding: 12px;
-  }
-  
-  .button-text {
-    font-size: 10px;
-    margin-top: 4px;
-  }
-  
-  .media-button-container {
-    margin: 0 8px;
-  }
-  
-  .media-progress {
-    margin-top: 10px;
-  }
-  
-  .progress-time-current,
-  .progress-time-total {
-    font-size: 12px;
-  }
-  
-  .progress-bar-wrapper {
-    margin: 0 8px;
-    height: 4px;
+    font-size: 14px;
   }
 }
 
-/* Extra small mobile screens */
+/* Extra small screens */
 @media (max-width: 480px) {
   .media-controls {
-    max-width: 240px;
+    width: 180px;
     padding: 10px 12px;
     top: 70px;
     left: 5px;
-    right: 5px;
   }
-  
+
   .media-button {
-    height: 35px;
-    width: 35px;
-    min-width: 35px;
-    min-height: 35px;
+    height: 28px;
+    width: 28px;
   }
-  
+
+  .play-button {
+    height: 34px;
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    flex: 0 0 34px;
+  }
+
+  .media-collapsible {
+    max-width: 28px;
+  }
+
   .button-icons {
-    font-size: 16px;
-  }
-  
-  .play-button .button-icons {
-    padding: 10px;
-  }
-  
-  .button-text {
-    font-size: 9px;
-    margin-top: 3px;
-  }
-  
-  .media-button-container {
-    margin: 0 6px;
-  }
-  
-  .media-progress {
-    margin-top: 8px;
-  }
-  
-  .progress-time-current,
-  .progress-time-total {
-    font-size: 11px;
-  }
-  
-  .progress-bar-wrapper {
-    margin: 0 6px;
-    height: 3px;
+    font-size: 12px;
   }
 }
