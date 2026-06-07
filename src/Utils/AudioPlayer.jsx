@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBackward, faPlay, faPause, faForward, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBackward, faPlay, faPause, faForward, faMinus, faPlus, faComputerMouse, faHandPointer } from "@fortawesome/free-solid-svg-icons";
 import "../AudioPlayer.css";
 
 // Forward the ref to the component
@@ -91,6 +91,17 @@ const AudioPlayer = React.forwardRef((props, ref) => {
                         ></div>
                     </div>
                     <div className="progress-time-total">{formatTime(duration)}</div>
+                </div>
+
+                <div className="media-hints">
+                    <span className="media-hint">
+                        <FontAwesomeIcon icon={faComputerMouse} className="media-hint-icon" />
+                        Scroll to look around
+                    </span>
+                    <span className="media-hint">
+                        <FontAwesomeIcon icon={faHandPointer} className="media-hint-icon" />
+                        Hover an object to interact
+                    </span>
                 </div>
             </div>
 

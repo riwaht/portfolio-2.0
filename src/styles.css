@@ -96,6 +96,43 @@ html.house-page {
   margin-top: 15px; /* Add space above the buttons */
 }
 
+/* --- Free-roam interactive house: info card, back button --- */
+
+/* Info card shown when a hotspot is focused */
+.house-infocard {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  max-width: 420px;
+  width: min(90vw, 420px);
+  z-index: 1100;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.house-infocard-title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.house-infocard-desc {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.house-infocard .navigation-buttons {
+  justify-content: center;
+}
+
+.house-infocard .navigation-buttons button {
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
 button {
   background-color: var(--accent-primary);
   color: var(--card-bg);
@@ -1727,35 +1764,6 @@ html.page-view {
   color: var(--card-bg);
   border-color: var(--accent-primary);
   transform: translateX(-3px);
-}
-
-.scroll-hint {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-family: "Satoshi", sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 15px var(--border-color);
-  z-index: 1100;
-  animation: scrollHintFade 4s ease forwards;
-  pointer-events: none;
-}
-
-@keyframes scrollHintFade {
-  0% { opacity: 0; transform: translateX(-50%) translateY(8px); }
-  15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  75% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
 }
 
 /* Mobile Menu Styles */

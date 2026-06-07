@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
-function ModelController({ modelRef, isWalkthroughActive, pcZoomed }) {
+function ModelController({ modelRef, focusTarget }) {
     const [targetRotationY, setTargetRotationY] = useState(0);
     const rotationSpeed = 0.1;
 
@@ -11,11 +11,19 @@ function ModelController({ modelRef, isWalkthroughActive, pcZoomed }) {
         }
     });
 
+    // When a hotspot is focused, return the house to its front (rotation 0) so the
+    // world-space focus framings line up with the object.
     useEffect(() => {
-        setTargetRotationY(0); // Reset rotation on load
+        if (focusTarget) {
+            setTargetRotationY(0);
+        }
+    }, [focusTarget]);
+
+    // Scroll wheel spins the whole house in free-roam (disabled while focused).
+    useEffect(() => {
         const handleScroll = (event) => {
-            if (!isWalkthroughActive && !pcZoomed) {
-                setTargetRotationY((prev) => prev + event.deltaY * 0.001); // Adjust sensitivity here
+            if (!focusTarget) {
+                setTargetRotationY((prev) => prev + event.deltaY * 0.001);
             }
         };
 
@@ -24,7 +32,7 @@ function ModelController({ modelRef, isWalkthroughActive, pcZoomed }) {
         return () => {
             window.removeEventListener('wheel', handleScroll);
         };
-    }, [isWalkthroughActive, pcZoomed]);
+    }, [focusTarget]);
 
     return null;
 }
