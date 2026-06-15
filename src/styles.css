@@ -3454,3 +3454,47 @@ html.page-view {
 
 /* mobile horizon */
 .journey-horizon-mobile { margin: 1rem 1rem 2rem; }
+
+/* ============================================================
+   Departure wash — full-screen palette sweep when a postcard
+   is opened, then navigation to the live trip page.
+   ============================================================ */
+.departure-wash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: washIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.departure-wash-alpine {
+  background: radial-gradient(circle at 50% 60%, #EFEDE6, #C56F66);
+}
+.departure-wash-sea {
+  background: radial-gradient(circle at 50% 60%, #114E5C, #0C3B45);
+}
+.departure-wash-label {
+  font-family: 'Satoshi', sans-serif;
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  animation: washLabel 0.7s ease forwards;
+}
+.departure-wash-alpine .departure-wash-label { color: #2C353C; }
+
+@keyframes washIn {
+  from { clip-path: circle(0% at 50% 60%); opacity: 0.6; }
+  to   { clip-path: circle(150% at 50% 60%); opacity: 1; }
+}
+@keyframes washLabel {
+  0%   { opacity: 0; transform: translateY(12px); }
+  45%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .departure-wash,
+  .departure-wash-label { animation: none; }
+}
