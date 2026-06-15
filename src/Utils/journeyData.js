@@ -534,6 +534,7 @@ export const journeyPoints = [
     startDate: '2026-07-23',
     endDate: '2026-07-27',
     theme: 'alpine',
+    mrz: 'P<ITADOLOMITES<<VALGARDENA<<<<<<<<<<<2307VCE<<4N',
   },
   {
     id: 'corfu-aug-2026',
@@ -557,6 +558,7 @@ export const journeyPoints = [
     startDate: '2026-08-05',
     endDate: '2026-08-09',
     theme: 'sea',
+    mrz: 'P<GRCCORFU<<DASSIA<<<<<<<<<<<<<<<0508CFU<<4N',
   }
 ];
 

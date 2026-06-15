@@ -2935,528 +2935,6 @@ html.page-view {
   100% { opacity: 0; r: 2; }
 }
 
-/* Sub-locations — staggered reveal */
-.journey-sub-item {
-  animation: subReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes subReveal {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.journey-sub-line {
-  stroke: var(--accent-primary);
-  stroke-width: 0.05;
-  stroke-dasharray: 0.2 0.1;
-  opacity: 0.3;
-}
-
-.journey-sub-dot {
-  fill: var(--accent-primary);
-  opacity: 0.55;
-}
-
-.journey-sub-label {
-  font-size: 0.85px;
-  fill: var(--text-primary);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  opacity: 0.65;
-  pointer-events: none;
-}
-
-/* ---- Timeline entries ---- */
-.journey-timeline {
-  position: relative;
-}
-
-/* Spacers — push first/last entry to panel center */
-.journey-scroll-spacer-top {
-  height: calc(50vh - 35px);
-}
-
-.journey-scroll-spacer-bottom {
-  height: calc(50vh - 35px);
-}
-
-/* Scroll entries */
-.journey-scroll-entry {
-  padding: 0.75rem 0 0.75rem 1rem;
-}
-
-/* ---- Cards — editorial style ---- */
-.journey-scroll-card {
-  display: flex;
-  overflow: hidden;
-  border-radius: 10px;
-  background: var(--card-bg);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-  opacity: 0.25;
-  transform: translateY(12px) scale(0.97);
-  transition:
-    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 0.4s ease;
-  width: 100%;
-}
-
-.journey-scroll-entry.active .journey-scroll-card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.journey-scroll-entry.past .journey-scroll-card {
-  opacity: 0.45;
-  transform: translateY(-4px) scale(0.98);
-}
-
-/* Accent bar — left edge color strip */
-.journey-card-accent {
-  width: 3px;
-  flex-shrink: 0;
-  background: var(--accent-primary);
-  opacity: 0.4;
-  transition: opacity 0.4s ease;
-}
-
-.journey-scroll-entry.active .journey-card-accent {
-  opacity: 1;
-}
-
-.journey-card-home .journey-card-accent {
-  background: var(--accent-secondary);
-}
-
-.journey-card-current .journey-card-accent {
-  background: var(--accent-primary);
-}
-
-.journey-card-work .journey-card-accent {
-  background: var(--accent-primary);
-}
-
-.journey-card-travel .journey-card-accent {
-  background: var(--text-secondary);
-}
-
-/* Card body */
-.journey-card-body {
-  padding: 1rem 1.15rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.journey-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.journey-card-date {
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.01em;
-}
-
-.journey-card-type {
-  font-family: var(--font-sans);
-  font-size: 0.55rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 800;
-  color: var(--accent-primary);
-  opacity: 0.7;
-}
-
-.journey-card-location {
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 0 0 0.3rem 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-/* Country name below city */
-.journey-card-country {
-  font-family: var(--font-sans);
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  display: block;
-  margin-top: -0.15rem;
-  margin-bottom: 0.3rem;
-}
-
-/* Country trip itinerary: City → City → City */
-.journey-card-itinerary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.15rem;
-  margin-bottom: 0.35rem;
-}
-
-.journey-card-itinerary-city {
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15rem;
-}
-
-.journey-card-itinerary-sep {
-  color: var(--accent-primary);
-  opacity: 0.5;
-  font-size: 0.6rem;
-}
-
-.journey-card-desc {
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.5;
-  opacity: 0.85;
-}
-
-/* Sub-location pills (legacy, kept for map compatibility) */
-.journey-card-subs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.5rem;
-}
-
-.journey-card-sub {
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-secondary);
-  padding: 0.12rem 0.45rem;
-  border-radius: 8px;
-  opacity: 0.8;
-}
-
-/* Professional badges */
-.journey-card-pros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.45rem;
-}
-
-.journey-card-pro {
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: var(--card-bg);
-  background: var(--accent-primary);
-  padding: 0.15rem 0.5rem;
-  border-radius: 8px;
-  letter-spacing: 0.01em;
-}
-
-.journey-card-home .journey-card-pro {
-  background: var(--accent-secondary);
-}
-
-/* Excursion cards — indented, subtler */
-.journey-scroll-entry.excursion {
-  padding-left: 1.5rem;
-}
-
-.journey-card-excursion {
-  border-left: 1px dashed var(--border-color);
-  border-radius: 0 10px 10px 0;
-}
-
-.journey-card-excursion .journey-card-accent {
-  display: none;
-}
-
-.journey-card-excursion-tag {
-  font-family: var(--font-sans);
-  font-size: 0.5rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  opacity: 0.5;
-  font-style: italic;
-}
-
-/* Mini stats footer */
-.journey-stats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 2rem 0 1rem;
-  opacity: 0.5;
-}
-
-.journey-stat {
-  font-family: var(--font-sans);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  letter-spacing: 0.03em;
-}
-
-.journey-stat-sep {
-  font-size: 0.5rem;
-  color: var(--text-secondary);
-  opacity: 0.4;
-}
-
-/* ---- Mobile fallback ---- */
-.journey-mobile-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  padding: 2rem;
-}
-
-.journey-mobile-text {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  opacity: 0.6;
-  text-align: center;
-  letter-spacing: 0.01em;
-  line-height: 1.6;
-}
-
-/* ============================================================
-   The Horizon — upcoming trips as a warm "Journeys" collection.
-   Its own warm identity (hub palette) so it reads in BOTH themes.
-   ============================================================ */
-.journey-horizon {
-  position: relative;
-  margin: 1.5rem 0 0;
-  padding: 2.25rem 1.25rem 1.5rem;
-  border-radius: 18px;
-  background: #F4F0E8;
-  border: 1px solid #DBD3C4;
-  color: #1E2A2E;
-  scroll-margin-top: 90px;
-}
-/* soft fade easing the timeline into the warm collection */
-.journey-horizon::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -48px;
-  height: 48px;
-  background: linear-gradient(to bottom, transparent, #F4F0E8);
-  pointer-events: none;
-}
-
-.horizon-eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-weight: 800;
-  color: #3C5A63;
-  margin-bottom: 0.85rem;
-}
-
-.horizon-mobile-title {
-  font-family: var(--font-sans);
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #1E2A2E;
-  margin: 0 0 0.25rem;
-}
-.horizon-dot { color: #CE6B5C; }
-
-/* departures board */
-.horizon-board {
-  background: #1E2A2E;
-  border-radius: 10px;
-  padding: 0.6rem 0.8rem;
-  margin-bottom: 1rem;
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-}
-.horizon-board-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 0.4rem;
-  margin-bottom: 0.45rem;
-}
-.horizon-board-title {
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: #F6AE2D;
-}
-.horizon-board-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #5FB6B6;
-  margin-left: auto;
-  box-shadow: 0 0 6px #5FB6B6;
-}
-.horizon-board-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.72rem;
-  color: #E7ECEB;
-  padding: 0.18rem 0;
-}
-.horizon-board-date { font-weight: 700; color: #fff; letter-spacing: 0.04em; }
-.horizon-board-dest { letter-spacing: 0.06em; text-transform: uppercase; }
-.horizon-board-code { color: #8B9794; font-size: 0.62rem; }
-.horizon-board-nights { color: #5FB6B6; font-size: 0.62rem; letter-spacing: 0.05em; }
-
-/* postcards */
-.horizon-postcards { display: flex; flex-direction: column; gap: 1rem; }
-.horizon-entry { scroll-margin-top: 90px; }
-
-.horizon-postcard {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  background: #fff;
-  border: 1px solid #E3DCCC;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.5);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-.horizon-postcard:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.55);
-  border-color: #C9BFAD;
-}
-
-.horizon-postcard-banner {
-  position: relative;
-  height: 96px;
-  display: flex;
-  align-items: flex-end;
-  padding: 0.6rem 0.75rem;
-}
-.horizon-banner-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.horizon-postcard-stamp {
-  position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
-  width: 18px;
-  height: 22px;
-  background: #FBF6EC;
-  border: 1.5px dashed #C9BFAA;
-  border-radius: 2px;
-}
-.horizon-postcard-place {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-sans);
-  font-size: 0.56rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 0.22rem 0.6rem;
-  border-radius: 999px;
-}
-
-.horizon-postcard-body { padding: 0.85rem 0.95rem 1rem; }
-.horizon-postcard-kind {
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #3C5A63;
-}
-.horizon-postcard-city {
-  font-family: var(--font-sans);
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #1E2A2E;
-  margin: 0.2rem 0 0;
-}
-.horizon-postcard-dates {
-  display: block;
-  font-size: 0.7rem;
-  color: #5C656B;
-  margin-top: 0.2rem;
-}
-.horizon-postcard-summary {
-  font-size: 0.74rem;
-  line-height: 1.5;
-  color: #5C656B;
-  margin: 0.55rem 0 0;
-}
-.horizon-postcard-go {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.8rem;
-  font-family: var(--font-sans);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.horizon-postcard-arrow { transition: transform 0.2s ease; }
-.horizon-postcard:hover .horizon-postcard-arrow { transform: translateX(4px); }
-.horizon-postcard-alpine .horizon-postcard-go { color: #C56F66; }
-.horizon-postcard-sea .horizon-postcard-go { color: #11707C; }
-
-/* jump pill — sticky, right-aligned, subtle */
-.horizon-jump {
-  position: sticky;
-  top: 0.5rem;
-  z-index: 5;
-  display: block;
-  width: max-content;
-  margin: 0 0 0.5rem auto;
-  padding: 0.3rem 0.7rem;
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 999px;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-}
-.horizon-jump:hover { opacity: 1; }
-
-/* mobile horizon */
-.journey-horizon-mobile { margin: 1rem 1rem 2rem; }
-
 /* ============================================================
    Departure wash — full-screen palette sweep when a postcard
    is opened, then navigation to the live trip page.
@@ -3499,4 +2977,392 @@ html.page-view {
 @media (prefers-reduced-motion: reduce) {
   .departure-wash,
   .departure-wash-label { animation: none; }
+}
+
+/* ============================================================
+   Journey board — Arrivals & Departures (Passport × Terminal).
+   Full-width living travel board. Palette is page-scoped to
+   body.journey-page so the warm paper aesthetic never leaks
+   into the rest of the site.
+   ============================================================ */
+body.journey-page {
+  --jb-paper: #ECE4D2;
+  --jb-paper-2: #E4DAC4;
+  --jb-card: #F6F1E3;
+  --jb-ink: #21252A;
+  --jb-ink-soft: #4E5048;
+  --jb-muted: #948A71;
+  --jb-line: #D8CEB9;
+  --jb-line-strong: #21252A;
+  --jb-oxblood: #8A3F35;
+  --jb-gold: #A9833F;
+  --jb-coral: #C2655A;
+  --jb-teal: #2C8181;
+  background-color: var(--jb-paper);
+  background-image:
+    radial-gradient(150% 90% at 50% -5%, rgba(138, 63, 53, 0.045), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  color: var(--jb-ink);
+}
+body.journey-page .page-container { background-color: transparent; }
+
+.jb-board { color: var(--jb-ink); padding-bottom: 80px; }
+.jb-wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
+
+/* hero */
+.jb-hero {
+  padding: 64px 0 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+  border-bottom: 2px solid var(--jb-line-strong);
+}
+.jb-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--jb-oxblood);
+  margin-bottom: 18px;
+}
+.jb-h1 {
+  font-size: clamp(3.6rem, 10vw, 8rem);
+  line-height: 0.84;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144;
+  margin: 0;
+}
+.jb-stats {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--jb-muted);
+  line-height: 2;
+}
+.jb-stats b { color: var(--jb-ink); font-weight: 500; display: inline-block; min-width: 30px; }
+
+/* section labels */
+.jb-board-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 60px 0 0;
+  padding-bottom: 14px;
+}
+.jb-board-label h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: 'opsz' 90;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+}
+.jb-sig {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--jb-oxblood);
+  display: inline-block;
+  flex: none;
+  animation: jbBlink 1.6s steps(1) infinite;
+}
+@keyframes jbBlink { 50% { opacity: 0.25; } }
+.jb-meta {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jb-muted);
+}
+
+/* departures board rows — Solari split-flap reveal */
+.jb-rows { perspective: 1400px; }
+.jb-frow {
+  display: grid;
+  grid-template-columns: 132px 1fr 110px 90px 150px;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--jb-line);
+  transform-origin: top center;
+  animation: jbFlap 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.jb-rows .jb-frow:first-child { border-top: 2px solid var(--jb-line-strong); }
+.jb-rows .jb-frow:nth-child(2) { animation-delay: 0.07s; }
+.jb-rows .jb-frow:nth-child(3) { animation-delay: 0.14s; }
+.jb-rows .jb-frow:nth-child(4) { animation-delay: 0.21s; }
+@keyframes jbFlap {
+  0% { transform: rotateX(-90deg); opacity: 0; }
+  55% { opacity: 1; }
+  100% { transform: rotateX(0); opacity: 1; }
+}
+.jb-time { font-family: var(--font-mono); font-size: 0.9rem; color: var(--jb-ink-soft); letter-spacing: 0.02em; }
+.jb-dest {
+  font-size: 2.5rem;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: 'opsz' 120;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+}
+.jb-region {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jb-muted);
+  margin-top: 6px;
+}
+.jb-nights {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jb-muted);
+}
+.jb-code { font-family: var(--font-mono); font-size: 1.12rem; letter-spacing: 0.2em; }
+.jb-status {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jb-oxblood);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+}
+.jb-livedot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--jb-oxblood);
+  display: inline-block;
+  flex: none;
+  animation: jbBlink 1.6s steps(1) infinite;
+}
+.jb-frow-alpine .jb-code { color: var(--jb-coral); }
+.jb-frow-sea .jb-code { color: var(--jb-teal); }
+
+/* featured boarding-pass tickets */
+.jb-passes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 34px; }
+.jb-pass {
+  background: var(--jb-card);
+  border-radius: 7px;
+  position: relative;
+  box-shadow: 0 20px 48px -28px rgba(33, 37, 42, 0.45);
+  border: 1px solid var(--jb-paper-2);
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.jb-pass:hover { transform: translateY(-3px); box-shadow: 0 26px 56px -28px rgba(33, 37, 42, 0.5); }
+.jb-pass:focus-visible { outline: 2px solid var(--jb-oxblood); outline-offset: 3px; }
+.jb-pass::before, .jb-pass::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--jb-paper);
+  top: 50%;
+  transform: translateY(-50%);
+}
+.jb-pass::before { left: -12px; }
+.jb-pass::after { right: -12px; }
+.jb-pass-top { padding: 26px 30px 20px; }
+.jb-pass-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.jb-klass {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jb-oxblood);
+}
+.jb-pass .jb-code { font-family: var(--font-mono); font-size: 1.1rem; letter-spacing: 0.22em; }
+.jb-pass-alpine .jb-code { color: var(--jb-coral); }
+.jb-pass-sea .jb-code { color: var(--jb-teal); }
+.jb-pass-city {
+  font-size: 2.9rem;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: 'opsz' 120;
+  letter-spacing: -0.02em;
+  margin: 14px 0 4px;
+}
+.jb-pass-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--jb-line);
+}
+.jb-k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--jb-muted);
+}
+.jb-v { font-family: var(--font-mono); font-size: 0.96rem; color: var(--jb-ink); margin-top: 4px; }
+.jb-pass-body { padding: 6px 30px 22px; }
+.jb-pass-body p { font-size: 1.08rem; line-height: 1.55; color: var(--jb-ink-soft); margin: 0; }
+.jb-pass-cta {
+  display: inline-flex;
+  gap: 9px;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jb-oxblood);
+  border-bottom: 1.5px solid var(--jb-oxblood);
+  padding-bottom: 3px;
+}
+.jb-arrow { transition: transform 0.2s ease; }
+.jb-pass:hover .jb-arrow { transform: translateX(4px); }
+.jb-mrz {
+  background: var(--jb-ink);
+  color: #d7cfba;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  padding: 11px 30px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* arrivals ledger */
+.jb-lrow {
+  display: grid;
+  grid-template-columns: 132px 1fr 90px 150px;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--jb-line);
+}
+.jb-ledger .jb-lrow:first-child { border-top: 2px solid var(--jb-line-strong); }
+.jb-date { font-family: var(--font-mono); font-size: 0.9rem; color: var(--jb-ink-soft); }
+.jb-place {
+  font-size: 2.5rem;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: 'opsz' 120;
+  letter-spacing: -0.015em;
+}
+.jb-reg {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jb-muted);
+  margin-top: 6px;
+  display: block;
+}
+.jb-lcode { font-family: var(--font-mono); letter-spacing: 0.2em; font-size: 1.05rem; }
+.jb-stamp {
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--jb-teal);
+  border: 1.5px solid var(--jb-teal);
+  border-radius: 50px;
+  padding: 6px 13px;
+  transform: rotate(-4deg);
+  opacity: 0.78;
+}
+.jb-stamp-home { color: var(--jb-oxblood); border-color: var(--jb-oxblood); }
+.jb-stamp-res { color: var(--jb-gold); border-color: var(--jb-gold); }
+.jb-note {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--jb-oxblood);
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+/* up close */
+.jb-upclose { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 34px; }
+.jb-acard {
+  background: var(--jb-card);
+  border: 1px solid var(--jb-paper-2);
+  border-radius: 7px;
+  padding: 30px 32px;
+  box-shadow: 0 16px 40px -30px rgba(33, 37, 42, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+.jb-cstamp {
+  position: absolute;
+  right: -8px;
+  top: 18px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--jb-coral);
+  border-radius: 50%;
+  color: var(--jb-coral);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+  opacity: 0.3;
+  line-height: 1.4;
+}
+.jb-cstamp-sea { border-color: var(--jb-teal); color: var(--jb-teal); }
+.jb-acard-meta {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  color: var(--jb-muted);
+  text-transform: uppercase;
+}
+.jb-acard-city {
+  font-size: 2.3rem;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: 'opsz' 120;
+  margin: 10px 0 2px;
+}
+.jb-acard-country {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jb-muted);
+}
+.jb-acard p { font-size: 1.06rem; line-height: 1.55; color: var(--jb-ink-soft); margin-top: 14px; }
+.jb-acard-role {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--jb-oxblood);
+  border-left: 3px solid var(--jb-oxblood);
+  padding: 3px 0 3px 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jb-frow { animation: none; }
+  .jb-sig, .jb-livedot { animation: none; }
 }
