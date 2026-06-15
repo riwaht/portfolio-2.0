@@ -8,6 +8,7 @@ function JourneyTimeline({ activePointId, registerRef }) {
       case 'work': return 'work';
       case 'travel': return 'travel';
       case 'current': return 'now';
+      case 'upcoming': return 'upcoming';
       default: return '';
     }
   };
@@ -47,6 +48,16 @@ function JourneyTimeline({ activePointId, registerRef }) {
                       </span>
                     ))}
                   </div>
+                )}
+                {point.itinerary && (
+                  <a
+                    className="journey-card-itinerary-link"
+                    href={point.itinerary}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View itinerary <span className="journey-card-itinerary-arrow">→</span>
+                  </a>
                 )}
               </div>
             </div>
