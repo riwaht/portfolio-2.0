@@ -1,5 +1,5 @@
-import React from 'react';
 import { journeyPoints } from '../../Utils/journeyData';
+import JourneyHorizon from './JourneyHorizon';
 
 function JourneyTimeline({ activePointId, registerRef }) {
   const getTypeLabel = (type) => {
@@ -8,18 +8,29 @@ function JourneyTimeline({ activePointId, registerRef }) {
       case 'work': return 'work';
       case 'travel': return 'travel';
       case 'current': return 'now';
-      case 'upcoming': return 'upcoming';
       default: return '';
     }
   };
 
-  const activeIdx = journeyPoints.findIndex(p => p.id === activePointId);
+  const timelinePoints = journeyPoints.filter((p) => p.type !== 'upcoming');
+  const upcomingPoints = journeyPoints.filter((p) => p.type === 'upcoming');
+  const activeIdx = journeyPoints.findIndex((p) => p.id === activePointId);
 
   return (
     <div className="journey-timeline">
+      <button
+        type="button"
+        className="horizon-jump"
+        onClick={() =>
+          document.getElementById('horizon')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      >
+        ↓ upcoming journeys
+      </button>
+
       <div className="journey-scroll-spacer-top" />
 
-      {journeyPoints.map((point, i) => {
+      {timelinePoints.map((point, i) => {
         const isActive = activePointId === point.id;
         const isPast = activeIdx >= 0 && i < activeIdx;
 
@@ -49,22 +60,13 @@ function JourneyTimeline({ activePointId, registerRef }) {
                     ))}
                   </div>
                 )}
-                {point.itinerary && (
-                  <a
-                    className="journey-card-itinerary-link"
-                    href={point.itinerary}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View itinerary <span className="journey-card-itinerary-arrow">→</span>
-                  </a>
-                )}
               </div>
             </div>
           </div>
         );
       })}
 
+      <JourneyHorizon points={upcomingPoints} registerRef={registerRef} />
 
       <div className="journey-scroll-spacer-bottom" />
     </div>

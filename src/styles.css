@@ -3039,16 +3039,6 @@ html.page-view {
   background: var(--text-secondary);
 }
 
-.journey-card-upcoming .journey-card-accent {
-  background: var(--accent-secondary);
-}
-
-/* Upcoming trips read as "planned" — dashed type label, warm accent */
-.journey-card-upcoming .journey-card-type {
-  color: var(--accent-secondary);
-  opacity: 0.9;
-}
-
 /* Card body */
 .journey-card-body {
   padding: 1rem 1.15rem;
@@ -3128,35 +3118,6 @@ html.page-view {
   color: var(--accent-primary);
   opacity: 0.5;
   font-size: 0.6rem;
-}
-
-/* "View itinerary" deep link on upcoming trip cards */
-.journey-card-itinerary-link {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent-secondary);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-top: 0.55rem;
-  transition: gap 0.18s ease, opacity 0.18s ease;
-}
-
-.journey-card-itinerary-link:hover {
-  opacity: 0.8;
-  gap: 0.5rem;
-}
-
-.journey-card-itinerary-arrow {
-  transition: transform 0.18s ease;
-}
-
-.journey-card-itinerary-link:hover .journey-card-itinerary-arrow {
-  transform: translateX(2px);
 }
 
 .journey-card-desc {
@@ -3276,3 +3237,220 @@ html.page-view {
   letter-spacing: 0.01em;
   line-height: 1.6;
 }
+
+/* ============================================================
+   The Horizon — upcoming trips as a warm "Journeys" collection.
+   Its own warm identity (hub palette) so it reads in BOTH themes.
+   ============================================================ */
+.journey-horizon {
+  position: relative;
+  margin: 1.5rem 0 0;
+  padding: 2.25rem 1.25rem 1.5rem;
+  border-radius: 18px;
+  background: #F4F0E8;
+  border: 1px solid #DBD3C4;
+  color: #1E2A2E;
+  scroll-margin-top: 90px;
+}
+/* soft fade easing the timeline into the warm collection */
+.journey-horizon::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -48px;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, #F4F0E8);
+  pointer-events: none;
+}
+
+.horizon-eyebrow {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #3C5A63;
+  margin-bottom: 0.85rem;
+}
+
+.horizon-mobile-title {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1E2A2E;
+  margin: 0 0 0.25rem;
+}
+.horizon-dot { color: #CE6B5C; }
+
+/* departures board */
+.horizon-board {
+  background: #1E2A2E;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+.horizon-board-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
+}
+.horizon-board-title {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #F6AE2D;
+}
+.horizon-board-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5FB6B6;
+  margin-left: auto;
+  box-shadow: 0 0 6px #5FB6B6;
+}
+.horizon-board-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  color: #E7ECEB;
+  padding: 0.18rem 0;
+}
+.horizon-board-date { font-weight: 700; color: #fff; letter-spacing: 0.04em; }
+.horizon-board-dest { letter-spacing: 0.06em; text-transform: uppercase; }
+.horizon-board-code { color: #8B9794; font-size: 0.62rem; }
+.horizon-board-nights { color: #5FB6B6; font-size: 0.62rem; letter-spacing: 0.05em; }
+
+/* postcards */
+.horizon-postcards { display: flex; flex-direction: column; gap: 1rem; }
+.horizon-entry { scroll-margin-top: 90px; }
+
+.horizon-postcard {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: 1px solid #E3DCCC;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.horizon-postcard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.55);
+  border-color: #C9BFAD;
+}
+
+.horizon-postcard-banner {
+  position: relative;
+  height: 96px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.6rem 0.75rem;
+}
+.horizon-banner-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.horizon-postcard-stamp {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 18px;
+  height: 22px;
+  background: #FBF6EC;
+  border: 1.5px dashed #C9BFAA;
+  border-radius: 2px;
+}
+.horizon-postcard-place {
+  position: relative;
+  z-index: 1;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+}
+
+.horizon-postcard-body { padding: 0.85rem 0.95rem 1rem; }
+.horizon-postcard-kind {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3C5A63;
+}
+.horizon-postcard-city {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1E2A2E;
+  margin: 0.2rem 0 0;
+}
+.horizon-postcard-dates {
+  display: block;
+  font-size: 0.7rem;
+  color: #5C656B;
+  margin-top: 0.2rem;
+}
+.horizon-postcard-summary {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: #5C656B;
+  margin: 0.55rem 0 0;
+}
+.horizon-postcard-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.horizon-postcard-arrow { transition: transform 0.2s ease; }
+.horizon-postcard:hover .horizon-postcard-arrow { transform: translateX(4px); }
+.horizon-postcard-alpine .horizon-postcard-go { color: #C56F66; }
+.horizon-postcard-sea .horizon-postcard-go { color: #11707C; }
+
+/* jump pill — sticky, right-aligned, subtle */
+.horizon-jump {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 5;
+  display: block;
+  width: max-content;
+  margin: 0 0 0.5rem auto;
+  padding: 0.3rem 0.7rem;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.horizon-jump:hover { opacity: 1; }
+
+/* mobile horizon */
+.journey-horizon-mobile { margin: 1rem 1rem 2rem; }
