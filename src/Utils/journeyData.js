@@ -511,6 +511,32 @@ export const journeyPoints = [
     type: 'current',
     description: 'Home in Paris again. Back to building, back to the routine I love.',
     professional: null,
+  },
+  {
+    id: 'dolomites-jul-2026',
+    city: 'Dolomites',
+    country: 'Italy',
+    geo: { lon: 12.13, lat: 46.54 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: '23–27 Jul 2026',
+    month: 7,
+    type: 'upcoming',
+    description: 'A clockwise loop out of Venice — east to the Tre Cime and the pale lakes, then west to Val Gardena, with two nights spent high on the mountain.',
+    itinerary: 'https://itineraries.riwashouse.live/dolomites',
+    professional: null,
+  },
+  {
+    id: 'corfu-aug-2026',
+    city: 'Corfu',
+    country: 'Greece',
+    geo: { lon: 19.92, lat: 39.62 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: '5–9 Aug 2026',
+    month: 8,
+    type: 'upcoming',
+    description: 'Four of us converging on one Ionian island — parents from Athens, sister from Birmingham, me from Paris — based in Dassia on the green northeast coast.',
+    itinerary: 'https://itineraries.riwashouse.live/corfu',
+    professional: null,
   }
 ];
 
@@ -523,7 +549,7 @@ export function getJourneyStats() {
     'Japan': 'Asia', 'Poland': 'Europe', 'Czech Republic': 'Europe',
     'Hungary': 'Europe', 'Austria': 'Europe', 'Denmark': 'Europe',
     'Sweden': 'Europe', 'United Kingdom': 'Europe',
-    'Netherlands': 'Europe',
+    'Netherlands': 'Europe', 'Greece': 'Europe',
   };
   journeyPoints.forEach(p => {
     if (continentMap[p.country]) continents.add(continentMap[p.country]);

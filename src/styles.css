@@ -3039,6 +3039,16 @@ html.page-view {
   background: var(--text-secondary);
 }
 
+.journey-card-upcoming .journey-card-accent {
+  background: var(--accent-secondary);
+}
+
+/* Upcoming trips read as "planned" — dashed type label, warm accent */
+.journey-card-upcoming .journey-card-type {
+  color: var(--accent-secondary);
+  opacity: 0.9;
+}
+
 /* Card body */
 .journey-card-body {
   padding: 1rem 1.15rem;
@@ -3118,6 +3128,35 @@ html.page-view {
   color: var(--accent-primary);
   opacity: 0.5;
   font-size: 0.6rem;
+}
+
+/* "View itinerary" deep link on upcoming trip cards */
+.journey-card-itinerary-link {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-secondary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.55rem;
+  transition: gap 0.18s ease, opacity 0.18s ease;
+}
+
+.journey-card-itinerary-link:hover {
+  opacity: 0.8;
+  gap: 0.5rem;
+}
+
+.journey-card-itinerary-arrow {
+  transition: transform 0.18s ease;
+}
+
+.journey-card-itinerary-link:hover .journey-card-itinerary-arrow {
+  transform: translateX(2px);
 }
 
 .journey-card-desc {
