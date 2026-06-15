@@ -1,7 +1,54 @@
 # Travels "Horizon" — weaving the itineraries hub into `/journey`
 
 **Date:** 2026-06-15
-**Status:** Approved design, ready for implementation planning
+**Status:** ⚠️ REVISED 2026-06-15 — superseded by the *Arrivals & Departures* redesign (see banner below). Original "Horizon" sections retained for history.
+
+---
+
+## ⚠️ Revision: Arrivals & Departures board (the shipping direction)
+
+After the "Horizon" v1 shipped behind the scenes, the user's verdict was that it
+**"feels too forced to be there now, like we just inserted it — everything else is still
+the same."** The fix is not a bigger widget but a **cohesive redesign of the whole `/journey`
+page** so the trips are native to it, not bolted on.
+
+**New concept — the page *is* an airport board.**
+
+- **Departures** = upcoming trips (Dolomites, Corfu) → boarding-pass tickets → open the live itineraries.
+- **Arrivals** = everywhere already visited (the past), as a stamped ledger.
+- **Now** = current base (Paris), the hinge between the two.
+- **Lifecycle — auto by date:** each trip carries a real date; code compares to `today`. When a
+  trip's end date passes, it **graduates from Departures → Arrivals automatically**, zero maintenance.
+
+**Aesthetic — approved "Passport × Terminal" hybrid** (realized in `public/mockups/hybrid.html`,
+viewed + approved):
+- **Fraunces** (variable serif, italic display) becomes the **site-wide** signature face,
+  replacing Satoshi everywhere "as much as it takes" (user's words). **Spline Sans Mono** carries
+  data/labels (dates, IATA codes, MRZ).
+- Terminal's sleek bones: huge type, hairline grid, generous whitespace, single signal accent.
+- Passport's soul: warm paper (`#ECE4D2`), oxblood ink (`#8A3F35`), boarding-pass tickets with
+  perforation + dashed tear line + dark **MRZ strip**, rotated pill/circular **stamps**.
+- Theme accents: alpine **coral** `#C2655A` (Dolomites), sea **teal** `#2C8181` (Corfu), gold `#A9833F`.
+
+**Cool factor preserved.** The existing scroll-driven **live world-map** (dot-matrix landmasses,
+progressive route reveal, smooth-damped pan, themed pins) and the **departure wash** carry over,
+**re-skinned** to the hybrid palette. The one detail everyone loved from the Solari comp — the
+**split-flap "flip"** — lands on the Departures board rows as the new signature reveal.
+
+**Layout.** Full-width single-column board (the editorial impact of the mockup), with the world map
+re-introduced as a **sticky scroll-stage behind the Arrivals ledger**: as you scroll the cities, the
+map pans and the route reveals city-to-city (IntersectionObserver → active point → existing map
+machinery). Departures / boarding-passes / Up-Close sit on plain paper above it.
+
+**Build order (incremental, live-preview after each phase):**
+A. Fraunces site-wide. B. Data + auto-by-date lifecycle helpers. C. Full-width hybrid board (static).
+D. Integrate the live map as a scroll-stage (re-skinned). E. Mobile + reduced-motion polish.
+
+See the implementation plan: `docs/superpowers/plans/2026-06-15-travels-horizon.md`.
+
+---
+
+### Original "Horizon" v1 design (historical — superseded above)
 
 ## Context & goal
 
