@@ -528,7 +528,11 @@ export const journeyPoints = [
     region: 'Italy · The Alps',
     nights: 4,
     depart: 'Jul 23',
+    ret: 'Jul 27',
     code: 'IT',
+    iata: 'VCE',
+    startDate: '2026-07-23',
+    endDate: '2026-07-27',
     theme: 'alpine',
   },
   {
@@ -547,7 +551,11 @@ export const journeyPoints = [
     region: 'Greece · Ionian Sea',
     nights: 4,
     depart: 'Aug 5',
+    ret: 'Aug 9',
     code: 'GR',
+    iata: 'CFU',
+    startDate: '2026-08-05',
+    endDate: '2026-08-09',
     theme: 'sea',
   }
 ];
@@ -575,4 +583,121 @@ export function getSeasonalHue(month) {
   if (month >= 6 && month <= 8) return 35;
   if (month >= 9 && month <= 11) return 25;
   return 210;
+}
+
+/* ---- Arrivals & Departures board model ---- */
+
+// How "significant" a stay is when choosing the representative entry for a city.
+const TYPE_RANK = { current: 4, work: 3, home: 2, travel: 1, upcoming: 0 };
+const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// City → IATA code for the board's mono "flight code" column.
+const IATA = {
+  Beirut: 'BEY', Paris: 'CDG', Rome: 'FCO', Venice: 'VCE', Florence: 'FLR',
+  Tokyo: 'HND', Osaka: 'KIX', Kyoto: 'UKY', Nara: 'NAR', 'Mt Fuji': 'NGO',
+  Warsaw: 'WAW', Prague: 'PRG', Budapest: 'BUD', Krakow: 'KRK', Vienna: 'VIE',
+  Copenhagen: 'CPH', 'Malmö': 'MMX', London: 'LHR', Strasbourg: 'SXB',
+  Amsterdam: 'AMS', Dolomites: 'VCE', Corfu: 'CFU',
+};
+
+export function iataFor(city) {
+  return IATA[city] || '';
+}
+
+const yearOf = (p) => {
+  const m = /(20\d{2})/.exec(p.dateRange || '');
+  return m ? Number(m[1]) : null;
+};
+
+// Split upcoming trips into still-departing vs already-flown, by today's date.
+export function getBoardState(today = new Date()) {
+  const iso = today.toISOString().slice(0, 10);
+  const upcoming = journeyPoints.filter((p) => p.type === 'upcoming');
+  const departures = upcoming
+    .filter((p) => p.endDate >= iso)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate));
+  const graduated = upcoming.filter((p) => p.endDate < iso);
+  return { departures, graduated };
+}
+
+// Deduped, newest-first ledger of every place already arrived in.
+// journeyPoints stays intact (the map route needs its order + transit duplicates);
+// this view collapses it to one row per city.
+export function getArrivalsLedger(today = new Date()) {
+  const iso = today.toISOString().slice(0, 10);
+  const arrived = journeyPoints.filter(
+    (p) => p.type !== 'upcoming' || p.endDate < iso
+  );
+
+  const byCity = new Map();
+  arrived.forEach((p, i) => {
+    const e = byCity.get(p.city) || { city: p.city, country: p.country, entries: [] };
+    e.entries.push({ p, i });
+    byCity.set(p.city, e);
+  });
+
+  const items = [];
+  for (const { city, country, entries } of byCity.values()) {
+    // Representative = most significant stay; ties broken by earliest appearance.
+    const rep = entries
+      .slice()
+      .sort((a, b) => TYPE_RANK[b.p.type] - TYPE_RANK[a.p.type] || a.i - b.i)[0].p;
+    // Pull a company from any entry for the city (e.g. Paris → Mistral, Warsaw → Snowflake).
+    const withRole = entries.find((e) => e.p.professional);
+    const company = withRole ? withRole.p.professional[0].company : null;
+
+    const status =
+      rep.type === 'current' ? 'RESIDENT' : rep.type === 'home' ? 'HOME' : 'STAMPED';
+    const tone =
+      rep.type === 'current' ? 'gold' : rep.type === 'home' ? 'oxblood' : 'teal';
+    const y = yearOf(rep);
+    const label =
+      rep.type === 'current'
+        ? 'NOW'
+        : rep.month && y
+          ? `${MONTHS[rep.month]} ${y}`
+          : y
+            ? String(y)
+            : 'HOME';
+    const sortKey =
+      rep.type === 'current' ? Infinity : y ? y * 100 + (rep.month || 0) : 0;
+
+    items.push({
+      id: rep.id,
+      city,
+      country,
+      iata: IATA[city] || '',
+      region: company ? `${country} · ${company}` : country,
+      label,
+      status,
+      tone,
+      sortKey,
+    });
+  }
+
+  items.sort((a, b) => b.sortKey - a.sortKey);
+  return items;
+}
+
+// The two editorial "Up Close" cards.
+export function getUpClose() {
+  const byId = (id) => journeyPoints.find((p) => p.id === id);
+  return [byId('paris-2026'), byId('tokyo-2025')]
+    .filter(Boolean)
+    .map((p) => {
+      const y = yearOf(p);
+      return {
+        id: p.id,
+        city: p.city,
+        country: p.country,
+        iata: IATA[p.city] || '',
+        label: p.month && y ? `${MONTHS[p.month]} ${y}` : y ? String(y) : '',
+        description: p.description,
+        role: p.professional ? `${p.professional[0].role} · ${p.professional[0].company}` : null,
+        stamp:
+          p.type === 'current' || p.professional
+            ? `${p.city} · Resident · ${y || ''}`
+            : `${p.city} · Arr. ${y || ''}`,
+      };
+    });
 }
