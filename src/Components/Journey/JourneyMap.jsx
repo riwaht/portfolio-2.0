@@ -28,6 +28,11 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
 
   const activeCoords = activeIdx >= 0 ? pointCoords[activeIdx] : null;
   const seasonalHue = activeIdx >= 0 ? getSeasonalHue(journeyPoints[activeIdx].month) : null;
+  const activePoint = activeIdx >= 0 ? journeyPoints[activeIdx] : null;
+  const upcomingPinColor =
+    activePoint && activePoint.type === 'upcoming'
+      ? (activePoint.theme === 'sea' ? '#2C8A8A' : '#CE6B5C')
+      : null;
 
 
   // Travel path connects all points in chronological order
@@ -45,7 +50,8 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
     return d;
   }, [pointCoords]);
 
-  // Per-segment paths with seasonal colors
+  // Per-segment paths — seasonal color, except segments arriving at an
+  // upcoming trip, which take that destination's theme color.
   const segments = useMemo(() => {
     if (pointCoords.length < 2) return [];
     return journeyPoints.slice(1).map((point, i) => {
@@ -55,10 +61,14 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
       const cx = prev.x + dx * 0.5;
       const cy = prev.y - Math.abs(dx) * 0.12;
       const hue = getSeasonalHue(point.month);
+      const upcoming = point.type === 'upcoming';
+      const themeColor = upcoming ? (point.theme === 'sea' ? '#2C8A8A' : '#CE6B5C') : null;
       return {
         d: `M ${prev.x} ${prev.y} Q ${cx} ${cy}, ${curr.x} ${curr.y}`,
         hue,
         color: hue !== null ? `hsl(${hue}, 65%, 55%)` : null,
+        upcoming,
+        themeColor,
       };
     });
   }, [pointCoords]);
@@ -196,7 +206,7 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
           }
           const offset = segLen * (1 - revealFrac);
           if (revealFrac === 0) return null;
-          const color = seg.color || 'var(--accent-primary)';
+          const color = seg.upcoming ? seg.themeColor : (seg.color || 'var(--accent-primary)');
           return (
             <g key={i}>
               <path
@@ -232,7 +242,7 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
             <circle cx={activeCoords.x} cy={activeCoords.y} r="0.4" className="journey-ripple journey-ripple-2" />
 
             {/* Glow halo */}
-            <circle cx={activeCoords.x} cy={activeCoords.y} r="1.2" filter="url(#pinGlow)" className="journey-pin-halo" />
+            <circle cx={activeCoords.x} cy={activeCoords.y} r="1.2" filter="url(#pinGlow)" className="journey-pin-halo" style={upcomingPinColor ? { fill: upcomingPinColor } : undefined} />
 
             {/* Current-location pulse */}
             {journeyPoints[activeIdx].type === 'current' && (
@@ -240,13 +250,14 @@ function JourneyMap({ activePointId, scrollProgress = 0, scrollSpeedRef }) {
             )}
 
             {/* Pin dot */}
-            <circle cx={activeCoords.x} cy={activeCoords.y} r="0.5" className="journey-pin-dot journey-pin-state-active" />
+            <circle cx={activeCoords.x} cy={activeCoords.y} r="0.5" className="journey-pin-dot journey-pin-state-active" style={upcomingPinColor ? { fill: upcomingPinColor } : undefined} />
 
             {/* Label */}
             <text
               x={activeCoords.x} y={activeCoords.y - 1.3}
               className="journey-pin-label active-label"
               textAnchor="middle"
+              style={upcomingPinColor ? { fill: upcomingPinColor } : undefined}
             >
               {journeyPoints[activeIdx].city || journeyPoints[activeIdx].country}
             </text>
