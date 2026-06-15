@@ -524,6 +524,12 @@ export const journeyPoints = [
     description: 'A clockwise loop out of Venice — east to the Tre Cime and the pale lakes, then west to Val Gardena, with two nights spent high on the mountain.',
     itinerary: 'https://itineraries.riwashouse.live/dolomites',
     professional: null,
+    kind: "Couple's road trip",
+    region: 'Italy · The Alps',
+    nights: 4,
+    depart: 'Jul 23',
+    code: 'IT',
+    theme: 'alpine',
   },
   {
     id: 'corfu-aug-2026',
@@ -537,6 +543,12 @@ export const journeyPoints = [
     description: 'Four of us converging on one Ionian island — parents from Athens, sister from Birmingham, me from Paris — based in Dassia on the green northeast coast.',
     itinerary: 'https://itineraries.riwashouse.live/corfu',
     professional: null,
+    kind: 'Family trip',
+    region: 'Greece · Ionian Sea',
+    nights: 4,
+    depart: 'Aug 5',
+    code: 'GR',
+    theme: 'sea',
   }
 ];
 
