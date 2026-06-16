@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import FeatureItinerary from './FeatureItinerary';
 import DeparturesBoard from './DeparturesBoard';
+import TerminalHeader from './TerminalHeader';
 import AtlasIndex from './AtlasIndex';
 import {
   journeyPoints,
@@ -9,7 +10,7 @@ import {
   getArrivalsLedger,
   iataFor,
 } from '../../Utils/journeyData';
-import { pad2, prefersReducedMotion } from '../../Utils/ui';
+import { prefersReducedMotion } from '../../Utils/ui';
 
 /**
  * The /journey page as an editorial travel index, in three movements:
@@ -29,6 +30,10 @@ function JourneyBoard() {
   const currentCity = current ? current.city : null;
   // The departures board flies out of wherever home currently is (Paris · CDG).
   const origin = current ? { city: current.city, code: iataFor(current.city) } : null;
+  // Upcoming featured trips power the header's "now boarding" ticker call.
+  const boardingCities = featured
+    .filter((t) => t.status === 'upcoming')
+    .map((t) => t.city);
 
   // Wash the screen in the trip's palette, then hand off to the live itinerary.
   const handleOpen = useCallback((e, trip) => {
@@ -52,22 +57,7 @@ function JourneyBoard() {
   return (
     <div className="jb-board">
       <div className="jb-wrap">
-        <header className="jb-masthead">
-          <div className="jb-eyebrow">The Travel Index</div>
-          <h1 className="jb-h1">Journeys<span className="jb-dot">.</span></h1>
-          <p className="jb-lead">
-            Trips I&apos;ve documented day&nbsp;by&nbsp;day — and everywhere&nbsp;else the road has gone.
-          </p>
-          <div className="jb-rule">
-            <span><b>{pad2(stats.cities)}</b> Cities</span><span className="jb-sep" aria-hidden="true" />
-            <span><b>{pad2(stats.countries)}</b> Countries</span><span className="jb-sep" aria-hidden="true" />
-            <span><b>{pad2(stats.continents)}</b> Continents</span><span className="jb-sep" aria-hidden="true" />
-            <span>Since <b>2018</b></span>
-            {currentCity && (
-              <span className="jb-now"><span className="jb-live" aria-hidden="true" /> Currently · {currentCity}</span>
-            )}
-          </div>
-        </header>
+        <TerminalHeader stats={stats} currentCity={currentCity} boarding={boardingCities} />
 
         {featured.length > 0 && (
           <section aria-label="Departures — featured itineraries">
