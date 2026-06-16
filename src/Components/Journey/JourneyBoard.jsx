@@ -1,11 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import FeatureItinerary from './FeatureItinerary';
+import DeparturesBoard from './DeparturesBoard';
 import AtlasIndex from './AtlasIndex';
 import {
   journeyPoints,
   getJourneyStats,
   getFeaturedItineraries,
   getArrivalsLedger,
+  iataFor,
 } from '../../Utils/journeyData';
 
 const prefersReducedMotion = () =>
@@ -32,6 +34,8 @@ function JourneyBoard() {
   const ledger = getArrivalsLedger();
   const current = journeyPoints.find((p) => p.type === 'current');
   const currentCity = current ? current.city : null;
+  // The departures board flies out of wherever home currently is (Paris · CDG).
+  const origin = current ? { city: current.city, code: iataFor(current.city) } : null;
 
   // Wash the screen in the trip's palette, then hand off to the live itinerary.
   const handleOpen = useCallback((e, trip) => {
@@ -73,11 +77,12 @@ function JourneyBoard() {
         </header>
 
         {featured.length > 0 && (
-          <section aria-label="Featured itineraries">
+          <section aria-label="Departures — featured itineraries">
             <div className="jb-slabel">
-              <h2>Featured itineraries</h2>
-              <div className="jb-tag">Planned in full · walked day by day</div>
+              <h2>Departures</h2>
+              <div className="jb-tag">Featured itineraries<br />Planned in full · walked day by day</div>
             </div>
+            <DeparturesBoard trips={featured} origin={origin} onOpen={handleOpen} />
             <div className="jb-features">
               {featured.map((trip, i) => (
                 <FeatureItinerary
@@ -93,10 +98,10 @@ function JourneyBoard() {
           </section>
         )}
 
-        <section aria-label="Everywhere else">
+        <section aria-label="Arrivals — everywhere else">
           <div className="jb-slabel">
-            <h2>Everywhere else</h2>
-            <div className="jb-tag">Stamped · 2018 — now</div>
+            <h2>Arrivals</h2>
+            <div className="jb-tag">Everywhere else<br />Stamped · 2018 — now</div>
           </div>
           <AtlasIndex items={ledger} />
         </section>
