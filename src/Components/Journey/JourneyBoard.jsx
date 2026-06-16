@@ -13,12 +13,13 @@ import {
 import { pad2, prefersReducedMotion } from '../../Utils/ui';
 
 /**
- * The /journey page as an editorial travel index, in three movements:
- *   1. Masthead — name, lead, and a mono stat rule with a live "currently" dot.
- *   2. Featured itineraries — the trips documented day-by-day, rendered as
- *      large alternating feature spreads that link out to the live itineraries.
- *   3. Everywhere else — a quiet year-grouped index of every other place.
- * Trips graduate from "featured" to the index automatically by date.
+ * The /journey page as an airport flight-information display — one continuous
+ * dark terminal screen (RIWA HOTEIT INTL), independent of the site theme:
+ *   1. Terminal header — name, live "now" pip, ticking clock, boarding ticker.
+ *   2. Departures — the featured itineraries as a split-flap board that links
+ *      out to each live itinerary, plus the same trips walked day-by-day below.
+ *   3. Arrivals — a split-flap mirror of every other place I've landed.
+ * Trips graduate from Departures to the Arrivals ledger automatically by date.
  */
 function JourneyBoard() {
   const [departing, setDeparting] = useState(null);

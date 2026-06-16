@@ -29,7 +29,7 @@ const COLUMNS = ['Arrived', 'From', 'Flight', 'Remarks'];
 function ArrivalsBoard({ items }) {
   if (!items || items.length === 0) return null;
 
-  // Group newest-first by year, Base group last (mirrors the old AtlasIndex).
+  // Group newest-first by year, Base group last (mirrors the old atlas index).
   const byYear = new Map();
   items.forEach((it) => {
     const key = yearKey(it);
