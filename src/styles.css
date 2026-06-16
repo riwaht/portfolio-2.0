@@ -2760,13 +2760,40 @@ body.journey-page {
   --jb-teal: #2C8181;
   --jb-alpine: #2E6F5E;
   --jb-sea: #2B6F8C;
+  /* Grow with content so the paper + grain fill the entire page. Without this
+     the global `height:100%` locks the body to one viewport, and everything
+     scrolled past it falls back to the lighter site canvas — a visible seam. */
+  height: auto;
+  min-height: 100vh;
   background-color: var(--jb-paper);
+  /* Fixed-size top glow (so it stays a soft halo behind the masthead instead of
+     stretching down a now-tall body) + a tiling grain. */
   background-image:
-    radial-gradient(150% 90% at 50% -5%, rgba(138, 63, 53, 0.045), transparent 55%),
+    radial-gradient(1200px 620px at 50% -120px, rgba(138, 63, 53, 0.05), transparent 70%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
   color: var(--jb-ink);
 }
+/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg.
+   (--jb-paper lives on <body>, which doesn't cascade up to <html>, so use the literal.) */
+html:has(body.journey-page) { background-color: #ECE4D2; }
 body.journey-page .page-container { background-color: transparent; }
+/* Let the shared site footer settle onto the paper instead of its own tan slab. */
+body.journey-page .footer {
+  background-color: transparent;
+  border-top: 1px solid var(--jb-line);
+}
+body.journey-page .social-icon {
+  background-color: transparent;
+  border-color: var(--jb-line-2);
+  color: var(--jb-ink-soft);
+}
+body.journey-page .social-icon:hover {
+  background-color: var(--jb-oxblood);
+  border-color: var(--jb-oxblood);
+  color: var(--jb-paper);
+}
+body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
 .jb-board { color: var(--jb-ink); padding-bottom: 40px; }
 .jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }

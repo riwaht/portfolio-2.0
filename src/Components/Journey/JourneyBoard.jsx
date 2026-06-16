@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import FeatureItinerary from './FeatureItinerary';
 import AtlasIndex from './AtlasIndex';
 import {
@@ -41,6 +41,15 @@ function JourneyBoard() {
     window.setTimeout(() => {
       window.location.href = trip.itinerary;
     }, 700);
+  }, []);
+
+  // Pressing Back from an itinerary restores this page from the bfcache with
+  // React state frozen — including a finished departure wash still covering the
+  // screen. Clear it whenever the page is shown (in particular on bfcache restore).
+  useEffect(() => {
+    const clearWash = () => setDeparting(null);
+    window.addEventListener('pageshow', clearWash);
+    return () => window.removeEventListener('pageshow', clearWash);
   }, []);
 
   return (
