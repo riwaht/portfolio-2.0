@@ -9,14 +9,7 @@ import {
   getArrivalsLedger,
   iataFor,
 } from '../../Utils/journeyData';
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// Two-digit terminal-style counts (e.g. "02 Continents").
-const pad2 = (n) => String(n).padStart(2, '0');
+import { pad2, prefersReducedMotion } from '../../Utils/ui';
 
 /**
  * The /journey page as an editorial travel index, in three movements:

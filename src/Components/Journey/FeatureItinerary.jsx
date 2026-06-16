@@ -1,5 +1,4 @@
-// Two-digit feature index (01, 02, …).
-const pad2 = (n) => String(n).padStart(2, '0');
+import { pad2 } from '../../Utils/ui';
 
 const ACCENT = { alpine: 'var(--jb-alpine)', sea: 'var(--jb-sea)' };
 const GLYPH = { alpine: '▲', sea: '≈' }; // ▲ peak · ≈ sea

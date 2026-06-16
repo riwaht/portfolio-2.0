@@ -1,5 +1,4 @@
-// Two-digit count (e.g. "20 stops").
-const pad2 = (n) => String(n).padStart(2, '0');
+import { pad2 } from '../../Utils/ui';
 
 // Year for a ledger row: current resident → this year; dated stay → its year;
 // the undated home base → its own "Base" group at the foot of the index.

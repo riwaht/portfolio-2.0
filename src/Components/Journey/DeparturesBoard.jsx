@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+import { prefersReducedMotion } from '../../Utils/ui';
 
 // "RH 0723" — a stable flight number built from the departure date.
 const flightNo = (trip) => {
@@ -64,8 +60,7 @@ function DeparturesBoard({ trips, origin, onOpen }) {
   return (
     <div className="dep-board" aria-label="Departures board">
       <div className="dep-head">
-        <span className="dep-title">Departures</span>
-        {origin && <span className="dep-origin">From {origin.code} · {origin.city}</span>}
+        <span className="dep-title">{origin ? `${origin.code} · ${origin.city}` : 'Departures'}</span>
         <span className="dep-live"><span className="dep-live-dot" aria-hidden="true" /> Live</span>
         <Clock />
       </div>
@@ -88,7 +83,7 @@ function DeparturesBoard({ trips, origin, onOpen }) {
               <Flap delay={stagger(i, 0)} className="dep-when">{departDate(trip)}</Flap>
               <span className="dep-dest">
                 <Flap delay={stagger(i, 1)} className="dep-city">{trip.city}</Flap>
-                <span className="dep-region">{(trip.region || trip.country)} · {trip.iata}</span>
+                <span className="dep-region">{trip.region || trip.country}</span>
               </span>
               <Flap delay={stagger(i, 2)} className="dep-flight">{flightNo(trip)}</Flap>
               <Flap delay={stagger(i, 3)} className={`dep-status dep-status-${r.kind}`}>
