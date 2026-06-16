@@ -1051,6 +1051,8 @@ Delete the now-unused atlas component and prune the CSS rules the masthead + atl
 **Files:**
 - Remove: `src/Components/Journey/AtlasIndex.jsx`
 - Modify: `src/styles.css` (mono-fold selector; delete masthead + atlas rules; entrance + responsive selectors)
+- Modify: `src/Components/Journey/JourneyBoard.jsx` (refresh stale masthead/index JSDoc)
+- Modify: `src/Components/Journey/ArrivalsBoard.jsx` (reword stale "AtlasIndex" comment)
 
 - [ ] **Step 1: Delete the atlas component**
 
@@ -1128,9 +1130,56 @@ Finally, in the last reduced-motion block (≈line 3166), drop the dead `.jb-mas
   .th, .jb-slabel, .jb-feature, .jb-foot { animation: none; }
 ```
 
-- [ ] **Step 6: Confirm no dead references remain**
+That same reduced-motion block also has a live-dot line that still names the now-deleted masthead `.jb-live`. Drop `.jb-live` from it so it reads:
 
-Run: `grep -n 'jb-masthead\|jb-atlas\|jb-prow\|jb-yearblock\|jb-yearhead\|\.jb-k\b\|jb-big\|jb-eyebrow\|jb-h1\|jb-lead\|jb-rule\|AtlasIndex' src/styles.css src/Components/Journey/*.jsx`
+```css
+  .th-live, .jb-fstatus-dot { animation: none; }
+```
+
+- [ ] **Step 6: Refresh stale doc comments**
+
+In `src/Components/Journey/JourneyBoard.jsx`, the component JSDoc (≈lines 15-22) still describes the old "editorial travel index, in three movements: 1. Masthead… 3. Everywhere else" composition. Replace it:
+
+```jsx
+/**
+ * The /journey page as an editorial travel index, in three movements:
+ *   1. Masthead — name, lead, and a mono stat rule with a live "currently" dot.
+ *   2. Featured itineraries — the trips documented day-by-day, rendered as
+ *      large alternating feature spreads that link out to the live itineraries.
+ *   3. Everywhere else — a quiet year-grouped index of every other place.
+ * Trips graduate from "featured" to the index automatically by date.
+ */
+```
+
+with the terminal framing:
+
+```jsx
+/**
+ * The /journey page as an airport flight-information display — one continuous
+ * dark terminal screen (RIWA HOTEIT INTL), independent of the site theme:
+ *   1. Terminal header — name, live "now" pip, ticking clock, boarding ticker.
+ *   2. Departures — the featured itineraries as a split-flap board that links
+ *      out to each live itinerary, plus the same trips walked day-by-day below.
+ *   3. Arrivals — a split-flap mirror of every other place I've landed.
+ * Trips graduate from Departures to the Arrivals ledger automatically by date.
+ */
+```
+
+Then in `src/Components/Journey/ArrivalsBoard.jsx` (≈line 32), reword the comment that names the now-deleted component so no dead reference lingers:
+
+```jsx
+  // Group newest-first by year, Base group last (mirrors the old AtlasIndex).
+```
+
+to:
+
+```jsx
+  // Group newest-first by year, Base group last (mirrors the old atlas index).
+```
+
+- [ ] **Step 7: Confirm no dead references remain**
+
+Run: `grep -n 'jb-masthead\|jb-atlas\|jb-prow\|jb-yearblock\|jb-yearhead\|\.jb-k\b\|jb-big\|jb-eyebrow\|jb-h1\|jb-lead\|jb-rule\|jb-live\|AtlasIndex' src/styles.css src/Components/Journey/*.jsx`
 Expected: no matches (every masthead/atlas symbol is gone; `.th-*` and `.fb-*` replace them).
 
 - [ ] **Step 7: Build**
