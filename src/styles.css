@@ -2749,6 +2749,8 @@ body.journey-page {
      site light/dark toggle. (Formerly split into a light palette + a dark
      override; the page now renders its own device palette unconditionally.) */
   --jb-paper: #15171C;
+  /* RGB triplet of --jb-paper, for rgba() screens (e.g. the translucent nav). */
+  --jb-paper-rgb: 21, 23, 28;
   --jb-paper-2: #1B1E24;
   --jb-card: #1E232B;
   --jb-ink: #ECE6D8;
@@ -2778,7 +2780,9 @@ body.journey-page {
   background-repeat: no-repeat, repeat;
   color: var(--jb-ink);
 }
-/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg. */
+/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg.
+   A literal (not var(--jb-paper)) because that token is scoped to <body> and does
+   not cascade up to <html>. */
 html:has(body.journey-page) { background-color: #15171C; }
 body.journey-page .page-container { background-color: transparent; }
 /* Let the shared site footer settle onto the screen instead of its own slab. */
@@ -2802,7 +2806,7 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
    terminal palette so the bar is part of the dark screen in both site themes.
    Journey content uses jb-* tokens, so this only retargets the shared chrome. */
 body.journey-page {
-  --nav-bg: rgba(21, 23, 28, 0.92);
+  --nav-bg: rgba(var(--jb-paper-rgb), 0.92);
   --bg-primary: var(--jb-paper);
   --bg-secondary: var(--jb-paper-2);
   --card-bg: var(--jb-card);
