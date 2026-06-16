@@ -2798,6 +2798,21 @@ body.journey-page .social-icon:hover {
 }
 body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
+/* The shared sticky nav + mobile menu read site-level tokens; remap them to the
+   terminal palette so the bar is part of the dark screen in both site themes.
+   Journey content uses jb-* tokens, so this only retargets the shared chrome. */
+body.journey-page {
+  --nav-bg: rgba(21, 23, 28, 0.92);
+  --bg-primary: var(--jb-paper);
+  --bg-secondary: var(--jb-paper-2);
+  --card-bg: var(--jb-card);
+  --text-primary: var(--jb-ink);
+  --text-secondary: var(--jb-ink-soft);
+  --accent-primary: var(--jb-amber);
+  --accent-secondary: var(--jb-gold);
+  --border-color: var(--jb-line);
+}
+
 .jb-board { color: var(--jb-ink); padding-bottom: 40px; }
 .jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
 
