@@ -1,6 +1,8 @@
-@import url("https://fonts.cdnfonts.com/css/satoshi");
-
 :root {
+  /* Typography — Fraunces is the site-wide signature face, Spline Sans Mono for data */
+  --font-sans: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-mono: 'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
   /* Light Mode Colors */
   --bg-primary: #F8F5F2;
   --bg-secondary: #F2E6D8;
@@ -33,7 +35,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -59,7 +61,7 @@ html.house-page {
   right: 15%;
   z-index: 1;
   color: #00c49a;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
 }
 
 .header h1 {
@@ -78,7 +80,7 @@ html.house-page {
   z-index: 1100; /* Higher than navbar for button interactions */
   text-align: center;
   color: var(--text-primary);
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.1rem;
   transition: all 0.5s ease-in-out;
   opacity: 1;
@@ -108,7 +110,7 @@ button {
   transition: all 0.3s ease;
   flex: 1;
   margin: 5px 5px;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
 }
 
 button:hover {
@@ -141,7 +143,7 @@ button:disabled:hover {
   height: 100vh;
   background-color: var(--bg-primary);
   text-align: center;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   color: var(--text-primary);
   padding: 20px;
   transition: all 0.3s ease;
@@ -175,7 +177,7 @@ button:disabled:hover {
   border-radius: 8px;
   cursor: pointer;
   z-index: 1000;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -260,7 +262,7 @@ html.page-view {
 .page-container {
   min-height: 100vh;
   background-color: var(--bg-primary);
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   scroll-behavior: smooth;
   transition: background-color 0.3s ease;
   display: flex;
@@ -1711,7 +1713,7 @@ html.page-view {
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 10px 20px;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -1739,7 +1741,7 @@ html.page-view {
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 10px 20px;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
   font-size: 0.85rem;
   font-weight: 500;
   display: flex;
@@ -2691,588 +2693,494 @@ html.page-view {
   }
 }
 
-/* ========================================
-   Journey Page — Side-by-side layout
-   ======================================== */
 
-.journey-layout {
-  display: flex;
-  height: calc(100vh - 70px);
-  background: var(--bg-primary);
-  overflow: hidden;
-}
-
-/* ---- Map panel: sticky left side ---- */
-.journey-map-panel {
-  flex: 1;
-  position: sticky;
-  top: 70px;
-  height: calc(100vh - 70px);
-  overflow: hidden;
-}
-
-.journey-map {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.journey-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Vignette — soft fade at right edge to blend into timeline */
-.journey-map-vignette {
-  position: absolute;
+/* ============================================================
+   Departure wash — full-screen palette sweep when a postcard
+   is opened, then navigation to the live trip page.
+   ============================================================ */
+.departure-wash {
+  position: fixed;
   inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to right,
-    transparent 60%,
-    var(--bg-primary) 100%
-  );
-  opacity: 0.5;
-}
-
-/* ---- Timeline panel: scrollable right side ---- */
-.journey-timeline-panel {
-  width: 380px;
-  flex-shrink: 0;
-  height: calc(100vh - 70px);
-  overflow-y: auto;
-  padding: 0 1.5rem 0 1rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-}
-
-.journey-timeline-panel::-webkit-scrollbar {
-  width: 3px;
-}
-
-.journey-timeline-panel::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 2px;
-}
-
-/* ---- Dot matrix with seasonal color shift ---- */
-.journey-land-dot {
-  fill: var(--text-secondary);
-  opacity: 0.12;
-  transition: fill 1.2s ease, opacity 1.2s ease;
-}
-
-.journey-land-dot.visited {
-  fill: var(--accent-primary);
-  opacity: 0.35;
-  transition: fill 1.2s ease, opacity 1.2s ease;
-}
-
-/* Seasonal tint — applied via --season-hue CSS variable */
-.journey-map[style*="--season-hue"] .journey-land-dot {
-  fill: hsl(var(--season-hue), 25%, 55%);
-  opacity: 0.14;
-}
-
-.journey-map[style*="--season-hue"] .journey-land-dot.visited {
-  fill: hsl(var(--season-hue), 45%, 50%);
-  opacity: 0.4;
-}
-
-/* ---- Travel path — progressive reveal ---- */
-.journey-travel-path {
-  fill: none;
-  stroke: var(--accent-primary);
-  stroke-width: 0.18;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.8;
-}
-
-.journey-travel-path-glow {
-  fill: none;
-  stroke: var(--accent-primary);
-  stroke-width: 0.5;
-  stroke-linecap: round;
-  opacity: 0.2;
-}
-
-
-/* ---- Map legend ---- */
-.journey-legend {
-  position: absolute;
-  bottom: 1.2rem;
-  left: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  pointer-events: none;
-}
-
-.journey-legend-stats {
+  z-index: 9999;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  animation: washIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-
-.journey-legend-stat {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  letter-spacing: 0.03em;
-  opacity: 0.6;
+.departure-wash-alpine {
+  background: radial-gradient(circle at 50% 60%, #EFEDE6, #C56F66);
 }
-
-.journey-legend-sep {
-  font-size: 0.45rem;
-  color: var(--text-secondary);
-  opacity: 0.3;
+.departure-wash-sea {
+  background: radial-gradient(circle at 50% 60%, #114E5C, #0C3B45);
 }
-
-.journey-legend-seasons {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.journey-legend-season {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.55rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  opacity: 0.5;
-  letter-spacing: 0.02em;
-}
-
-.journey-legend-swatch {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-/* ---- Active pin ---- */
-.journey-pin-dot {
-  fill: var(--accent-primary);
-  stroke: none;
-  opacity: 1;
-}
-
-.journey-pin-home .journey-pin-dot {
-  fill: var(--accent-secondary);
-}
-
-.journey-pin-halo {
-  fill: var(--accent-primary);
-  opacity: 0.12;
-}
-
-.journey-pin-home .journey-pin-halo {
-  fill: var(--accent-secondary);
-}
-
-/* Ripple burst — two staggered rings */
-.journey-ripple {
-  fill: none;
-  stroke: var(--accent-primary);
-  stroke-width: 0.06;
-  opacity: 0;
-}
-
-.journey-pin-home .journey-ripple {
-  stroke: var(--accent-secondary);
-}
-
-.journey-ripple-1 {
-  animation: rippleBurst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.journey-ripple-2 {
-  animation: rippleBurst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
-}
-
-@keyframes rippleBurst {
-  0% { r: 0.3; opacity: 0.5; stroke-width: 0.08; }
-  100% { r: 1.8; opacity: 0; stroke-width: 0.01; }
-}
-
-/* Label */
-.journey-pin-label {
-  font-size: 0.9px;
-  fill: var(--text-primary);
-  font-family: 'Satoshi', sans-serif;
-  font-weight: 700;
-  pointer-events: none;
-  letter-spacing: 0.02px;
-}
-
-.journey-pin-label.active-label {
-  opacity: 1;
-  animation: labelFadeIn 0.4s ease forwards;
-}
-
-@keyframes labelFadeIn {
-  from { opacity: 0; transform: translateY(0.3px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Pulse — current location */
-.journey-pin-pulse {
-  fill: var(--accent-primary);
-  opacity: 0;
-  animation: pinPulse 2.5s ease-in-out infinite;
-}
-
-@keyframes pinPulse {
-  0% { opacity: 0.35; r: 0.5; }
-  100% { opacity: 0; r: 2; }
-}
-
-/* Sub-locations — staggered reveal */
-.journey-sub-item {
-  animation: subReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes subReveal {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.journey-sub-line {
-  stroke: var(--accent-primary);
-  stroke-width: 0.05;
-  stroke-dasharray: 0.2 0.1;
-  opacity: 0.3;
-}
-
-.journey-sub-dot {
-  fill: var(--accent-primary);
-  opacity: 0.55;
-}
-
-.journey-sub-label {
-  font-size: 0.85px;
-  fill: var(--text-primary);
-  font-family: 'Satoshi', sans-serif;
-  font-weight: 500;
-  opacity: 0.65;
-  pointer-events: none;
-}
-
-/* ---- Timeline entries ---- */
-.journey-timeline {
-  position: relative;
-}
-
-/* Spacers — push first/last entry to panel center */
-.journey-scroll-spacer-top {
-  height: calc(50vh - 35px);
-}
-
-.journey-scroll-spacer-bottom {
-  height: calc(50vh - 35px);
-}
-
-/* Scroll entries */
-.journey-scroll-entry {
-  padding: 0.75rem 0 0.75rem 1rem;
-}
-
-/* ---- Cards — editorial style ---- */
-.journey-scroll-card {
-  display: flex;
-  overflow: hidden;
-  border-radius: 10px;
-  background: var(--card-bg);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-  opacity: 0.25;
-  transform: translateY(12px) scale(0.97);
-  transition:
-    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 0.4s ease;
-  width: 100%;
-}
-
-.journey-scroll-entry.active .journey-scroll-card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.journey-scroll-entry.past .journey-scroll-card {
-  opacity: 0.45;
-  transform: translateY(-4px) scale(0.98);
-}
-
-/* Accent bar — left edge color strip */
-.journey-card-accent {
-  width: 3px;
-  flex-shrink: 0;
-  background: var(--accent-primary);
-  opacity: 0.4;
-  transition: opacity 0.4s ease;
-}
-
-.journey-scroll-entry.active .journey-card-accent {
-  opacity: 1;
-}
-
-.journey-card-home .journey-card-accent {
-  background: var(--accent-secondary);
-}
-
-.journey-card-current .journey-card-accent {
-  background: var(--accent-primary);
-}
-
-.journey-card-work .journey-card-accent {
-  background: var(--accent-primary);
-}
-
-.journey-card-travel .journey-card-accent {
-  background: var(--text-secondary);
-}
-
-.journey-card-upcoming .journey-card-accent {
-  background: var(--accent-secondary);
-}
-
-/* Upcoming trips read as "planned" — dashed type label, warm accent */
-.journey-card-upcoming .journey-card-type {
-  color: var(--accent-secondary);
-  opacity: 0.9;
-}
-
-/* Card body */
-.journey-card-body {
-  padding: 1rem 1.15rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.journey-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.journey-card-date {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.01em;
-}
-
-.journey-card-type {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.55rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+.departure-wash-label {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 8vw, 4rem);
   font-weight: 800;
-  color: var(--accent-primary);
-  opacity: 0.7;
-}
-
-.journey-card-location {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 0 0 0.3rem 0;
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  color: #fff;
+  animation: washLabel 0.7s ease forwards;
+}
+.departure-wash-alpine .departure-wash-label { color: #2C353C; }
+
+@keyframes washIn {
+  from { clip-path: circle(0% at 50% 60%); opacity: 0.6; }
+  to   { clip-path: circle(150% at 50% 60%); opacity: 1; }
+}
+@keyframes washLabel {
+  0%   { opacity: 0; transform: translateY(12px); }
+  45%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Country name below city */
-.journey-card-country {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  display: block;
-  margin-top: -0.15rem;
-  margin-bottom: 0.3rem;
+@media (prefers-reduced-motion: reduce) {
+  .departure-wash,
+  .departure-wash-label { animation: none; }
 }
 
-/* Country trip itinerary: City → City → City */
-.journey-card-itinerary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.15rem;
-  margin-bottom: 0.35rem;
+/* ============================================================
+   Journey — editorial travel index. Three movements: a quiet
+   masthead, the documented itineraries as large alternating
+   feature spreads, and a year-grouped index of everywhere else.
+   Palette is page-scoped to body.journey-page.
+   ============================================================ */
+body.journey-page {
+  /* Always-dark terminal screen — one continuous FIDS display regardless of the
+     site light/dark toggle. (Formerly split into a light palette + a dark
+     override; the page now renders its own device palette unconditionally.) */
+  --jb-paper: #15171C;
+  /* RGB triplet of --jb-paper, for rgba() screens (e.g. the translucent nav). */
+  --jb-paper-rgb: 21, 23, 28;
+  --jb-paper-2: #1B1E24;
+  --jb-card: #1E232B;
+  --jb-ink: #ECE6D8;
+  --jb-ink-soft: #B4B0A2;
+  --jb-muted: #837F70;
+  --jb-line: #2D323B;
+  --jb-line-2: #3A404A;
+  --jb-line-strong: #5E6258;
+  --jb-oxblood: #D58D6F;
+  --jb-gold: #D9B25E;
+  --jb-alpine: #5FB58E;
+  --jb-sea: #5AA9C9;
+  /* Near-white "ink" printed on the board + poster screens. */
+  --jb-screen-rgb: 244, 236, 220;
+  /* Terminal amber — the board/header signage accent. */
+  --jb-amber: #E8B23A;
+  /* Grow with content so the screen + grain fill the entire page (the global
+     height:100% otherwise locks the body to one viewport). */
+  height: auto;
+  min-height: 100vh;
+  background-color: var(--jb-paper);
+  background-image:
+    radial-gradient(1200px 620px at 50% -120px, rgba(213, 141, 111, 0.10), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  color: var(--jb-ink);
+}
+/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg.
+   A literal (not var(--jb-paper)) because that token is scoped to <body> and does
+   not cascade up to <html>. */
+html:has(body.journey-page) { background-color: #15171C; }
+body.journey-page .page-container { background-color: transparent; }
+/* Let the shared site footer settle onto the screen instead of its own slab. */
+body.journey-page .footer {
+  background-color: transparent;
+  border-top: 1px solid var(--jb-line);
+}
+body.journey-page .social-icon {
+  background-color: transparent;
+  border-color: var(--jb-line-2);
+  color: var(--jb-ink-soft);
+}
+body.journey-page .social-icon:hover {
+  background-color: var(--jb-oxblood);
+  border-color: var(--jb-oxblood);
+  color: var(--jb-paper);
+}
+body.journey-page .footer-text { color: var(--jb-ink-soft); }
+
+/* The shared sticky nav + mobile menu read site-level tokens; remap them to the
+   terminal palette so the bar is part of the dark screen in both site themes.
+   Journey content uses jb-* tokens, so this only retargets the shared chrome. */
+body.journey-page {
+  --nav-bg: rgba(var(--jb-paper-rgb), 0.92);
+  --bg-primary: var(--jb-paper);
+  --bg-secondary: var(--jb-paper-2);
+  --card-bg: var(--jb-card);
+  --text-primary: var(--jb-ink);
+  --text-secondary: var(--jb-ink-soft);
+  --accent-primary: var(--jb-amber);
+  --accent-secondary: var(--jb-gold);
+  --border-color: var(--jb-line);
 }
 
-.journey-card-itinerary-city {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15rem;
+.jb-board { color: var(--jb-ink); padding-bottom: 40px; }
+.jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
+
+/* Every terminal-style label on this page is set in Spline Sans Mono. Declared
+   once here; each rule below keeps only its own size / spacing / colour. */
+.jb-tag, .jb-findex, .jb-fmeta, .jb-chip, .jb-fcta, .jb-foot,
+.jb-badge, .jb-iata, .jb-fstatus,
+.fb-title, .fb-live, .fb-clock, .fb-cols, .fb-region, .fb-flap {
+  font-family: var(--font-mono);
 }
 
-.journey-card-itinerary-sep {
-  color: var(--accent-primary);
-  opacity: 0.5;
-  font-size: 0.6rem;
+/* One ring-pulse, coloured per element via --ping — shared by the terminal
+   header "now" pip, the poster "upcoming" dot, and the arrivals live-ping dot. */
+@keyframes jbPing {
+  0% { box-shadow: 0 0 0 0 rgba(var(--ping), 0.45); }
+  70% { box-shadow: 0 0 0 7px rgba(var(--ping), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--ping), 0); }
 }
 
-/* "View itinerary" deep link on upcoming trip cards */
-.journey-card-itinerary-link {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent-secondary);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-top: 0.55rem;
-  transition: gap 0.18s ease, opacity 0.18s ease;
+/* =================== TERMINAL HEADER =================== */
+.th { padding: clamp(28px, 5vw, 52px) 0 clamp(20px, 3vw, 32px); }
+.th-id {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px 20px;
+  flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--jb-line);
+  font-family: var(--font-mono);
+}
+.th-code {
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--jb-amber);
+}
+.th-iata { color: var(--jb-ink-soft); }
+.th-now { display: inline-flex; align-items: center; gap: 14px; }
+.th-clock {
+  font-family: var(--font-mono); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.1em;
+  color: rgb(var(--jb-screen-rgb)); font-variant-numeric: tabular-nums;
+}
+.th-date {
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--jb-muted);
+}
+.th-eyebrow {
+  margin: clamp(26px, 4vw, 40px) 0 18px;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.42em;
+  text-transform: uppercase; color: var(--jb-amber);
+}
+.th-h1 {
+  font-size: clamp(4rem, 13vw, 10.5rem); line-height: 0.84; margin: 0;
+  font-style: italic; font-weight: 360; font-variation-settings: 'opsz' 144;
+  letter-spacing: -0.025em; color: var(--jb-ink);
+}
+.th-h1 .th-dot { color: var(--jb-amber); }
+.th-stats {
+  margin-top: clamp(28px, 4vw, 44px);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px;
+  padding-top: 18px; border-top: 1px solid var(--jb-line-strong);
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--jb-ink-soft);
+}
+.th-stats .th-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--jb-line-2); }
+.th-stats b { color: var(--jb-ink); font-weight: 600; }
+.th-live-wrap { margin-left: auto; display: inline-flex; align-items: center; gap: 9px; color: var(--jb-ink); }
+.th-live {
+  --ping: 46, 111, 94;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--jb-alpine);
+  box-shadow: 0 0 0 0 rgba(var(--ping), 0.45); animation: jbPing 2.4s ease-out infinite;
+}
+/* LED ticker — a horizontally scrolling marquee, masked to fade at the edges. */
+.th-ticker {
+  margin-top: clamp(22px, 3vw, 32px); overflow: hidden;
+  border-top: 1px solid var(--jb-line); border-bottom: 1px solid var(--jb-line); padding: 10px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.th-track { display: inline-flex; white-space: nowrap; animation: thTicker 28s linear infinite; }
+.th-track span {
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--jb-amber); padding-right: 1.5em;
+}
+@keyframes thTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* =================== SECTION LABEL =================== */
+.jb-slabel {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 20px; margin: clamp(48px, 8vw, 92px) 0 clamp(20px, 3vw, 32px);
+}
+.jb-slabel h2 {
+  margin: 0; font-style: italic; font-weight: 400; font-variation-settings: 'opsz' 90;
+  font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.01em;
+}
+.jb-tag {
+  font-size: 0.7rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--jb-muted); text-align: right; line-height: 1.7;
 }
 
-.journey-card-itinerary-link:hover {
-  opacity: 0.8;
-  gap: 0.5rem;
+/* =================== DEPARTURES BOARD =================== */
+/* A dark airport "screen" object — kept theme-independent so it reads the same
+   on the light paper and the dark charcoal; the page chrome around it switches. */
+.fb-board {
+  /* device palette — kept theme-independent so the board reads the same on
+     light paper and dark charcoal; recurring values are tokenised here. The
+     near-white "ink" comes from the shared --jb-screen-rgb. */
+  --d-line: #2E323C;
+  --d-amber: var(--jb-amber);
+  --d-ink: #1A1410;
+  margin: 2px 0 clamp(34px, 6vw, 60px);
+  border-radius: 9px; overflow: hidden; color: rgb(var(--jb-screen-rgb));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 130px), #181B22;
+  border: 1px solid var(--d-line);
+  box-shadow: 0 28px 54px -34px rgba(8, 6, 4, 0.7), inset 0 1px 0 rgba(var(--jb-screen-rgb), 0.06);
+  padding: clamp(15px, 2.3vw, 22px) clamp(15px, 2.6vw, 26px) clamp(11px, 1.8vw, 16px);
+}
+.fb-head {
+  display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap;
+  padding-bottom: 13px; margin-bottom: 7px; border-bottom: 1px solid var(--d-line);
+}
+.fb-title {
+  font-weight: 600; font-size: 0.9rem;
+  letter-spacing: 0.34em; text-transform: uppercase; color: var(--d-amber);
+}
+.fb-live {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.62rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #8C9A8E;
+}
+.fb-live-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #62B98F;
+  box-shadow: 0 0 8px 1px rgba(98, 185, 143, 0.6); animation: fbBlink 1.6s steps(1) infinite;
+}
+.fb-clock {
+  font-weight: 600; font-size: 0.92rem;
+  letter-spacing: 0.1em; color: rgb(var(--jb-screen-rgb)); font-variant-numeric: tabular-nums;
+}
+.fb-colon { animation: fbBlink 1.1s steps(1) infinite; }
+@keyframes fbBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0.2; } }
+
+.fb-cols, .fb-row {
+  display: grid; grid-template-columns: 92px 1fr 96px 152px;
+  gap: 16px; align-items: center;
+}
+.fb-cols {
+  padding: 4px 8px 8px; font-size: 0.58rem;
+  letter-spacing: 0.22em; text-transform: uppercase; color: #6C7160;
+}
+.fb-rows { display: flex; flex-direction: column; }
+.fb-row {
+  position: relative; text-decoration: none; color: inherit;
+  padding: 9px 8px; border-radius: 6px; transition: background 0.3s ease;
+}
+.fb-row + .fb-row { border-top: 1px solid rgba(var(--jb-screen-rgb), 0.07); }
+.fb-row:hover { background: rgba(var(--jb-screen-rgb), 0.05); }
+
+/* Solari flap tile — a seam across the middle, flips down into place on load. */
+.fb-flap {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  background: #242833; border-radius: 3px; padding: 6px 10px;
+  font-weight: 600; letter-spacing: 0.07em; color: rgb(var(--jb-screen-rgb));
+  position: relative; transform-origin: top center; backface-visibility: hidden;
+  animation: fbFlap 0.5s cubic-bezier(0.3, 0.9, 0.3, 1) both; animation-delay: var(--d, 0s);
+}
+.fb-flap::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+  background: rgba(0, 0, 0, 0.5); transform: translateY(-0.5px); pointer-events: none;
+}
+@keyframes fbFlap {
+  0% { transform: perspective(240px) rotateX(-90deg); opacity: 0; }
+  55% { opacity: 1; }
+  100% { transform: perspective(240px) rotateX(0deg); opacity: 1; }
+}
+.fb-when { font-size: 0.78rem; }
+.fb-dest { display: flex; flex-direction: column; gap: 4px; min-width: 0; align-items: flex-start; }
+.fb-city { font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; max-width: 100%; }
+.fb-region {
+  font-size: 0.6rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #8C8675; padding-left: 2px;
+}
+.fb-flight { font-size: 0.76rem; color: #C9C2B0; justify-self: start; }
+.fb-status { justify-self: start; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.fb-status .fb-arrow { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fb-row:hover .fb-status .fb-arrow { transform: translateX(5px); }
+.fb-status-boarding { color: var(--d-ink); background: var(--d-amber); }
+.fb-status-boarding::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--d-ink);
+  animation: fbBlink 1.1s steps(1) infinite;
+}
+.fb-status-ontime { color: #8FCFAE; }
+.fb-status-departed { color: #9C9684; }
+/* Arrivals — year-divider band + arrival remark variants (mirror Departures). */
+.fb-divider {
+  display: flex; justify-content: center; padding: 14px 8px 8px;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.34em;
+  text-transform: uppercase; color: #6C7160;
+}
+.fb-row-live { background: rgba(232, 178, 58, 0.06); }
+.fb-status-arrived { color: #8FCFAE; }
+.fb-status-home { color: var(--d-amber); }
+.fb-status-live { color: var(--d-amber); display: inline-flex; align-items: center; gap: 7px; }
+.fb-live-ping {
+  --ping: 232, 178, 58;
+  width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--ping));
+  box-shadow: 0 0 0 0 rgba(var(--ping), 0.5); animation: jbPing 2.4s ease-out infinite;
 }
 
-.journey-card-itinerary-arrow {
-  transition: transform 0.18s ease;
+@media (max-width: 720px) {
+  .fb-cols { display: none; }
+  .fb-row { grid-template-columns: 62px 1fr auto; gap: 11px; }
+  .fb-flight { display: none; }
+  .fb-city { font-size: 0.92rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb-flap { animation: none; }
+  .fb-colon, .fb-live-dot, .fb-live-ping, .fb-status-boarding::before { animation: none; }
 }
 
-.journey-card-itinerary-link:hover .journey-card-itinerary-arrow {
-  transform: translateX(2px);
+/* =================== FEATURED ITINERARIES =================== */
+.jb-feature {
+  position: relative; display: grid; grid-template-columns: 1.04fr 0.96fr;
+  gap: clamp(24px, 4vw, 56px); align-items: stretch;
+  padding: clamp(30px, 4vw, 48px) 0;
+  border-top: 1px solid var(--jb-line-strong);
+  text-decoration: none; color: inherit;
+  transition: background 0.5s ease;
+}
+.jb-feature:last-child { border-bottom: 1px solid var(--jb-line-strong); }
+.jb-feature.jb-feature-alt { grid-template-columns: 0.96fr 1.04fr; }
+.jb-feature.jb-feature-alt .jb-fbody { order: 2; }
+.jb-feature.jb-feature-alt .jb-fplate { order: 1; }
+.jb-feature::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--jb-accent); opacity: 0; transition: opacity 0.5s ease; mix-blend-mode: multiply;
+}
+.jb-feature:hover::after { opacity: 0.05; }
+
+.jb-fbody { display: flex; flex-direction: column; }
+.jb-findex {
+  font-size: 0.78rem; letter-spacing: 0.3em;
+  color: var(--jb-accent); margin-bottom: 14px;
+}
+.jb-fcity {
+  margin: 0; font-style: italic; font-weight: 350; font-variation-settings: 'opsz' 144;
+  font-size: clamp(2.8rem, 6.4vw, 5.4rem); line-height: 0.92; letter-spacing: -0.03em;
+}
+.jb-fmeta {
+  margin-top: 16px; font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--jb-ink-soft);
+  display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+}
+.jb-fmeta .jb-d { width: 3px; height: 3px; border-radius: 50%; background: var(--jb-line-2); }
+.jb-ftagline {
+  margin: clamp(20px, 3vw, 30px) 0 0; max-width: 40ch;
+  font-size: clamp(1.18rem, 1.7vw, 1.5rem); line-height: 1.34; color: var(--jb-ink);
+  font-weight: 360;
+}
+.jb-fstops { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 7px; }
+.jb-chip {
+  font-size: 0.66rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--jb-ink-soft);
+  border: 1px solid var(--jb-line-2); border-radius: 100px; padding: 5px 11px;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.jb-feature:hover .jb-chip { border-color: color-mix(in srgb, var(--jb-accent) 45%, var(--jb-line-2)); }
+.jb-fcta {
+  margin-top: auto; padding-top: clamp(24px, 3vw, 34px);
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 0.82rem; letter-spacing: 0.14em;
+  text-transform: uppercase; font-weight: 500; color: var(--jb-ink);
+}
+.jb-fcta .jb-arrow { color: var(--jb-accent); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.jb-feature:hover .jb-fcta .jb-arrow { transform: translateX(8px); }
+.jb-fcta .jb-line { flex: 1; height: 1px; background: var(--jb-line-2); min-width: 28px; transition: background 0.4s ease; }
+.jb-feature:hover .jb-fcta .jb-line { background: var(--jb-accent); }
+
+/* the printed travel-poster "plate" */
+.jb-fplate {
+  position: relative; border-radius: 5px; overflow: hidden; min-height: 320px;
+  background: #1C2430;
+  border: 1px solid var(--jb-line);
+  box-shadow: inset 0 0 0 1px rgba(var(--jb-screen-rgb), 0.12), 0 18px 34px -26px rgba(20, 16, 12, 0.55);
+}
+.jb-fplate svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.jb-feature:hover .jb-fplate svg { transform: scale(1.045); }
+/* legibility scrim for the corner labels */
+.jb-fplate::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(16, 18, 24, 0.42) 0%, transparent 26%),
+    linear-gradient(0deg, rgba(16, 18, 24, 0.40) 0%, transparent 24%);
+}
+.jb-badge {
+  position: absolute; left: 18px; bottom: 15px; z-index: 2;
+  font-size: 0.68rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgb(var(--jb-screen-rgb));
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  display: flex; align-items: center; gap: 8px;
+}
+.jb-iata {
+  position: absolute; right: 18px; top: 14px; z-index: 2;
+  font-weight: 600; font-size: 1.1rem;
+  letter-spacing: 0.2em; color: rgb(var(--jb-screen-rgb));
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+/* date-accurate trip badge: scheduled · boarding · departed · documented */
+.jb-fstatus {
+  position: absolute; left: 16px; top: 14px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.64rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 5px 11px; border-radius: 100px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+/* Departure day — the one loud, amber moment, with a dark pulsing pip. */
+.jb-fstatus-boarding {
+  color: #1A1410; background: rgba(244, 222, 140, 0.92);
+  box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.4);
+}
+.jb-fstatus-boarding .jb-fstatus-dot { --ping: 26, 20, 16; }
+/* Still ahead — calm green outline counting down to departure. */
+.jb-fstatus-scheduled {
+  color: rgb(var(--jb-screen-rgb)); background: rgba(20, 22, 28, 0.5);
+  border: 1px solid rgba(143, 207, 174, 0.5);
+}
+.jb-fstatus-scheduled .jb-fstatus-dot { --ping: 143, 207, 174; }
+/* Mid-trip — muted, in the air. */
+.jb-fstatus-departed {
+  color: rgb(var(--jb-screen-rgb)); background: rgba(20, 22, 28, 0.42);
+  border: 1px solid rgba(var(--jb-screen-rgb), 0.34);
+}
+.jb-fstatus-departed .jb-fstatus-dot { --ping: 156, 150, 132; }
+/* Over — quiet, no pip. */
+.jb-fstatus-documented {
+  color: rgb(var(--jb-screen-rgb)); background: rgba(20, 22, 28, 0.42);
+  border: 1px solid rgba(var(--jb-screen-rgb), 0.34);
+}
+.jb-fstatus-dot {
+  --ping: 194, 101, 90;
+  width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--ping));
+  animation: jbPing 2.4s ease-out infinite;
 }
 
-.journey-card-desc {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.5;
-  opacity: 0.85;
+/* =================== CLOSING LINE =================== */
+.jb-foot {
+  margin-top: 56px; padding: 26px 0 0; border-top: 1px solid var(--jb-line-strong);
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--jb-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
 }
 
-/* Sub-location pills (legacy, kept for map compatibility) */
-.journey-card-subs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.5rem;
+/* =================== ENTRANCE =================== */
+.th, .jb-slabel, .jb-feature, .jb-foot {
+  animation: jbRise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.jb-slabel { animation-delay: 0.05s; }
+.jb-feature { animation-delay: 0.1s; }
+@keyframes jbRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =================== RESPONSIVE =================== */
+@media (max-width: 880px) {
+  .jb-feature, .jb-feature.jb-feature-alt { grid-template-columns: 1fr; }
+  .jb-feature.jb-feature-alt .jb-fbody { order: 1; }
+  .jb-feature.jb-feature-alt .jb-fplate { order: 2; }
+  .jb-fplate { min-height: 200px; }
 }
 
-.journey-card-sub {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-secondary);
-  padding: 0.12rem 0.45rem;
-  border-radius: 8px;
-  opacity: 0.8;
+@media (prefers-reduced-motion: reduce) {
+  .th-live, .jb-fstatus-dot { animation: none; }
+  .th-track { animation: none; }
+  .th, .jb-slabel, .jb-feature, .jb-foot { animation: none; }
+  .jb-feature:hover .jb-fplate svg { transform: none; }
 }
 
-/* Professional badges */
-.journey-card-pros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.45rem;
-}
-
-.journey-card-pro {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: var(--card-bg);
-  background: var(--accent-primary);
-  padding: 0.15rem 0.5rem;
-  border-radius: 8px;
-  letter-spacing: 0.01em;
-}
-
-.journey-card-home .journey-card-pro {
-  background: var(--accent-secondary);
-}
-
-/* Excursion cards — indented, subtler */
-.journey-scroll-entry.excursion {
-  padding-left: 1.5rem;
-}
-
-.journey-card-excursion {
-  border-left: 1px dashed var(--border-color);
-  border-radius: 0 10px 10px 0;
-}
-
-.journey-card-excursion .journey-card-accent {
-  display: none;
-}
-
-.journey-card-excursion-tag {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.5rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  opacity: 0.5;
-  font-style: italic;
-}
-
-/* Mini stats footer */
-.journey-stats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 2rem 0 1rem;
-  opacity: 0.5;
-}
-
-.journey-stat {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  letter-spacing: 0.03em;
-}
-
-.journey-stat-sep {
-  font-size: 0.5rem;
-  color: var(--text-secondary);
-  opacity: 0.4;
-}
-
-/* ---- Mobile fallback ---- */
-.journey-mobile-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  padding: 2rem;
-}
-
-.journey-mobile-text {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  opacity: 0.6;
-  text-align: center;
-  letter-spacing: 0.01em;
-  line-height: 1.6;
-}
