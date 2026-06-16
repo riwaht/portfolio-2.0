@@ -654,8 +654,6 @@ export function getArrivalsLedger(today = new Date()) {
 
     const status =
       rep.type === 'current' ? 'RESIDENT' : rep.type === 'home' ? 'HOME' : 'STAMPED';
-    const tone =
-      rep.type === 'current' ? 'gold' : rep.type === 'home' ? 'oxblood' : 'teal';
     const y = yearOf(rep);
     const label =
       rep.type === 'current'
@@ -676,7 +674,6 @@ export function getArrivalsLedger(today = new Date()) {
       region: company ? `${country} · ${company}` : country,
       label,
       status,
-      tone,
       sortKey,
     });
   }
