@@ -17,8 +17,9 @@ import { pad2, prefersReducedMotion } from '../../Utils/ui';
  * dark terminal screen (RIWA HOTEIT INTL), independent of the site theme:
  *   1. Terminal header — name, live "now" pip, ticking clock, boarding ticker.
  *   2. Departures — the featured itineraries as a split-flap board that links
- *      out to each live itinerary, plus the same trips walked day-by-day below.
- *   3. Arrivals — a split-flap mirror of every other place I've landed.
+ *      out to each live itinerary.
+ *   3. Now Boarding — those same featured trips walked day-by-day as spreads.
+ *   4. Arrivals — a split-flap mirror of every other place I've landed.
  * Trips graduate from Departures to the Arrivals ledger automatically by date.
  */
 function JourneyBoard() {

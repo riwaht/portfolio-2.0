@@ -2829,7 +2829,7 @@ body.journey-page {
 }
 
 /* One ring-pulse, coloured per element via --ping — shared by the terminal
-   header "now" pip, the poster "upcoming" dot, and the board live dots. */
+   header "now" pip, the poster "upcoming" dot, and the arrivals live-ping dot. */
 @keyframes jbPing {
   0% { box-shadow: 0 0 0 0 rgba(var(--ping), 0.45); }
   70% { box-shadow: 0 0 0 7px rgba(var(--ping), 0); }
