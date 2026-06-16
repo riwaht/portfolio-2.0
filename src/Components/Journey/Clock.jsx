@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
  * pass `seconds` for the `HH:MM:SS` terminal-header readout. The colon(s) blink
  * via CSS (.dep-colon — renamed to .fb-colon in the FlapBoard migration).
  */
-function Clock({ seconds = false, className = 'dep-clock' }) {
+function Clock({ seconds = false, className = 'fb-clock' }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000);
@@ -16,8 +16,8 @@ function Clock({ seconds = false, className = 'dep-clock' }) {
   const ss = String(now.getSeconds()).padStart(2, '0');
   return (
     <span className={className}>
-      {hh}<span className="dep-colon">:</span>{mm}
-      {seconds && <><span className="dep-colon">:</span>{ss}</>}
+      {hh}<span className="fb-colon">:</span>{mm}
+      {seconds && <><span className="fb-colon">:</span>{ss}</>}
     </span>
   );
 }

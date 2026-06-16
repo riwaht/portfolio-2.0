@@ -1,5 +1,4 @@
-import Clock from './Clock';
-import { prefersReducedMotion } from '../../Utils/ui';
+import FlapBoard from './FlapBoard';
 
 // "RH 0723" — a stable flight number built from the departure date.
 const flightNo = (trip) => {
@@ -17,71 +16,49 @@ const departDate = (trip) => {
 };
 
 // A real-board "REMARKS" status, derived from the trip's lifecycle status.
-// The soonest still-upcoming trip is "Boarding"; later upcoming ones are "On time";
+// The soonest still-upcoming trip is "Boarding"; later upcoming ones "On time";
 // trips whose dates have passed read "Departed".
 const remark = (trip, isNext) => {
   if (trip.status !== 'upcoming') return { text: 'Departed', kind: 'departed' };
   return isNext ? { text: 'Boarding', kind: 'boarding' } : { text: 'On time', kind: 'ontime' };
 };
 
-// One Solari "flap" tile — flips down into place on load (staggered by `delay`).
-function Flap({ children, delay = 0, className = '' }) {
-  return (
-    <span className={`dep-flap ${className}`} style={{ '--d': `${delay}s` }}>{children}</span>
-  );
-}
+const COLUMNS = ['Departs', 'Destination', 'Flight', 'Remarks'];
 
 /**
- * An airport split-flap DEPARTURES board for the featured itineraries: one
- * flight row per trip, departing the current base (Paris · CDG). Rows link to
- * the live itinerary and trigger the same palette wash as the poster spreads.
- * It's the crisp schedule; the posters below are the gate detail.
+ * The DEPARTURES board: one flight row per featured itinerary, departing the
+ * current base (Paris · CDG). Rows link to the live itinerary and trigger the
+ * same palette wash as the poster spreads. A thin config over FlapBoard.
  */
 function DeparturesBoard({ trips, origin, onOpen }) {
   if (!trips || trips.length === 0) return null;
-  const reduce = prefersReducedMotion();
-  const stagger = (row, col) => (reduce ? 0 : 0.12 + row * 0.16 + col * 0.07);
   const nextId = (trips.find((t) => t.status === 'upcoming') || {}).id;
+  const title = origin ? `${origin.code} · ${origin.city}` : 'Departures';
 
-  return (
-    <div className="dep-board" aria-label="Departures board">
-      <div className="dep-head">
-        <span className="dep-title">{origin ? `${origin.code} · ${origin.city}` : 'Departures'}</span>
-        <span className="dep-live"><span className="dep-live-dot" aria-hidden="true" /> Live</span>
-        <Clock />
-      </div>
-      <div className="dep-cols" aria-hidden="true">
-        <span>Departs</span>
-        <span>Destination</span>
-        <span>Flight</span>
-        <span>Remarks</span>
-      </div>
-      <div className="dep-rows">
-        {trips.map((trip, i) => {
-          const r = remark(trip, trip.id === nextId);
-          return (
-            <a
-              key={trip.id}
-              className="dep-row"
-              href={trip.itinerary}
-              onClick={onOpen ? (e) => onOpen(e, trip) : undefined}
-            >
-              <Flap delay={stagger(i, 0)} className="dep-when">{departDate(trip)}</Flap>
-              <span className="dep-dest">
-                <Flap delay={stagger(i, 1)} className="dep-city">{trip.city}</Flap>
-                <span className="dep-region">{trip.region || trip.country}</span>
-              </span>
-              <Flap delay={stagger(i, 2)} className="dep-flight">{flightNo(trip)}</Flap>
-              <Flap delay={stagger(i, 3)} className={`dep-status dep-status-${r.kind}`}>
-                {r.text}
-                <span className="dep-arrow" aria-hidden="true">→</span>
-              </Flap>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  );
+  const rows = trips.map((trip) => {
+    const r = remark(trip, trip.id === nextId);
+    return {
+      key: trip.id,
+      href: trip.itinerary,
+      onClick: onOpen ? (e) => onOpen(e, trip) : undefined,
+      cells: [
+        { content: departDate(trip), className: 'fb-when' },
+        { content: trip.city, className: 'fb-city', sub: trip.region || trip.country },
+        { content: flightNo(trip), className: 'fb-flight' },
+        {
+          content: (
+            <>
+              {r.text}
+              <span className="fb-arrow" aria-hidden="true">→</span>
+            </>
+          ),
+          className: `fb-status fb-status-${r.kind}`,
+        },
+      ],
+    };
+  });
+
+  return <FlapBoard title={title} columns={COLUMNS} rows={rows} ariaLabel="Departures board" />;
 }
 
 export default DeparturesBoard;
