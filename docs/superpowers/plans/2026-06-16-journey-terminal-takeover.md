@@ -1081,11 +1081,25 @@ with the trimmed version (drops `.jb-eyebrow, .jb-rule, .jb-k, .jb-ctry, .jb-cod
 }
 ```
 
-- [ ] **Step 3: Delete the masthead CSS block**
+- [ ] **Step 3: Delete the masthead CSS block (keep `@keyframes jbPing`)**
 
-In `src/styles.css`, delete the entire masthead section — from the `/* =================== MASTHEAD =================== */` comment through the `@keyframes jbPing { … }` rule's closing brace (the block defining `.jb-masthead, .jb-eyebrow, .jb-h1, .jb-dot, .jb-lead, .jb-rule, .jb-sep, .jb-now, .jb-live`, ≈lines 2843-2881).
+In `src/styles.css`, delete the masthead rules — the `/* =================== MASTHEAD =================== */` comment (≈line 2832) and every rule from `.jb-masthead` through `.jb-live { … }` (≈lines 2833-2863): `.jb-masthead, .jb-eyebrow, .jb-h1, .jb-h1 .jb-dot, .jb-lead, .jb-rule, .jb-rule .jb-sep, .jb-rule b, .jb-rule .jb-now, .jb-live`.
 
-**Keep `@keyframes jbPing`** — it is still used by `.th-live`, `.jb-fstatus-dot`, and `.fb-livedot`. Move the `@keyframes jbPing { … }` rule out of the deleted block: cut it before deleting, then paste it back immediately after the deletion point (just above the `/* =================== TERMINAL HEADER =================== */` comment).
+**Keep `@keyframes jbPing`** (≈lines 2866-2870) — it is still used by `.th-live`, `.jb-fstatus-dot`, and `.fb-live-ping`. It already sits just above the `/* =================== TERMINAL HEADER =================== */` comment, so leave it exactly where it is; only the masthead rules above it are removed.
+
+Refresh the now-stale comment directly above `@keyframes jbPing` (≈lines 2864-2865), which still names the deleted masthead. Replace:
+
+```css
+/* One ring-pulse, coloured per element via --ping — shared by the masthead
+   "currently" dot and the poster "upcoming" dot. */
+```
+
+with:
+
+```css
+/* One ring-pulse, coloured per element via --ping — shared by the terminal
+   header "now" pip, the poster "upcoming" dot, and the board live dots. */
+```
 
 - [ ] **Step 4: Delete the atlas CSS block**
 
