@@ -4,7 +4,7 @@ import AtlasIndex from './AtlasIndex';
 import {
   journeyPoints,
   getJourneyStats,
-  getBoardState,
+  getFeaturedItineraries,
   getArrivalsLedger,
 } from '../../Utils/journeyData';
 
@@ -28,7 +28,7 @@ function JourneyBoard() {
   const [departing, setDeparting] = useState(null);
 
   const stats = getJourneyStats();
-  const { departures } = getBoardState();
+  const featured = getFeaturedItineraries();
   const ledger = getArrivalsLedger();
   const current = journeyPoints.find((p) => p.type === 'current');
   const currentCity = current ? current.city : null;
@@ -72,19 +72,20 @@ function JourneyBoard() {
           </div>
         </header>
 
-        {departures.length > 0 && (
+        {featured.length > 0 && (
           <section aria-label="Featured itineraries">
             <div className="jb-slabel">
               <h2>Featured itineraries</h2>
-              <div className="jb-tag">Documented · day by day<br />Upcoming · 2026</div>
+              <div className="jb-tag">Planned in full · walked day by day</div>
             </div>
             <div className="jb-features">
-              {departures.map((trip, i) => (
+              {featured.map((trip, i) => (
                 <FeatureItinerary
                   key={trip.id}
                   trip={trip}
                   index={i}
                   alt={i % 2 === 1}
+                  status={trip.status}
                   onOpen={handleOpen}
                 />
               ))}

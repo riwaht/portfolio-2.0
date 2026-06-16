@@ -605,15 +605,22 @@ const yearOf = (p) => {
   return m ? Number(m[1]) : null;
 };
 
-// Split upcoming trips into still-departing vs already-flown, by today's date.
-export function getBoardState(today = new Date()) {
+// Every trip that links to a full documented itinerary stays featured for good.
+// Upcoming ones lead the spread (soonest departure first); once the dates pass
+// they flip from "upcoming" to "documented" and slide below — most recent first —
+// but they never drop off the page. This keeps the itineraries unmissable whether
+// the trip is still ahead or already written up day-by-day.
+export function getFeaturedItineraries(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
-  const upcoming = journeyPoints.filter((p) => p.type === 'upcoming');
-  const departures = upcoming
-    .filter((p) => p.endDate >= iso)
-    .sort((a, b) => a.startDate.localeCompare(b.startDate));
-  const graduated = upcoming.filter((p) => p.endDate < iso);
-  return { departures, graduated };
+  return journeyPoints
+    .filter((p) => p.itinerary)
+    .map((p) => ({ ...p, status: p.endDate >= iso ? 'upcoming' : 'documented' }))
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === 'upcoming' ? -1 : 1;
+      return a.status === 'upcoming'
+        ? a.startDate.localeCompare(b.startDate) // next departure first
+        : b.startDate.localeCompare(a.startDate); // freshest write-up first
+    });
 }
 
 // Deduped, newest-first ledger of every place already arrived in.
@@ -621,8 +628,11 @@ export function getBoardState(today = new Date()) {
 // this view collapses it to one row per city.
 export function getArrivalsLedger(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
+  // Trips with a documented itinerary live in the featured spread permanently,
+  // so keep them out of this quiet index — even after their dates pass — to
+  // avoid listing them twice.
   const arrived = journeyPoints.filter(
-    (p) => p.type !== 'upcoming' || p.endDate < iso
+    (p) => (p.type !== 'upcoming' || p.endDate < iso) && !p.itinerary
   );
 
   const byCity = new Map();

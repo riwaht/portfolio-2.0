@@ -2795,6 +2795,35 @@ body.journey-page .social-icon:hover {
 }
 body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
+/* ---- Dark mode: the field notebook after dark ----
+   The site toggle flips <html data-theme="dark">; remap the whole jb-* palette to
+   a deep warm charcoal so the journey page follows the rest of the site instead of
+   staying locked to paper. The poster plates keep their own vivid inks. */
+html[data-theme="dark"] body.journey-page {
+  --jb-paper: #15171C;
+  --jb-paper-2: #1B1E24;
+  --jb-card: #1E232B;
+  --jb-ink: #ECE6D8;
+  --jb-ink-soft: #B4B0A2;
+  --jb-muted: #837F70;
+  --jb-line: #2D323B;
+  --jb-line-2: #3A404A;
+  --jb-line-strong: #5E6258;
+  --jb-oxblood: #D58D6F;
+  --jb-gold: #D9B25E;
+  --jb-coral: #DA8472;
+  --jb-teal: #4FB0A6;
+  --jb-alpine: #5FB58E;
+  --jb-sea: #5AA9C9;
+  background-color: var(--jb-paper);
+  background-image:
+    radial-gradient(1200px 620px at 50% -120px, rgba(213, 141, 111, 0.10), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  color: var(--jb-ink);
+}
+html[data-theme="dark"]:has(body.journey-page) { background-color: #15171C; }
+html[data-theme="dark"] body.journey-page .footer { border-top-color: var(--jb-line); }
+
 .jb-board { color: var(--jb-ink); padding-bottom: 40px; }
 .jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
 
@@ -2907,24 +2936,62 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 .jb-fcta .jb-line { flex: 1; height: 1px; background: var(--jb-line-2); min-width: 28px; transition: background 0.4s ease; }
 .jb-feature:hover .jb-fcta .jb-line { background: var(--jb-accent); }
 
-/* the line-art "plate" */
+/* the printed travel-poster "plate" */
 .jb-fplate {
-  position: relative; border-radius: 4px; overflow: hidden; min-height: 300px;
-  background: var(--jb-card);
-  background: linear-gradient(160deg, color-mix(in srgb, var(--jb-accent) 16%, var(--jb-card)), var(--jb-card) 70%);
+  position: relative; border-radius: 5px; overflow: hidden; min-height: 320px;
+  background: #1C2430;
   border: 1px solid var(--jb-line);
+  box-shadow: inset 0 0 0 1px rgba(244, 236, 220, 0.12), 0 18px 34px -26px rgba(20, 16, 12, 0.55);
 }
-.jb-fplate svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.jb-fplate svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.jb-feature:hover .jb-fplate svg { transform: scale(1.045); }
+/* legibility scrim for the corner labels */
+.jb-fplate::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(16, 18, 24, 0.42) 0%, transparent 26%),
+    linear-gradient(0deg, rgba(16, 18, 24, 0.40) 0%, transparent 24%);
+}
 .jb-badge {
-  position: absolute; left: 18px; bottom: 16px; z-index: 2;
+  position: absolute; left: 18px; bottom: 15px; z-index: 2;
   font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--jb-accent);
+  text-transform: uppercase; color: #F1E7D4;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
   display: flex; align-items: center; gap: 8px;
 }
 .jb-iata {
   position: absolute; right: 18px; top: 14px; z-index: 2;
   font-family: var(--font-mono); font-weight: 600; font-size: 1.1rem;
-  letter-spacing: 0.2em; color: color-mix(in srgb, var(--jb-accent) 70%, var(--jb-ink));
+  letter-spacing: 0.2em; color: #F4ECDC;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+/* upcoming / documented status badge */
+.jb-fstatus {
+  position: absolute; left: 16px; top: 14px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 5px 11px; border-radius: 100px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+.jb-fstatus-upcoming {
+  color: #1A1410; background: rgba(244, 222, 140, 0.92);
+  box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.4);
+}
+.jb-fstatus-documented {
+  color: #F4ECDC; background: rgba(20, 22, 28, 0.42);
+  border: 1px solid rgba(244, 236, 220, 0.34);
+}
+.jb-fstatus-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #C2655A;
+  animation: jbFsDot 2.4s ease-out infinite;
+}
+@keyframes jbFsDot {
+  0% { box-shadow: 0 0 0 0 rgba(194, 101, 90, 0.5); }
+  70% { box-shadow: 0 0 0 6px rgba(194, 101, 90, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(194, 101, 90, 0); }
 }
 
 /* =================== EVERYWHERE ELSE INDEX =================== */
@@ -2981,7 +3048,8 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .jb-live { animation: none; }
+  .jb-live, .jb-fstatus-dot { animation: none; }
   .jb-masthead, .jb-slabel, .jb-feature, .jb-atlas, .jb-foot { animation: none; }
+  .jb-feature:hover .jb-fplate svg { transform: none; }
 }
 

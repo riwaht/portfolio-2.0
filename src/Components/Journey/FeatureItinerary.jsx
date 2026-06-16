@@ -12,34 +12,83 @@ function coordLabel(geo) {
   return `${Math.abs(geo.lat).toFixed(1)}°${ns} · ${Math.abs(geo.lon).toFixed(1)}°${ew}`;
 }
 
-// Topographic contour lines rising to a summit — the Alps.
-function AlpinePlate() {
+/**
+ * A printed travel-poster of the Dolomites at dusk: a dawn-to-rose sky, a pale
+ * disc low over the range, and layered limestone peaks whose upper faces catch
+ * the "enrosadira" alpenglow. `uid` keeps gradient ids unique per spread.
+ */
+function AlpinePoster({ uid }) {
   return (
-    <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <g fill="none" stroke="var(--jb-accent)" strokeWidth="1.1">
-        <path d="M-20,250 C60,235 120,150 200,140 C280,150 340,232 420,248" opacity="0.30" />
-        <path d="M-20,268 C60,255 130,178 200,168 C270,178 340,252 420,266" opacity="0.40" />
-        <path d="M-20,286 C60,276 135,206 200,196 C265,206 340,272 420,284" opacity="0.52" />
-        <path d="M-20,304 C60,298 140,236 200,226 C260,236 340,294 420,302" opacity="0.66" />
-        <path d="M120,150 C150,90 175,60 200,40 C225,60 250,92 280,150" opacity="0.7" />
-        <path d="M150,150 C170,108 186,86 200,72 C214,86 230,110 250,150" opacity="0.8" />
-      </g>
-      <circle cx="200" cy="40" r="2.4" fill="var(--jb-accent)" />
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#26313F" />
+          <stop offset="0.42" stopColor="#6B5A6B" />
+          <stop offset="0.74" stopColor="#C58A72" />
+          <stop offset="1" stopColor="#EBBC8C" />
+        </linearGradient>
+        <linearGradient id={`${uid}-lit`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#EA9E79" />
+          <stop offset="1" stopColor="#B85C49" />
+        </linearGradient>
+      </defs>
+      <rect width="400" height="300" fill={`url(#${uid}-sky)`} />
+      {/* low sun disc */}
+      <circle cx="300" cy="96" r="28" fill="#F6E6C4" opacity="0.9" />
+      {/* hazy back range */}
+      <polygon points="0,182 70,150 140,176 210,142 290,176 360,148 400,172 400,300 0,300" fill="#8E7F88" opacity="0.45" />
+      {/* mid stone range */}
+      <polygon points="0,210 64,170 132,200 210,156 288,198 356,164 400,194 400,300 0,300" fill="#585366" opacity="0.85" />
+      {/* front massif — shadow body */}
+      <polygon points="0,300 0,238 96,168 150,210 250,120 330,196 400,168 400,300" fill="#352F3B" />
+      {/* alpenglow-lit faces (left side of each peak) */}
+      <polygon points="96,168 96,300 0,300 0,238" fill={`url(#${uid}-lit)`} opacity="0.92" />
+      <polygon points="250,120 250,300 150,300 150,210" fill={`url(#${uid}-lit)`} />
+      {/* snow caps */}
+      <polygon points="250,120 268,138 232,138" fill="#F4ECDC" opacity="0.85" />
+      <polygon points="96,168 110,184 82,184" fill="#F4ECDC" opacity="0.7" />
+      {/* foreground forest */}
+      <path d="M0,300 L0,272 Q100,260 200,270 T400,266 L400,300 Z" fill="#1C3A30" />
     </svg>
   );
 }
 
-// Concentric wave lines under a low sun — the Ionian.
-function SeaPlate() {
+/**
+ * A printed travel-poster of the Ionian: a teal-to-gold sky, a low sun laying a
+ * reflection down the water, banded waves, and a small headland — Corfu.
+ */
+function SeaPoster({ uid }) {
   return (
-    <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <circle cx="300" cy="96" r="34" fill="none" stroke="var(--jb-accent)" strokeWidth="1.2" opacity="0.5" />
-      <g fill="none" stroke="var(--jb-accent)" strokeWidth="1.2">
-        <path d="M-20,170 C60,156 120,184 200,172 C280,160 340,186 420,174" opacity="0.32" />
-        <path d="M-20,198 C70,184 130,212 200,200 C270,188 350,214 420,202" opacity="0.42" />
-        <path d="M-20,226 C60,214 130,242 200,230 C270,218 350,244 420,232" opacity="0.54" />
-        <path d="M-20,254 C70,244 130,270 200,258 C270,246 350,272 420,260" opacity="0.66" />
-        <path d="M-20,282 C60,274 130,298 200,286 C270,274 350,300 420,288" opacity="0.78" />
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#1C5468" />
+          <stop offset="0.55" stopColor="#54879A" />
+          <stop offset="0.82" stopColor="#E7C079" />
+          <stop offset="1" stopColor="#F4D58C" />
+        </linearGradient>
+        <linearGradient id={`${uid}-sea`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#3E8C97" />
+          <stop offset="1" stopColor="#114049" />
+        </linearGradient>
+      </defs>
+      {/* sky */}
+      <rect width="400" height="158" fill={`url(#${uid}-sky)`} />
+      {/* sun + glow */}
+      <circle cx="206" cy="132" r="40" fill="#F8DE94" opacity="0.35" />
+      <circle cx="206" cy="134" r="26" fill="#F9E3A0" />
+      {/* headland on the left horizon */}
+      <path d="M0,158 L0,128 Q40,108 84,134 L96,158 Z" fill="#123A40" opacity="0.9" />
+      {/* sea */}
+      <rect y="156" width="400" height="144" fill={`url(#${uid}-sea)`} />
+      {/* sun reflection column */}
+      <polygon points="186,158 226,158 246,300 166,300" fill="#F6DC93" opacity="0.22" />
+      {/* wave crests, near→far lightening */}
+      <g fill="none" stroke="#CFE7E4" strokeLinecap="round">
+        <path d="M-10,176 q30,-8 60,0 t60,0 t60,0 t60,0 t60,0 t60,0" strokeWidth="2" opacity="0.5" />
+        <path d="M-10,202 q34,-9 68,0 t68,0 t68,0 t68,0 t68,0" strokeWidth="2.4" opacity="0.45" />
+        <path d="M-10,236 q38,-11 76,0 t76,0 t76,0 t76,0 t76,0" strokeWidth="3" opacity="0.4" />
+        <path d="M-10,276 q42,-12 84,0 t84,0 t84,0 t84,0 t84,0" strokeWidth="3.4" opacity="0.34" />
       </g>
     </svg>
   );
@@ -47,14 +96,17 @@ function SeaPlate() {
 
 /**
  * One documented itinerary as a large editorial spread: body (index, city,
- * meta, tagline, stop chips, CTA) beside a line-art "plate". Alternating
- * layouts (`alt`) flip the columns. The whole card is a link to the live
+ * meta, tagline, stop chips, CTA) beside a printed travel-poster "plate".
+ * Alternating layouts (`alt`) flip the columns. A status badge marks whether
+ * the trip is still upcoming or already written up day-by-day, so featured
+ * itineraries stay on the page for good. The whole card links to the live
  * itinerary; onOpen washes the screen in the trip's palette before navigating.
  */
-function FeatureItinerary({ trip, index, alt, onOpen }) {
+function FeatureItinerary({ trip, index, alt, status = 'documented', onOpen }) {
   const theme = trip.theme === 'sea' ? 'sea' : 'alpine';
   const regionLabel = (trip.region || trip.country).replace(' · ', ' / ');
   const stops = trip.stops || [];
+  const uid = `fp${index}`;
 
   return (
     <a
@@ -80,15 +132,19 @@ function FeatureItinerary({ trip, index, alt, onOpen }) {
           </div>
         )}
         <span className="jb-fcta">
-          Read the itinerary
+          {status === 'upcoming' ? 'See the plan' : 'Read the itinerary'}
           <span className="jb-line" aria-hidden="true" />
           <span className="jb-arrow" aria-hidden="true">{'→'}</span>
         </span>
       </div>
       <div className="jb-fplate">
+        {theme === 'sea' ? <SeaPoster uid={uid} /> : <AlpinePoster uid={uid} />}
+        <span className={`jb-fstatus jb-fstatus-${status}`}>
+          {status === 'upcoming' && <span className="jb-fstatus-dot" aria-hidden="true" />}
+          {status === 'upcoming' ? 'Upcoming' : 'Documented'}
+        </span>
         <span className="jb-iata">{trip.iata}</span>
         <span className="jb-badge"><span aria-hidden="true">{GLYPH[theme]}</span> {coordLabel(trip.geo)}</span>
-        {theme === 'sea' ? <SeaPlate /> : <AlpinePlate />}
       </div>
     </a>
   );
