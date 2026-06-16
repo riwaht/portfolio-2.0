@@ -462,19 +462,53 @@ to:
   --d-ink: #1A1410;
 ```
 
-- [ ] **Step 4: Build**
+- [ ] **Step 4: Make the shared site nav + mobile menu continuous with the screen**
+
+The sticky site nav (`.navbar`) and the mobile menu read SITE-level tokens
+(`--nav-bg`, `--accent-primary`, `--text-primary`, …) that still resolve to LIGHT
+values under the site's light theme — leaving a light bar sitting on top of the
+dark page (the site's *dark* theme is navy `#2F4858`, which also doesn't match the
+terminal charcoal). Journey *content* uses `jb-*` tokens and is self-contained, so
+remap only the shared site tokens to the terminal palette, scoped to
+`body.journey-page`, so the bar reads as part of the screen in BOTH themes. Add
+this rule immediately after the `body.journey-page .footer-text { … }` line:
+
+```css
+/* The shared sticky nav + mobile menu read site-level tokens; remap them to the
+   terminal palette so the bar is part of the dark screen in both site themes.
+   Journey content uses jb-* tokens, so this only retargets the shared chrome. */
+body.journey-page {
+  --nav-bg: rgba(21, 23, 28, 0.92);
+  --bg-primary: var(--jb-paper);
+  --bg-secondary: var(--jb-paper-2);
+  --card-bg: var(--jb-card);
+  --text-primary: var(--jb-ink);
+  --text-secondary: var(--jb-ink-soft);
+  --accent-primary: var(--jb-amber);
+  --accent-secondary: var(--jb-gold);
+  --border-color: var(--jb-line);
+}
+```
+
+- [ ] **Step 5: Build**
 
 Run: `npm run build`
 Expected: exits 0. Ignore the chunk-size warning.
 
-- [ ] **Step 5: Preview check (both theme states)**
+- [ ] **Step 6: Preview check (both theme states + nav)**
 
-Open `/journey` with the site in LIGHT theme: the page is the dark charcoal terminal (not paper). Toggle the site to DARK: the page looks the same — it does NOT change. Confirm the charcoal background via a computed-style read to defeat any stale offscreen paint:
+Open `/journey` with the site in LIGHT theme: the page AND the sticky top nav are
+the dark charcoal terminal (not paper); the brand reads amber. Open the mobile
+hamburger menu — the overlay is charcoal too. Toggle the site to DARK: nothing
+changes. Confirm via computed-style reads (defeats stale offscreen paint):
 
-Run (in the preview eval console): `getComputedStyle(document.body).backgroundColor`
-Expected: an `rgb(21, 23, 28)`-equivalent value in BOTH toggle states.
+Run: `getComputedStyle(document.body).backgroundColor` → `rgb(21, 23, 28)` in BOTH states.
+Run: `getComputedStyle(document.querySelector('.navbar')).backgroundColor` → a dark `rgba(21, 23, 28, …)` in BOTH states.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
+
+The palette collapse (Steps 1–3) already landed as the "always-dark terminal
+screen" commit. Commit the nav continuity (Step 4) separately:
 
 ```bash
 git add src/styles.css
@@ -485,6 +519,24 @@ Collapse the light + dark jb-* palettes into one always-dark device
 palette on body.journey-page, so /journey reads as one continuous FIDS
 display regardless of the site light/dark toggle. Add a shared
 --jb-amber signage token and point the board at it.
+
+Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
+EOF
+)"
+```
+
+Then the nav-continuity commit:
+
+```bash
+git add src/styles.css
+git commit -m "$(cat <<'EOF'
+feat(journey): carry the always-dark screen into the shared nav
+
+Remap the site-level nav/menu tokens to the terminal palette on
+body.journey-page so the sticky bar and mobile menu read as part of the
+dark screen in both site themes (they previously stayed light under the
+site light theme). Scoped to the journey page; other pages keep the
+site palette.
 
 Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
 EOF
