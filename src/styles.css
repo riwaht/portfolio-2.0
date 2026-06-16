@@ -3035,6 +3035,21 @@ body.journey-page {
 }
 .fb-status-ontime { color: #8FCFAE; }
 .fb-status-departed { color: #9C9684; }
+/* Arrivals — year-divider band + arrival remark variants (mirror Departures). */
+.fb-divider {
+  display: flex; justify-content: center; padding: 14px 8px 8px;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.34em;
+  text-transform: uppercase; color: #6C7160;
+}
+.fb-row-live { background: rgba(232, 178, 58, 0.06); }
+.fb-status-arrived { color: #8FCFAE; }
+.fb-status-home { color: var(--d-amber); }
+.fb-status-live { color: var(--d-amber); display: inline-flex; align-items: center; gap: 7px; }
+.fb-livedot {
+  --ping: 232, 178, 58;
+  width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--ping));
+  box-shadow: 0 0 0 0 rgba(var(--ping), 0.5); animation: jbPing 2.4s ease-out infinite;
+}
 
 @media (max-width: 720px) {
   .fb-cols { display: none; }
@@ -3044,7 +3059,7 @@ body.journey-page {
 }
 @media (prefers-reduced-motion: reduce) {
   .fb-flap { animation: none; }
-  .fb-colon, .fb-live-dot, .fb-status-boarding::before { animation: none; }
+  .fb-colon, .fb-live-dot, .fb-livedot, .fb-status-boarding::before { animation: none; }
 }
 
 /* =================== FEATURED ITINERARIES =================== */

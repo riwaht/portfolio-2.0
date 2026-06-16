@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import FeatureItinerary from './FeatureItinerary';
 import DeparturesBoard from './DeparturesBoard';
 import TerminalHeader from './TerminalHeader';
-import AtlasIndex from './AtlasIndex';
+import ArrivalsBoard from './ArrivalsBoard';
 import {
   journeyPoints,
   getJourneyStats,
@@ -86,7 +86,7 @@ function JourneyBoard() {
             <h2>Arrivals</h2>
             <div className="jb-tag">Everywhere else<br />Stamped · 2018 — now</div>
           </div>
-          <AtlasIndex items={ledger} />
+          <ArrivalsBoard items={ledger} />
         </section>
 
         <div className="jb-foot">
