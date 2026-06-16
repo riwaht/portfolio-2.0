@@ -12,6 +12,8 @@ function Flap({ children, delay = 0, className = '' }) {
 // One board row. A divider row ({ divider }) draws a thin year band; a data row
 // renders its cells, wrapping flap cells in <Flap> and stacking any `sub` line
 // beneath. Rows with `href` link (Departures); rows without are static (Arrivals).
+// Departures emits neither dividers nor `live` rows, so the `.fb-divider` and
+// `.fb-row-live` styles land with the Arrivals board (Task 5), not here.
 function Row({ row, rowIndex, stagger }) {
   if (row.divider) {
     return (

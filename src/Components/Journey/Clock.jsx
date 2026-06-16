@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 /**
  * A ticking screen clock for the terminal boards. Renders `HH:MM` by default;
  * pass `seconds` for the `HH:MM:SS` terminal-header readout. The colon(s) blink
- * via CSS (.dep-colon — renamed to .fb-colon in the FlapBoard migration).
+ * via CSS (.fb-colon).
  */
 function Clock({ seconds = false, className = 'fb-clock' }) {
   const [now, setNow] = useState(() => new Date());
