@@ -10,7 +10,7 @@ import {
   getArrivalsLedger,
   iataFor,
 } from '../../Utils/journeyData';
-import { prefersReducedMotion } from '../../Utils/ui';
+import { pad2, prefersReducedMotion } from '../../Utils/ui';
 
 /**
  * The /journey page as an editorial travel index, in three movements:
@@ -60,38 +60,47 @@ function JourneyBoard() {
         <TerminalHeader stats={stats} currentCity={currentCity} boarding={boardingCities} />
 
         {featured.length > 0 && (
-          <section aria-label="Departures — featured itineraries">
-            <div className="jb-slabel">
-              <h2>Departures</h2>
-              <div className="jb-tag">Featured itineraries<br />Planned in full · walked day by day</div>
-            </div>
-            <DeparturesBoard trips={featured} origin={origin} onOpen={handleOpen} />
-            <div className="jb-features">
-              {featured.map((trip, i) => (
-                <FeatureItinerary
-                  key={trip.id}
-                  trip={trip}
-                  index={i}
-                  alt={i % 2 === 1}
-                  status={trip.status}
-                  onOpen={handleOpen}
-                />
-              ))}
-            </div>
-          </section>
+          <>
+            <section aria-label="Departures — where I'm headed">
+              <div className="jb-slabel">
+                <h2>Departures</h2>
+                <div className="jb-tag">Where I&apos;m headed<br />Boarding now · planned in full</div>
+              </div>
+              <DeparturesBoard trips={featured} origin={origin} onOpen={handleOpen} />
+            </section>
+
+            <section aria-label="Now boarding — the itineraries in detail">
+              <div className="jb-slabel">
+                <h2>Now Boarding</h2>
+                <div className="jb-tag">Gate detail<br />Walked day by day</div>
+              </div>
+              <div className="jb-features">
+                {featured.map((trip, i) => (
+                  <FeatureItinerary
+                    key={trip.id}
+                    trip={trip}
+                    index={i}
+                    alt={i % 2 === 1}
+                    status={trip.status}
+                    onOpen={handleOpen}
+                  />
+                ))}
+              </div>
+            </section>
+          </>
         )}
 
-        <section aria-label="Arrivals — everywhere else">
+        <section aria-label="Arrivals — everywhere I've landed">
           <div className="jb-slabel">
             <h2>Arrivals</h2>
-            <div className="jb-tag">Everywhere else<br />Stamped · 2018 — now</div>
+            <div className="jb-tag">{pad2(ledger.length)} stops<br />Everywhere I&apos;ve landed · 2018 — now</div>
           </div>
           <ArrivalsBoard items={ledger} />
         </section>
 
         <div className="jb-foot">
-          <span>Riwa Hoteit — Field Notes</span>
-          <span>Departures graduate to the index automatically, by date</span>
+          <span>End of display</span>
+          <span>Baggage claim · all carousels · Riwa Hoteit — Field Notes</span>
         </div>
       </div>
 
