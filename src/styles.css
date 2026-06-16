@@ -2745,65 +2745,9 @@ html.page-view {
    Palette is page-scoped to body.journey-page.
    ============================================================ */
 body.journey-page {
-  --jb-paper: #ECE4D2;
-  --jb-paper-2: #E4DAC4;
-  --jb-card: #F6F1E3;
-  --jb-ink: #21252A;
-  --jb-ink-soft: #4E5048;
-  --jb-muted: #948A71;
-  --jb-line: #D8CEB9;
-  --jb-line-2: #C8BCA1;
-  --jb-line-strong: #21252A;
-  --jb-oxblood: #8A3F35;
-  --jb-gold: #A9833F;
-  --jb-coral: #C2655A;
-  --jb-teal: #2C8181;
-  --jb-alpine: #2E6F5E;
-  --jb-sea: #2B6F8C;
-  /* Near-white "ink" printed on the dark board + poster screens. Deliberately
-     NOT re-declared in the dark block, so the device surfaces read identically
-     in light and dark. Stored as an RGB triplet for use as solid + rgba(). */
-  --jb-screen-rgb: 244, 236, 220;
-  /* Grow with content so the paper + grain fill the entire page. Without this
-     the global `height:100%` locks the body to one viewport, and everything
-     scrolled past it falls back to the lighter site canvas — a visible seam. */
-  height: auto;
-  min-height: 100vh;
-  background-color: var(--jb-paper);
-  /* Fixed-size top glow (so it stays a soft halo behind the masthead instead of
-     stretching down a now-tall body) + a tiling grain. */
-  background-image:
-    radial-gradient(1200px 620px at 50% -120px, rgba(138, 63, 53, 0.05), transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  background-repeat: no-repeat, repeat;
-  color: var(--jb-ink);
-}
-/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg.
-   (--jb-paper lives on <body>, which doesn't cascade up to <html>, so use the literal.) */
-html:has(body.journey-page) { background-color: #ECE4D2; }
-body.journey-page .page-container { background-color: transparent; }
-/* Let the shared site footer settle onto the paper instead of its own tan slab. */
-body.journey-page .footer {
-  background-color: transparent;
-  border-top: 1px solid var(--jb-line);
-}
-body.journey-page .social-icon {
-  background-color: transparent;
-  border-color: var(--jb-line-2);
-  color: var(--jb-ink-soft);
-}
-body.journey-page .social-icon:hover {
-  background-color: var(--jb-oxblood);
-  border-color: var(--jb-oxblood);
-  color: var(--jb-paper);
-}
-body.journey-page .footer-text { color: var(--jb-ink-soft); }
-
-/* ---- Dark mode: the field notebook after dark ----
-   The site toggle flips <html data-theme="dark">; remap the whole jb-* palette to
-   a deep warm charcoal so the journey page follows the rest of the site instead of
-   staying locked to paper. The poster plates keep their own vivid inks. */
-html[data-theme="dark"] body.journey-page {
+  /* Always-dark terminal screen — one continuous FIDS display regardless of the
+     site light/dark toggle. (Formerly split into a light palette + a dark
+     override; the page now renders its own device palette unconditionally.) */
   --jb-paper: #15171C;
   --jb-paper-2: #1B1E24;
   --jb-card: #1E232B;
@@ -2819,14 +2763,40 @@ html[data-theme="dark"] body.journey-page {
   --jb-teal: #4FB0A6;
   --jb-alpine: #5FB58E;
   --jb-sea: #5AA9C9;
+  /* Near-white "ink" printed on the board + poster screens. */
+  --jb-screen-rgb: 244, 236, 220;
+  /* Terminal amber — the board/header signage accent. */
+  --jb-amber: #E8B23A;
+  /* Grow with content so the screen + grain fill the entire page (the global
+     height:100% otherwise locks the body to one viewport). */
+  height: auto;
+  min-height: 100vh;
   background-color: var(--jb-paper);
   background-image:
     radial-gradient(1200px 620px at 50% -120px, rgba(213, 141, 111, 0.10), transparent 70%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
   color: var(--jb-ink);
 }
-html[data-theme="dark"]:has(body.journey-page) { background-color: #15171C; }
-html[data-theme="dark"] body.journey-page .footer { border-top-color: var(--jb-line); }
+/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg. */
+html:has(body.journey-page) { background-color: #15171C; }
+body.journey-page .page-container { background-color: transparent; }
+/* Let the shared site footer settle onto the screen instead of its own slab. */
+body.journey-page .footer {
+  background-color: transparent;
+  border-top: 1px solid var(--jb-line);
+}
+body.journey-page .social-icon {
+  background-color: transparent;
+  border-color: var(--jb-line-2);
+  color: var(--jb-ink-soft);
+}
+body.journey-page .social-icon:hover {
+  background-color: var(--jb-oxblood);
+  border-color: var(--jb-oxblood);
+  color: var(--jb-paper);
+}
+body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
 .jb-board { color: var(--jb-ink); padding-bottom: 40px; }
 .jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
@@ -2902,7 +2872,7 @@ html[data-theme="dark"] body.journey-page .footer { border-top-color: var(--jb-l
      light paper and dark charcoal; recurring values are tokenised here. The
      near-white "ink" comes from the shared --jb-screen-rgb. */
   --d-line: #2E323C;
-  --d-amber: #E8B23A;
+  --d-amber: var(--jb-amber);
   --d-ink: #1A1410;
   margin: 2px 0 clamp(34px, 6vw, 60px);
   border-radius: 9px; overflow: hidden; color: rgb(var(--jb-screen-rgb));
