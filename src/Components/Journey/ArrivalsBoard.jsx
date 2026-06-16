@@ -13,7 +13,7 @@ function yearKey(item) {
 // other landed city reads ARRIVED.
 const remark = (it) => {
   if (it.status === 'RESIDENT')
-    return { content: (<><span className="fb-livedot" aria-hidden="true" /> Live · Home</>), kind: 'live' };
+    return { content: (<><span className="fb-live-ping" aria-hidden="true" /> Live · Home</>), kind: 'live' };
   if (it.status === 'HOME') return { content: 'Home', kind: 'home' };
   return { content: 'Arrived', kind: 'arrived' };
 };
