@@ -950,7 +950,21 @@ Split the single "Departures" section into two — DEPARTURES (the board) and NO
 **Files:**
 - Modify: `src/Components/Journey/JourneyBoard.jsx` (the returned JSX between `<TerminalHeader … />` and the closing `</div>` of `.jb-wrap`)
 
-- [ ] **Step 1: Replace the section markup**
+- [ ] **Step 1: Re-add the `pad2` import**
+
+Task 4 removed `pad2` from `JourneyBoard.jsx`'s `Utils/ui` import (the masthead that used it was replaced by `TerminalHeader`). The new Arrivals header below calls `pad2(ledger.length)`, so re-add it. Change:
+
+```jsx
+import { prefersReducedMotion } from '../../Utils/ui';
+```
+
+to:
+
+```jsx
+import { pad2, prefersReducedMotion } from '../../Utils/ui';
+```
+
+- [ ] **Step 2: Replace the section markup**
 
 In `src/Components/Journey/JourneyBoard.jsx`, replace everything from `{featured.length > 0 && (` through the closing `</div>` of the `.jb-foot` block with:
 
@@ -1002,16 +1016,16 @@ In `src/Components/Journey/JourneyBoard.jsx`, replace everything from `{featured
 
 Leave the `{departing && ( … departure-wash … )}` block and the `handleOpen`/`useEffect` logic above the `return` exactly as they are.
 
-- [ ] **Step 2: Build**
+- [ ] **Step 3: Build**
 
 Run: `npm run build`
 Expected: exits 0. Ignore the chunk-size warning.
 
-- [ ] **Step 3: Preview check**
+- [ ] **Step 4: Preview check**
 
 Open `/journey`. Top to bottom it now reads as one terminal: header → `Departures` (board) → `Now Boarding` (the poster spreads) → `Arrivals` (board, header shows the `NN stops` tally) → an `End of display` / baggage-claim footer. Click a Departures row: the palette wash still fires and navigates to the itinerary. Press Back: the page restores with no leftover wash (bfcache handler intact).
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add src/Components/Journey/JourneyBoard.jsx
