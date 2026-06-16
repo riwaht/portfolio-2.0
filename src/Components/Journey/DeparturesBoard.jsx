@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import Clock from './Clock';
 import { prefersReducedMotion } from '../../Utils/ui';
 
 // "RH 0723" — a stable flight number built from the departure date.
@@ -23,20 +23,6 @@ const remark = (trip, isNext) => {
   if (trip.status !== 'upcoming') return { text: 'Departed', kind: 'departed' };
   return isNext ? { text: 'Boarding', kind: 'boarding' } : { text: 'On time', kind: 'ontime' };
 };
-
-// Ticking HH:MM clock so the board reads as a live screen.
-function Clock() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(id);
-  }, []);
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  return (
-    <span className="dep-clock">{hh}<span className="dep-colon">:</span>{mm}</span>
-  );
-}
 
 // One Solari "flap" tile — flips down into place on load (staggered by `delay`).
 function Flap({ children, delay = 0, className = '' }) {
