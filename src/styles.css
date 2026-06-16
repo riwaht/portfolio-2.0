@@ -3117,7 +3117,7 @@ body.journey-page {
   letter-spacing: 0.2em; color: rgb(var(--jb-screen-rgb));
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-/* upcoming / documented status badge */
+/* date-accurate trip badge: scheduled · boarding · departed · documented */
 .jb-fstatus {
   position: absolute; left: 16px; top: 14px; z-index: 2;
   display: inline-flex; align-items: center; gap: 7px;
@@ -3125,10 +3125,25 @@ body.journey-page {
   letter-spacing: 0.18em; text-transform: uppercase;
   padding: 5px 11px; border-radius: 100px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
 }
-.jb-fstatus-upcoming {
+/* Departure day — the one loud, amber moment, with a dark pulsing pip. */
+.jb-fstatus-boarding {
   color: #1A1410; background: rgba(244, 222, 140, 0.92);
   box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.4);
 }
+.jb-fstatus-boarding .jb-fstatus-dot { --ping: 26, 20, 16; }
+/* Still ahead — calm green outline counting down to departure. */
+.jb-fstatus-scheduled {
+  color: rgb(var(--jb-screen-rgb)); background: rgba(20, 22, 28, 0.5);
+  border: 1px solid rgba(143, 207, 174, 0.5);
+}
+.jb-fstatus-scheduled .jb-fstatus-dot { --ping: 143, 207, 174; }
+/* Mid-trip — muted, in the air. */
+.jb-fstatus-departed {
+  color: rgb(var(--jb-screen-rgb)); background: rgba(20, 22, 28, 0.42);
+  border: 1px solid rgba(var(--jb-screen-rgb), 0.34);
+}
+.jb-fstatus-departed .jb-fstatus-dot { --ping: 156, 150, 132; }
+/* Over — quiet, no pip. */
 .jb-fstatus-documented {
   color: rgb(var(--jb-screen-rgb)); background: rgba(20, 22, 28, 0.42);
   border: 1px solid rgba(var(--jb-screen-rgb), 0.34);

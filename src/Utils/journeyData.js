@@ -12,7 +12,6 @@ export const journeyPoints = [
     type: 'home',
     description: 'Where it all started. Learned to code, built my first projects, and dreamed about what comes next.',
     professional: [
-      { role: 'Coding Instructor', company: 'Geek Express' },
       { role: 'Software / Simulation Engineer', company: 'inmind.ai' }
     ],
   },
@@ -605,22 +604,40 @@ const yearOf = (p) => {
   return m ? Number(m[1]) : null;
 };
 
-// Every trip that links to a full documented itinerary stays featured for good.
-// Upcoming ones lead the spread (soonest departure first); once the dates pass
-// they flip from "upcoming" to "documented" and slide below — most recent first —
-// but they never drop off the page. This keeps the itineraries unmissable whether
-// the trip is still ahead or already written up day-by-day.
+const DAY_MS = 86400000;
+
+// Date-accurate board phase for a featured itinerary, comparing today (UTC) to
+// the trip's own window. "boarding" is the departure day *itself*, so the amber
+// BOARDING flap only ever lights up on the real date — never before:
+//   scheduled → still ahead        boarding  → the departure day
+//   departed  → mid-trip           documented → over (slides below, kept for the write-up)
+function tripPhase(p, iso) {
+  if (p.endDate < iso) return 'documented';
+  if (iso < p.startDate) return 'scheduled';
+  if (iso === p.startDate) return 'boarding';
+  return 'departed';
+}
+
+// Whole days from today to the departure date (0 once the day arrives).
+function daysToDeparture(startDate, iso) {
+  return Math.max(0, Math.round((Date.parse(startDate) - Date.parse(iso)) / DAY_MS));
+}
+
+// The featured spread is the live slate only: itinerary trips still ahead or in
+// progress, soonest departure first. Once a trip's dates pass it graduates out of
+// here and into the Arrivals ledger (below), so a finished trip is never shown
+// twice. Carrying an itinerary link no longer pins a trip here — that's now just
+// an optional link any stay can have, so older trips can be written up too.
 export function getFeaturedItineraries(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
   return journeyPoints
-    .filter((p) => p.itinerary)
-    .map((p) => ({ ...p, status: p.endDate >= iso ? 'upcoming' : 'documented' }))
-    .sort((a, b) => {
-      if (a.status !== b.status) return a.status === 'upcoming' ? -1 : 1;
-      return a.status === 'upcoming'
-        ? a.startDate.localeCompare(b.startDate) // next departure first
-        : b.startDate.localeCompare(a.startDate); // freshest write-up first
-    });
+    .filter((p) => p.itinerary && tripPhase(p, iso) !== 'documented')
+    .map((p) => ({
+      ...p,
+      phase: tripPhase(p, iso),
+      days: daysToDeparture(p.startDate, iso),
+    }))
+    .sort((a, b) => a.startDate.localeCompare(b.startDate)); // soonest departure first
 }
 
 // Deduped, newest-first ledger of every place already arrived in.
@@ -628,12 +645,13 @@ export function getFeaturedItineraries(today = new Date()) {
 // this view collapses it to one row per city.
 export function getArrivalsLedger(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
-  // Trips with a documented itinerary live in the featured spread permanently,
-  // so keep them out of this quiet index — even after their dates pass — to
-  // avoid listing them twice.
-  const arrived = journeyPoints.filter(
-    (p) => (p.type !== 'upcoming' || p.endDate < iso) && !p.itinerary
-  );
+  // Everything already landed in. A trip is held out only while it's still a live
+  // featured departure (an itinerary trip not yet past its dates) or otherwise
+  // still upcoming; the moment it's documented it graduates in here. Older trips
+  // that gain an itinerary link stay put and simply become clickable rows.
+  const isLiveFeature = (p) => p.itinerary && tripPhase(p, iso) !== 'documented';
+  const isFutureUpcoming = (p) => p.type === 'upcoming' && !(p.endDate < iso);
+  const arrived = journeyPoints.filter((p) => !isLiveFeature(p) && !isFutureUpcoming(p));
 
   const byCity = new Map();
   arrived.forEach((p, i) => {
@@ -651,6 +669,10 @@ export function getArrivalsLedger(today = new Date()) {
     // Pull a company from any entry for the city (e.g. Paris → Mistral, Warsaw → Snowflake).
     const withRole = entries.find((e) => e.p.professional);
     const company = withRole ? withRole.p.professional[0].company : null;
+    // A written-up trip makes its city's row link out (e.g. Dolomites, Corfu once
+    // their dates pass — or any older stay you later document).
+    const withItin = entries.find((e) => e.p.itinerary);
+    const itinerary = withItin ? withItin.p.itinerary : null;
 
     const status =
       rep.type === 'current' ? 'RESIDENT' : rep.type === 'home' ? 'HOME' : 'STAMPED';
@@ -675,6 +697,7 @@ export function getArrivalsLedger(today = new Date()) {
       label,
       status,
       sortKey,
+      itinerary,
     });
   }
 

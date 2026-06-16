@@ -10,13 +10,17 @@ const MONS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OC
  * the Fraunces "Journeys." title, a stats readout with the live "now" ping,
  * and a scrolling LED ticker of the lead line + boarding call.
  */
-function TerminalHeader({ stats, currentCity, boarding = [] }) {
+function TerminalHeader({ stats, currentCity, boarding = [], upcoming = [] }) {
   const now = new Date();
   const dateStr = `${DAYS[now.getDay()]} ${pad2(now.getDate())} ${MONS[now.getMonth()]}`;
 
+  // Date-honest call: announce a real boarding only when one is happening today;
+  // otherwise tease the next scheduled departures.
   const boardingCall = boarding.length
     ? `NOW BOARDING: ${boarding.map((c) => c.toUpperCase()).join(' ✦ ')}`
-    : '';
+    : upcoming.length
+      ? `NEXT UP: ${upcoming.map((c) => c.toUpperCase()).join(' ✦ ')}`
+      : '';
   const tickerText = `EVERYWHERE ELSE THE ROAD HAS GONE${boardingCall ? ` ✦ ${boardingCall}` : ''} ✦ `;
 
   return (

@@ -15,28 +15,41 @@ const departDate = (trip) => {
   return (trip.dateRange || '').toUpperCase();
 };
 
-// A real-board "REMARKS" status, derived from the trip's lifecycle status.
-// The soonest still-upcoming trip is "Boarding"; later upcoming ones "On time";
-// trips whose dates have passed read "Departed".
-const remark = (trip, isNext) => {
-  if (trip.status !== 'upcoming') return { text: 'Departed', kind: 'departed' };
-  return isNext ? { text: 'Boarding', kind: 'boarding' } : { text: 'On time', kind: 'ontime' };
+// A real-board "REMARKS" status, derived from the trip's date-accurate phase.
+// "Boarding" lights up only on the departure day itself; before that a trip reads
+// "On time", once underway "Departed", and it stays "Departed" after the write-up.
+const REMARK = {
+  scheduled: { text: 'On time', kind: 'ontime' },
+  boarding: { text: 'Boarding', kind: 'boarding' },
+  departed: { text: 'Departed', kind: 'departed' },
+  documented: { text: 'Departed', kind: 'departed' },
 };
+const remark = (trip) => REMARK[trip.phase] || REMARK.documented;
 
 const COLUMNS = ['Departs', 'Destination', 'Flight', 'Remarks'];
 
 /**
  * The DEPARTURES board: one flight row per featured itinerary, departing the
  * current base (Paris · CDG). Rows link to the live itinerary and trigger the
- * same palette wash as the poster spreads. A thin config over FlapBoard.
+ * same palette wash as the poster spreads. With nothing upcoming the board stays
+ * put — the centerpiece of the terminal — and simply reads "No departures
+ * scheduled". A thin config over FlapBoard.
  */
 function DeparturesBoard({ trips, origin, onOpen }) {
-  if (!trips || trips.length === 0) return null;
-  const nextId = (trips.find((t) => t.status === 'upcoming') || {}).id;
   const title = origin ? `${origin.code} · ${origin.city}` : 'Departures';
+  if (!trips || trips.length === 0) {
+    return (
+      <FlapBoard
+        title={title}
+        columns={COLUMNS}
+        rows={[{ key: 'none', divider: 'No departures scheduled' }]}
+        ariaLabel="Departures board"
+      />
+    );
+  }
 
   const rows = trips.map((trip) => {
-    const r = remark(trip, trip.id === nextId);
+    const r = remark(trip);
     return {
       key: trip.id,
       href: trip.itinerary,
@@ -53,6 +66,9 @@ function DeparturesBoard({ trips, origin, onOpen }) {
             </>
           ),
           className: `fb-status fb-status-${r.kind}`,
+          // Live countdown under "On time" while a trip is still ahead; the
+          // departure day, mid-trip and write-up rows speak for themselves.
+          sub: trip.phase === 'scheduled' ? `in ${trip.days}d` : undefined,
         },
       ],
     };

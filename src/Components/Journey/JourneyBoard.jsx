@@ -32,10 +32,10 @@ function JourneyBoard() {
   const currentCity = current ? current.city : null;
   // The departures board flies out of wherever home currently is (Paris · CDG).
   const origin = current ? { city: current.city, code: iataFor(current.city) } : null;
-  // Upcoming featured trips power the header's "now boarding" ticker call.
-  const boardingCities = featured
-    .filter((t) => t.status === 'upcoming')
-    .map((t) => t.city);
+  // Header calls stay date-honest: only trips actually boarding today drive the
+  // "now boarding" call; the rest of the upcoming slate teases as "next up".
+  const boardingNow = featured.filter((t) => t.phase === 'boarding').map((t) => t.city);
+  const upcomingNext = featured.filter((t) => t.phase === 'scheduled').map((t) => t.city);
 
   // Wash the screen in the trip's palette, then hand off to the live itinerary.
   const handleOpen = useCallback((e, trip) => {
@@ -59,37 +59,36 @@ function JourneyBoard() {
   return (
     <div className="jb-board">
       <div className="jb-wrap">
-        <TerminalHeader stats={stats} currentCity={currentCity} boarding={boardingCities} />
+        <TerminalHeader stats={stats} currentCity={currentCity} boarding={boardingNow} upcoming={upcomingNext} />
+
+        <section aria-label="Departures — where I'm headed">
+          <div className="jb-slabel">
+            <h2>Departures</h2>
+            <div className="jb-tag">Where I&apos;m headed<br />Next departures · planned in full</div>
+          </div>
+          <DeparturesBoard trips={featured} origin={origin} onOpen={handleOpen} />
+        </section>
 
         {featured.length > 0 && (
-          <>
-            <section aria-label="Departures — where I'm headed">
-              <div className="jb-slabel">
-                <h2>Departures</h2>
-                <div className="jb-tag">Where I&apos;m headed<br />Boarding now · planned in full</div>
-              </div>
-              <DeparturesBoard trips={featured} origin={origin} onOpen={handleOpen} />
-            </section>
-
-            <section aria-label="Now boarding — the itineraries in detail">
-              <div className="jb-slabel">
-                <h2>Now Boarding</h2>
-                <div className="jb-tag">Gate detail<br />Walked day by day</div>
-              </div>
-              <div className="jb-features">
-                {featured.map((trip, i) => (
-                  <FeatureItinerary
-                    key={trip.id}
-                    trip={trip}
-                    index={i}
-                    alt={i % 2 === 1}
-                    status={trip.status}
-                    onOpen={handleOpen}
-                  />
-                ))}
-              </div>
-            </section>
-          </>
+          <section aria-label="Now boarding — the itineraries in detail">
+            <div className="jb-slabel">
+              <h2>Now Boarding</h2>
+              <div className="jb-tag">Gate detail<br />Walked day by day</div>
+            </div>
+            <div className="jb-features">
+              {featured.map((trip, i) => (
+                <FeatureItinerary
+                  key={trip.id}
+                  trip={trip}
+                  index={i}
+                  alt={i % 2 === 1}
+                  phase={trip.phase}
+                  days={trip.days}
+                  onOpen={handleOpen}
+                />
+              ))}
+            </div>
+          </section>
         )}
 
         <section aria-label="Arrivals — everywhere I've landed">

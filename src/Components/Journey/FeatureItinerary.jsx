@@ -3,6 +3,15 @@ import { pad2 } from '../../Utils/ui';
 const ACCENT = { alpine: 'var(--jb-alpine)', sea: 'var(--jb-sea)' };
 const GLYPH = { alpine: '▲', sea: '≈' }; // ▲ peak · ≈ sea
 
+// Poster badge per date-accurate phase. Scheduled spreads count down to the
+// departure; the day itself reads "Boarding today"; mid-trip "En route".
+function badgeText(phase, days) {
+  if (phase === 'boarding') return 'Boarding today';
+  if (phase === 'departed') return 'En route';
+  if (phase === 'documented') return 'Documented';
+  return days <= 1 ? 'Departs tomorrow' : `Departs in ${days} days`;
+}
+
 // "46.5°N · 12.1°E" from the trip's geo, for the plate badge.
 function coordLabel(geo) {
   if (!geo) return '';
@@ -96,13 +105,14 @@ function SeaPoster({ uid }) {
 /**
  * One documented itinerary as a large editorial spread: body (index, city,
  * meta, tagline, stop chips, CTA) beside a printed travel-poster "plate".
- * Alternating layouts (`alt`) flip the columns. A status badge marks whether
- * the trip is still upcoming or already written up day-by-day, so featured
- * itineraries stay on the page for good. The whole card links to the live
- * itinerary; onOpen washes the screen in the trip's palette before navigating.
+ * Alternating layouts (`alt`) flip the columns. A date-accurate badge counts the
+ * spread down to departure, flips to "Boarding" on the day, then settles to
+ * "Documented" — so featured itineraries stay on the page for good. The whole card
+ * links to the live itinerary; onOpen washes the screen in the trip's palette first.
  */
-function FeatureItinerary({ trip, index, alt, status = 'documented', onOpen }) {
+function FeatureItinerary({ trip, index, alt, phase = 'documented', days = 0, onOpen }) {
   const theme = trip.theme === 'sea' ? 'sea' : 'alpine';
+  const upcoming = phase !== 'documented';
   const regionLabel = (trip.region || trip.country).replace(' · ', ' / ');
   const stops = trip.stops || [];
   const uid = `fp${index}`;
@@ -131,16 +141,16 @@ function FeatureItinerary({ trip, index, alt, status = 'documented', onOpen }) {
           </div>
         )}
         <span className="jb-fcta">
-          {status === 'upcoming' ? 'See the plan' : 'Read the itinerary'}
+          {upcoming ? 'See the plan' : 'Read the itinerary'}
           <span className="jb-line" aria-hidden="true" />
           <span className="jb-arrow" aria-hidden="true">{'→'}</span>
         </span>
       </div>
       <div className="jb-fplate">
         {theme === 'sea' ? <SeaPoster uid={uid} /> : <AlpinePoster uid={uid} />}
-        <span className={`jb-fstatus jb-fstatus-${status}`}>
-          {status === 'upcoming' && <span className="jb-fstatus-dot" aria-hidden="true" />}
-          {status === 'upcoming' ? 'Upcoming' : 'Documented'}
+        <span className={`jb-fstatus jb-fstatus-${phase}`}>
+          {upcoming && <span className="jb-fstatus-dot" aria-hidden="true" />}
+          {badgeText(phase, days)}
         </span>
         <span className="jb-iata">{trip.iata}</span>
         <span className="jb-badge"><span aria-hidden="true">{GLYPH[theme]}</span> {coordLabel(trip.geo)}</span>

@@ -23,8 +23,10 @@ const COLUMNS = ['Arrived', 'From', 'Flight', 'Remarks'];
 /**
  * The ARRIVALS board — the deduped arrivals ledger as a split-flap mirror of
  * Departures: one row per city, every row landed. Year-divider bands break the
- * ~22 rows into the index's year groups; the home base anchors the foot. Rows
- * are non-linking (no per-city itinerary), unlike Departures rows.
+ * ~22 rows into the index's year groups; the home base anchors the foot. A row
+ * whose trip has a written-up itinerary links out (with the same "→" affordance
+ * as Departures); the rest are static — so finished trips and any older stay you
+ * later document become clickable here.
  */
 function ArrivalsBoard({ items }) {
   if (!items || items.length === 0) return null;
@@ -44,14 +46,24 @@ function ArrivalsBoard({ items }) {
     rows.push({ key: `yr-${year}`, divider: `—— ${year} ——` });
     byYear.get(year).forEach((it) => {
       const r = remark(it);
+      const href = it.itinerary || undefined;
       rows.push({
         key: it.id,
         live: it.status === 'RESIDENT',
+        href,
         cells: [
           { content: it.label, className: 'fb-when' },
           { content: it.city, className: 'fb-city', sub: it.region },
           { content: it.iata, className: 'fb-flight' },
-          { content: r.content, className: `fb-status fb-status-${r.kind}` },
+          {
+            content: href ? (
+              <>
+                {r.content}
+                <span className="fb-arrow" aria-hidden="true">→</span>
+              </>
+            ) : r.content,
+            className: `fb-status fb-status-${r.kind}`,
+          },
         ],
       });
     });
