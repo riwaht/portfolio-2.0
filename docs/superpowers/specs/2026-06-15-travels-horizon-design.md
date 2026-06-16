@@ -1,7 +1,59 @@
 # Travels "Horizon" — weaving the itineraries hub into `/journey`
 
 **Date:** 2026-06-15
-**Status:** ⚠️ REVISED 2026-06-15 — superseded by the *Arrivals & Departures* redesign (see banner below). Original "Horizon" sections retained for history.
+**Status:** ✅ SHIPPED 2026-06-16 as the *Editorial Travel Index* (see Revision 2 below). The
+*Arrivals & Departures* board (Revision 1) and original "Horizon" (v1) are retained for history.
+
+---
+
+## ✅ Revision 2: Editorial Travel Index — the shipped direction (2026-06-16)
+
+The *Arrivals & Departures* board (Revision 1) was built and previewed, but read as **too
+cluttered**: the same two trips appeared **twice** (flip rows *and* boarding passes), the passport
+skeuomorphism (perforation notches, MRZ strips, rotated stamps) was busy, and the veiled live
+world-map fought the text for attention. The user asked to make it **much sleeker** and to
+**integrate the itineraries as a featured, unmissable** part of the page — explicitly open to
+changing the whole page.
+
+**New concept — the page is an editorial *travel index*, in three movements:**
+
+1. **Masthead.** "The Travel Index" eyebrow, an oversized italic-Fraunces `Journeys.` wordmark, a
+   one-line lead, and a single mono **stat rule** (`22 Cities · 13 Countries · 02 Continents ·
+   Since 2018`) ending in a live `● Currently · Paris` dot. Quiet, confident, lots of air.
+2. **Featured itineraries.** The two upcoming trips (Dolomites, Corfu) as **large alternating
+   editorial feature spreads** — body (index no., city in display Fraunces, kind · nights · dates,
+   tagline, stop chips, a prominent `READ THE ITINERARY →` CTA) beside an on-theme **line-art
+   "plate"** drawn in SVG (alpine = topographic contours rising to a summit; sea = concentric
+   waves under a low sun) badged with the IATA code and coordinates. The whole card is the link;
+   clicking plays the **departure wash** before navigating to the live itinerary. **This is the
+   integration** — the itineraries are now the visual centerpiece, not a footnote.
+3. **Everywhere else.** A quiet, **year-grouped typographic index** of every other place
+   (deduped to one row per city: city · country · IATA), newest-first, with a sticky tally aside
+   ("20 stops") and the home base (Beirut) anchoring the foot.
+
+**Auto-by-date lifecycle preserved.** Trips still carry real dates; `getBoardState()` keeps them in
+*Featured* while upcoming and **graduates them into the index automatically** once flown — zero
+maintenance. `getArrivalsLedger()` still powers the index.
+
+**Kept from Revision 1:** Fraunces site-wide (Phase A), the data model + auto-by-date selectors
+(Phase B), the warm-paper page-scoped palette, and the **departure wash** (re-skinned to the two
+trip themes). Plate accents added: `--jb-alpine #2E6F5E`, `--jb-sea #2B6F8C`.
+
+**Cut to de-clutter:** the duplicate trip rows (flip board + boarding passes → one feature spread
+each), all passport skeuomorphism (perforation/MRZ/stamps), the Solari split-flap reveal, and the
+sticky scroll-stage world map. (`journeyData` keeps its data + `mrz`/`stops` fields; the map's grid
+helper stays for the data layer, but `JourneyMap`/`BoardRow`/`BoardingPass`/`ArrivalsLedger`
+components were removed.)
+
+**Components (final):** `JourneyBoard.jsx` (orchestrator), `FeatureItinerary.jsx` (feature spread
++ SVG plates), `AtlasIndex.jsx` (year-grouped index). `Journey.jsx` wraps `Navbar` + board +
+`Footer`. **Removed:** `BoardRow`, `BoardingPass`, `ArrivalsLedger`, `JourneyMap`,
+`JourneyTimeline`, `JourneyHorizon`.
+
+**Verified** on the live preview (Preview MCP) at desktop (1280×860) and mobile (390×844): sleek
+masthead under the real navbar, both itineraries as alternating spreads with correct themed plates
+(VCE / ▲ 46.5°N · 12.1°E green peak; CFU / ≈ 39.6°N · 19.9°E blue waves) and `READ THE ITINERARY →`
+CTAs, and the year-grouped index (Paris "— now", Beirut "home" base). `npm run build` passes.
 
 ---
 

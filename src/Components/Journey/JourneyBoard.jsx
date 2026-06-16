@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import BoardRow from './BoardRow';
-import BoardingPass from './BoardingPass';
-import ArrivalsLedger from './ArrivalsLedger';
+import { useState, useCallback } from 'react';
+import FeatureItinerary from './FeatureItinerary';
+import AtlasIndex from './AtlasIndex';
 import {
+  journeyPoints,
   getJourneyStats,
   getBoardState,
   getArrivalsLedger,
-  getUpClose,
 } from '../../Utils/journeyData';
 
 const prefersReducedMotion = () =>
@@ -14,15 +13,16 @@ const prefersReducedMotion = () =>
   typeof window.matchMedia === 'function' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Two-digit terminal-style counts (e.g. "02 continents").
+// Two-digit terminal-style counts (e.g. "02 Continents").
 const pad2 = (n) => String(n).padStart(2, '0');
 
 /**
- * The whole /journey page as a living Arrivals & Departures board.
- * Departures (upcoming trips) sit up top as flip-board rows + boarding-pass
- * tickets; Arrivals (everywhere already visited, deduped) read newest-first
- * below; two editorial "Up Close" cards close it out. Trips graduate from
- * Departures to Arrivals automatically by date — see journeyData selectors.
+ * The /journey page as an editorial travel index, in three movements:
+ *   1. Masthead — name, lead, and a mono stat rule with a live "currently" dot.
+ *   2. Featured itineraries — the trips documented day-by-day, rendered as
+ *      large alternating feature spreads that link out to the live itineraries.
+ *   3. Everywhere else — a quiet year-grouped index of every other place.
+ * Trips graduate from "featured" to the index automatically by date.
  */
 function JourneyBoard() {
   const [departing, setDeparting] = useState(null);
@@ -30,83 +30,71 @@ function JourneyBoard() {
   const stats = getJourneyStats();
   const { departures } = getBoardState();
   const ledger = getArrivalsLedger();
-  const upClose = getUpClose();
+  const current = journeyPoints.find((p) => p.type === 'current');
+  const currentCity = current ? current.city : null;
 
   // Wash the screen in the trip's palette, then hand off to the live itinerary.
-  const handleOpen = (e, trip) => {
+  const handleOpen = useCallback((e, trip) => {
     if (prefersReducedMotion()) return; // let the <a href> navigate normally
     e.preventDefault();
     setDeparting(trip);
     window.setTimeout(() => {
       window.location.href = trip.itinerary;
     }, 700);
-  };
+  }, []);
 
   return (
     <div className="jb-board">
       <div className="jb-wrap">
-        <header className="jb-hero">
-          <div>
-            <div className="jb-eyebrow">Arrivals &amp; Departures</div>
-            <h1 className="jb-h1">Journeys.</h1>
-          </div>
-          <div className="jb-stats">
-            <div><b>{pad2(stats.cities)}</b> cities</div>
-            <div><b>{pad2(stats.countries)}</b> countries</div>
-            <div><b>{pad2(stats.continents)}</b> continents</div>
+        <header className="jb-masthead">
+          <div className="jb-eyebrow">The Travel Index</div>
+          <h1 className="jb-h1">Journeys<span className="jb-dot">.</span></h1>
+          <p className="jb-lead">
+            Trips I&apos;ve documented day&nbsp;by&nbsp;day — and everywhere&nbsp;else the road has gone.
+          </p>
+          <div className="jb-rule">
+            <span><b>{pad2(stats.cities)}</b> Cities</span><span className="jb-sep" aria-hidden="true" />
+            <span><b>{pad2(stats.countries)}</b> Countries</span><span className="jb-sep" aria-hidden="true" />
+            <span><b>{pad2(stats.continents)}</b> Continents</span><span className="jb-sep" aria-hidden="true" />
+            <span>Since <b>2018</b></span>
+            {currentCity && (
+              <span className="jb-now"><span className="jb-live" aria-hidden="true" /> Currently · {currentCity}</span>
+            )}
           </div>
         </header>
 
-        <section aria-label="Departures">
-          <div className="jb-board-label">
-            <h2><span className="jb-sig" aria-hidden="true" />Departures</h2>
-            <div className="jb-meta">Upcoming · 2026</div>
+        {departures.length > 0 && (
+          <section aria-label="Featured itineraries">
+            <div className="jb-slabel">
+              <h2>Featured itineraries</h2>
+              <div className="jb-tag">Documented · day by day<br />Upcoming · 2026</div>
+            </div>
+            <div className="jb-features">
+              {departures.map((trip, i) => (
+                <FeatureItinerary
+                  key={trip.id}
+                  trip={trip}
+                  index={i}
+                  alt={i % 2 === 1}
+                  onOpen={handleOpen}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section aria-label="Everywhere else">
+          <div className="jb-slabel">
+            <h2>Everywhere else</h2>
+            <div className="jb-tag">Stamped · 2018 — now</div>
           </div>
-          <div className="jb-rows">
-            {departures.map((trip, i) => (
-              <BoardRow key={trip.id} trip={trip} status={i === 0 ? 'Boarding' : 'Scheduled'} />
-            ))}
-          </div>
-          <div className="jb-passes">
-            {departures.map((trip) => (
-              <BoardingPass key={trip.id} trip={trip} onOpen={handleOpen} />
-            ))}
-          </div>
+          <AtlasIndex items={ledger} />
         </section>
 
-        <section aria-label="Arrivals">
-          <div className="jb-board-label">
-            <h2>Arrivals</h2>
-            <div className="jb-meta">Stamped · 2018 — now</div>
-          </div>
-          <ArrivalsLedger items={ledger} />
-          <div className="jb-note">
-            ↑ Each departure gets stamped into Arrivals once it&apos;s flown — automatically, by date.
-          </div>
-        </section>
-
-        <section aria-label="Up close">
-          <div className="jb-board-label">
-            <h2>From the pages</h2>
-            <div className="jb-meta">Up close</div>
-          </div>
-          <div className="jb-upclose">
-            {upClose.map((c) => (
-              <article className="jb-acard" key={c.id}>
-                <div className={`jb-cstamp${c.role ? '' : ' jb-cstamp-sea'}`} aria-hidden="true">
-                  {c.stamp.split(' · ').map((line) => (
-                    <span key={line}>{line}</span>
-                  ))}
-                </div>
-                <div className="jb-acard-meta">{c.label} · {c.iata}</div>
-                <h3 className="jb-acard-city">{c.city}</h3>
-                <div className="jb-acard-country">{c.country}</div>
-                <p>{c.description}</p>
-                {c.role && <span className="jb-acard-role">{c.role}</span>}
-              </article>
-            ))}
-          </div>
-        </section>
+        <div className="jb-foot">
+          <span>Riwa Hoteit — Field Notes</span>
+          <span>Departures graduate to the index automatically, by date</span>
+        </div>
       </div>
 
       {departing && (

@@ -534,6 +534,7 @@ export const journeyPoints = [
     startDate: '2026-07-23',
     endDate: '2026-07-27',
     theme: 'alpine',
+    stops: ['Tre Cime', 'Lago di Braies', 'Val Gardena', 'Seceda', 'Alpe di Siusi'],
     mrz: 'P<ITADOLOMITES<<VALGARDENA<<<<<<<<<<<2307VCE<<4N',
   },
   {
@@ -558,6 +559,7 @@ export const journeyPoints = [
     startDate: '2026-08-05',
     endDate: '2026-08-09',
     theme: 'sea',
+    stops: ['Dassia', 'Old Town', 'Paleokastritsa', "Canal d'Amour"],
     mrz: 'P<GRCCORFU<<DASSIA<<<<<<<<<<<<<<<0508CFU<<4N',
   }
 ];
@@ -577,14 +579,6 @@ export function getJourneyStats() {
     if (continentMap[p.country]) continents.add(continentMap[p.country]);
   });
   return { cities: cities.size, countries: countries.size, continents: continents.size };
-}
-
-export function getSeasonalHue(month) {
-  if (!month) return null;
-  if (month >= 3 && month <= 5) return 140;
-  if (month >= 6 && month <= 8) return 35;
-  if (month >= 9 && month <= 11) return 25;
-  return 210;
 }
 
 /* ---- Arrivals & Departures board model ---- */
@@ -679,27 +673,4 @@ export function getArrivalsLedger(today = new Date()) {
 
   items.sort((a, b) => b.sortKey - a.sortKey);
   return items;
-}
-
-// The two editorial "Up Close" cards.
-export function getUpClose() {
-  const byId = (id) => journeyPoints.find((p) => p.id === id);
-  return [byId('paris-2026'), byId('tokyo-2025')]
-    .filter(Boolean)
-    .map((p) => {
-      const y = yearOf(p);
-      return {
-        id: p.id,
-        city: p.city,
-        country: p.country,
-        iata: IATA[p.city] || '',
-        label: p.month && y ? `${MONTHS[p.month]} ${y}` : y ? String(y) : '',
-        description: p.description,
-        role: p.professional ? `${p.professional[0].role} · ${p.professional[0].company}` : null,
-        stamp:
-          p.type === 'current' || p.professional
-            ? `${p.city} · Resident · ${y || ''}`
-            : `${p.city} · Arr. ${y || ''}`,
-      };
-    });
 }

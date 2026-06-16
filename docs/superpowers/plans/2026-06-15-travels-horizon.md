@@ -1,5 +1,13 @@
 # Journey Redesign — "Arrivals & Departures" Implementation Plan
 
+> **✅ SHIPPED as the Editorial Travel Index (2026-06-16).** This plan executed Phases A–B as
+> written (Fraunces site-wide; data model + auto-by-date selectors), then **pivoted at Phase C**:
+> the Arrivals & Departures board read as too cluttered, so the page was rebuilt as a sleek
+> *editorial travel index* instead. See **Revision 2** in the design spec
+> (`docs/superpowers/specs/2026-06-15-travels-horizon-design.md`) for the shipped concept. The
+> phase-by-phase board plan below is retained for history; the actual final state is summarized in
+> "Shipped state" immediately after the header.
+
 > **For agentic workers:** This is a design-heavy frontend build with **no test framework**.
 > The verification gate per task is **`npm run build` passing** + **live-preview visual check**
 > (Preview MCP serverId `89b79c73-80ff-4c1a-b2c7-172c6a610be7`, `localhost:4321`). Lint repo-wide
@@ -20,6 +28,33 @@ ledger, driven by IntersectionObserver → existing pan/path machinery.
 Fraunces + Spline Sans Mono (Google Fonts), no new deps.
 
 **Branch:** `feat/travels-horizon` (build forward — new commits replace the Horizon content; no revert).
+
+---
+
+## Shipped state (what actually landed)
+
+The page is an **editorial travel index** in three movements (full rationale in the spec's
+Revision 2):
+
+1. **Masthead** — "The Travel Index" eyebrow, oversized italic `Journeys.` wordmark, lead, and a
+   single mono stat rule ending in a live `● Currently · Paris` dot.
+2. **Featured itineraries** — Dolomites + Corfu as large **alternating feature spreads**: body
+   (index, city, kind · nights · dates, tagline, stop chips, `READ THE ITINERARY →`) beside an
+   on-theme SVG **plate** (alpine contours / sea waves) badged with IATA + coordinates. The card is
+   the link; clicking plays the **departure wash**, then navigates to the live itinerary.
+3. **Everywhere else** — `getArrivalsLedger()` rendered as a quiet **year-grouped index** (one row
+   per city: city · country · IATA), newest-first, sticky tally aside, home base anchoring the foot.
+
+**Components (final):** `JourneyBoard.jsx` (orchestrator) · `FeatureItinerary.jsx` (spread + SVG
+plates) · `AtlasIndex.jsx` (year-grouped index). `Journey.jsx` = `Navbar` + board + `Footer`.
+**Removed:** `BoardRow`, `BoardingPass`, `ArrivalsLedger`, `JourneyMap`, `JourneyTimeline`,
+`JourneyHorizon`. **Kept:** Fraunces site-wide (A), data + auto-by-date selectors (B), departure
+wash (re-skinned), warm-paper palette. **Added tokens:** `--jb-alpine #2E6F5E`, `--jb-sea #2B6F8C`,
+`--jb-line-2 #C8BCA1`. **Cut:** duplicate trip rows, passport skeuomorphism (perforation/MRZ/
+stamps), Solari split-flap, the sticky scroll-stage map.
+
+**Verification gate met:** `npm run build` passes; verified on Preview MCP at desktop (1280×860) +
+mobile (390×844). `public/mockups/` deleted in cleanup.
 
 ---
 
