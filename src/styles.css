@@ -593,7 +593,7 @@ html.page-view {
   position: absolute;
   font-family: var(--font-mono);
   font-weight: 400;
-  color: var(--text-primary);
+  color: var(--text-muted);
   user-select: none;
   pointer-events: none;
   white-space: pre;
@@ -1531,6 +1531,11 @@ html.page-view {
 .about-intro,
 .blog-intro {
   margin-bottom: 3rem;
+}
+
+.about-intro .eyebrow {
+  margin-bottom: 0.75rem;
+  padding-left: calc(1.5rem + 3px);
 }
 
 .section-title {
