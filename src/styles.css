@@ -66,6 +66,30 @@
   --glow-tint: rgba(213, 141, 111, 0.10);
 }
 
+/* ===================== SHARED MOTIF KIT ===================== */
+/* Terminal microlabel — Spline Sans Mono, wide tracking, muted. The small
+   "label above a heading" lifted from the journey board for use site-wide. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.eyebrow-amber { color: var(--accent-primary); }
+
+/* Shared panel surface — bordered, soft-shadowed card on the active substrate. */
+.screen-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px var(--shadow-soft);
+}
+
+/* Universal hover accent: links/icons/cards warm to oxblood/terracotta. */
+.hover-oxblood { transition: color 0.25s ease, border-color 0.25s ease; }
+.hover-oxblood:hover { color: var(--accent-oxblood); }
+
 body,
 html {
   margin: 0;
@@ -567,7 +591,7 @@ html.page-view {
 
 .bg-code {
   position: absolute;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
   font-weight: 400;
   color: var(--text-primary);
   user-select: none;
@@ -1177,7 +1201,7 @@ html.page-view {
   padding: 1.5rem;
   margin: 1.5rem 0;
   overflow-x: auto;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family: var(--font-mono);
 }
 
 .blog-modal-content code {
@@ -1185,7 +1209,7 @@ html.page-view {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 0.2em 0.4em;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family: var(--font-mono);
   font-size: 0.9em;
   color: var(--accent-primary);
 }
