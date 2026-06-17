@@ -133,22 +133,6 @@ html.house-page {
   transition: background-color 0.3s ease;
 }
 
-.header {
-  position: absolute;
-  top: 10%;
-  right: 15%;
-  z-index: 1;
-  color: #00c49a;
-  font-family: var(--font-sans);
-}
-
-.header h1 {
-  font-size: 3rem;
-  margin: 0;
-  padding: 10px;
-  border-radius: 8px;
-}
-
 .popup {
   background-color: var(--card-bg);
   border: 2px solid var(--accent-primary);
@@ -328,14 +312,6 @@ button:disabled:hover {
 }
 
 /* New Navbar and Page Styles */
-
-/* Update body styles for new pages */
-body.page-view,
-html.page-view {
-  overflow: auto;
-  height: auto;
-  min-height: 100vh;
-}
 
 .page-container {
   min-height: 100vh;
@@ -706,7 +682,7 @@ html.page-view {
   margin: 0;
   font-weight: 600;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 4px var(--shadow-soft);
   z-index: 100;
   position: relative;
   pointer-events: none;
@@ -918,7 +894,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border-left: 4px solid var(--accent-primary);
 }
 
@@ -946,7 +922,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 2.5rem;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border: 2px solid var(--accent-primary);
 }
 
@@ -982,7 +958,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 20px var(--shadow-soft);
 }
 
 .blog-header h1 {
@@ -1008,14 +984,14 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border-left: 4px solid var(--accent-primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .blog-post-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(175, 201, 126, 0.15);
+  box-shadow: 0 8px 25px var(--shadow-strong);
 }
 
 .post-meta {
@@ -1070,7 +1046,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   color: var(--text-primary);
 }
 
@@ -1253,7 +1229,7 @@ html.page-view {
   background-color: var(--accent-primary);
   color: var(--card-bg);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(45, 106, 246, 0.2);
+  box-shadow: 0 2px 8px var(--shadow-soft);
 }
 
 @keyframes fadeIn {
@@ -1568,7 +1544,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 20px var(--shadow-soft);
 }
 
 .projects-header h1 {
@@ -1596,21 +1572,21 @@ html.page-view {
   background-color: var(--card-bg);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border-top: 4px solid var(--accent-primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(175, 201, 126, 0.15);
+  box-shadow: 0 8px 25px var(--shadow-strong);
 }
 
 .project-image {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: var(--bg-secondary);
 }
 
 .project-image img {
@@ -1694,7 +1670,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   text-align: center;
   border: 2px solid var(--accent-primary);
 }
@@ -1939,7 +1915,7 @@ html.page-view {
   width: 300px;
   height: 100vh;
   background-color: var(--card-bg);
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 10px var(--shadow-strong);
   z-index: 1000;
   transition: right 0.3s ease;
   display: flex;
