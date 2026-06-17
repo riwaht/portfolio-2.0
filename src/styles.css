@@ -3043,20 +3043,18 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 }
 
 /* =================== DEPARTURES BOARD =================== */
-/* A dark airport "screen" object — kept theme-independent so it reads the same
-   on the light paper and the dark charcoal; the page chrome around it switches. */
+/* The split-flap board is a physical device that switches substrate with the
+   theme: a warm printed manila timetable on paper (light), an illuminated screen
+   on charcoal (dark). Surfaces come from the --fb-* tokens (see body.journey-page). */
 .fb-board {
-  /* device palette — kept theme-independent so the board reads the same on
-     light paper and dark charcoal; recurring values are tokenised here. The
-     near-white "ink" comes from the shared --jb-screen-rgb. */
-  --d-line: #2E323C;
+  --d-line: var(--fb-edge);
   --d-amber: var(--jb-amber);
-  --d-ink: #1A1410;
+  --d-ink: #1A1410; /* near-black ink for the amber "boarding" chip — works on both */
   margin: 2px 0 clamp(34px, 6vw, 60px);
   border-radius: 9px; overflow: hidden; color: rgb(var(--jb-screen-rgb));
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 130px), #181B22;
+  background: linear-gradient(180deg, var(--fb-sheen), transparent 130px), var(--fb-face);
   border: 1px solid var(--d-line);
-  box-shadow: 0 28px 54px -34px rgba(8, 6, 4, 0.7), inset 0 1px 0 rgba(var(--jb-screen-rgb), 0.06);
+  box-shadow: 0 28px 54px -34px var(--shadow-strong), inset 0 1px 0 rgba(var(--jb-screen-rgb), 0.06);
   padding: clamp(15px, 2.3vw, 22px) clamp(15px, 2.6vw, 26px) clamp(11px, 1.8vw, 16px);
 }
 .fb-head {
@@ -3070,11 +3068,11 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 .fb-live {
   margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
   font-size: 0.62rem; letter-spacing: 0.22em;
-  text-transform: uppercase; color: #8C9A8E;
+  text-transform: uppercase; color: var(--jb-ink-soft);
 }
 .fb-live-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #62B98F;
-  box-shadow: 0 0 8px 1px rgba(98, 185, 143, 0.6); animation: fbBlink 1.6s steps(1) infinite;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--fb-livedot);
+  box-shadow: 0 0 8px 1px var(--fb-livedot-glow); animation: fbBlink 1.6s steps(1) infinite;
 }
 .fb-clock {
   font-weight: 600; font-size: 0.92rem;
@@ -3089,7 +3087,7 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 }
 .fb-cols {
   padding: 4px 8px 8px; font-size: 0.58rem;
-  letter-spacing: 0.22em; text-transform: uppercase; color: #6C7160;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--fb-cols);
 }
 .fb-rows { display: flex; flex-direction: column; }
 .fb-row {
@@ -3102,14 +3100,14 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 /* Solari flap tile — a seam across the middle, flips down into place on load. */
 .fb-flap {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  background: #242833; border-radius: 3px; padding: 6px 10px;
+  background: var(--fb-flap); border-radius: 3px; padding: 6px 10px;
   font-weight: 600; letter-spacing: 0.07em; color: rgb(var(--jb-screen-rgb));
   position: relative; transform-origin: top center; backface-visibility: hidden;
   animation: fbFlap 0.5s cubic-bezier(0.3, 0.9, 0.3, 1) both; animation-delay: var(--d, 0s);
 }
 .fb-flap::after {
   content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
-  background: rgba(0, 0, 0, 0.5); transform: translateY(-0.5px); pointer-events: none;
+  background: var(--fb-seam); transform: translateY(-0.5px); pointer-events: none;
 }
 @keyframes fbFlap {
   0% { transform: perspective(240px) rotateX(-90deg); opacity: 0; }
@@ -3121,9 +3119,9 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 .fb-city { font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; max-width: 100%; }
 .fb-region {
   font-size: 0.6rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #8C8675; padding-left: 2px;
+  text-transform: uppercase; color: var(--fb-region); padding-left: 2px;
 }
-.fb-flight { font-size: 0.76rem; color: #C9C2B0; justify-self: start; }
+.fb-flight { font-size: 0.76rem; color: var(--fb-flight); justify-self: start; }
 .fb-status { justify-self: start; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; }
 .fb-status .fb-arrow { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .fb-row:hover .fb-status .fb-arrow { transform: translateX(5px); }
@@ -3132,16 +3130,16 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
   content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--d-ink);
   animation: fbBlink 1.1s steps(1) infinite;
 }
-.fb-status-ontime { color: #8FCFAE; }
-.fb-status-departed { color: #9C9684; }
+.fb-status-ontime { color: var(--fb-ontime); }
+.fb-status-departed { color: var(--fb-departed); }
 /* Arrivals — year-divider band + arrival remark variants (mirror Departures). */
 .fb-divider {
   display: flex; justify-content: center; padding: 14px 8px 8px;
   font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.34em;
-  text-transform: uppercase; color: #6C7160;
+  text-transform: uppercase; color: var(--fb-cols);
 }
-.fb-row-live { background: rgba(232, 178, 58, 0.06); }
-.fb-status-arrived { color: #8FCFAE; }
+.fb-row-live { background: var(--glow-tint); }
+.fb-status-arrived { color: var(--fb-ontime); }
 .fb-status-home { color: var(--d-amber); }
 .fb-status-live { color: var(--d-amber); display: inline-flex; align-items: center; gap: 7px; }
 .fb-live-ping {
