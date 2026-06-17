@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import '../styles.css';
 
 function DarkModeToggle() {
-    const [isDark, setIsDark] = useState(false);
+    // Seed from the attribute the inline <head> script set before paint, so the
+    // button label is right on the first render (no "dark"→"light" flicker in dark mode).
+    const [isDark, setIsDark] = useState(
+        () => typeof document !== 'undefined'
+            && document.documentElement.getAttribute('data-theme') === 'dark'
+    );
 
     useEffect(() => {
         // Check for saved theme preference or default to light mode
