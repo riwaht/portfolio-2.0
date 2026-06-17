@@ -2781,43 +2781,78 @@ html.page-view {
    Palette is page-scoped to body.journey-page.
    ============================================================ */
 body.journey-page {
-  /* Always-dark terminal screen — one continuous FIDS display regardless of the
-     site light/dark toggle. (Formerly split into a light palette + a dark
-     override; the page now renders its own device palette unconditionally.) */
-  --jb-paper: #15171C;
-  /* RGB triplet of --jb-paper, for rgba() screens (e.g. the translucent nav). */
-  --jb-paper-rgb: 21, 23, 28;
-  --jb-paper-2: #1B1E24;
-  --jb-card: #1E232B;
-  --jb-ink: #ECE6D8;
-  --jb-ink-soft: #B4B0A2;
-  --jb-muted: #837F70;
-  --jb-line: #2D323B;
-  --jb-line-2: #3A404A;
-  --jb-line-strong: #5E6258;
-  --jb-oxblood: #D58D6F;
-  --jb-gold: #D9B25E;
-  --jb-alpine: #5FB58E;
-  --jb-sea: #5AA9C9;
-  /* Near-white "ink" printed on the board + poster screens. */
-  --jb-screen-rgb: 244, 236, 220;
-  /* Terminal amber — the board/header signage accent. */
-  --jb-amber: #E8B23A;
-  /* Grow with content so the screen + grain fill the entire page (the global
-     height:100% otherwise locks the body to one viewport). */
+  /* The journey page now follows the site theme: its --jb-* palette is sourced
+     from the global tokens, so the page is a warm printed timetable in light mode
+     and the illuminated charcoal terminal in dark. (Previously these were
+     hardcoded to an always-dark device palette.) */
+  --jb-paper: var(--bg-primary);
+  --jb-paper-rgb: var(--bg-primary-rgb);
+  --jb-paper-2: var(--bg-secondary);
+  --jb-card: var(--card-bg);
+  --jb-ink: var(--text-primary);
+  --jb-ink-soft: var(--text-secondary);
+  --jb-muted: var(--text-muted);
+  --jb-line: var(--border-color);
+  --jb-line-2: var(--border-strong);
+  --jb-oxblood: var(--accent-oxblood);
+  --jb-gold: var(--accent-secondary);
+  --jb-alpine: var(--accent-alpine);
+  --jb-sea: var(--accent-sea);
+  --jb-amber: var(--accent-primary);
+
+  /* Oddballs without a global twin — light values here, dark override below. */
+  --jb-line-strong: rgba(41, 37, 30, 0.30);
+  --jb-screen-rgb: 41, 37, 30;
+
+  /* FlapBoard device surfaces — "printed manila timetable" (light).
+     Dark device values are in the [data-theme="dark"] override below.
+     Consumed in a later task. */
+  --fb-face: #EADEC4;
+  --fb-flap: #DFD0B2;
+  --fb-seam: rgba(41, 37, 30, 0.18);
+  --fb-edge: rgba(41, 37, 30, 0.22);
+  --fb-sheen: rgba(255, 255, 255, 0.40);
+  --fb-ontime: #2E7C58;
+  --fb-departed: #8A7F66;
+  --fb-flight: #5A5345;
+  --fb-region: #8A8068;
+  --fb-cols: #8A8068;
+  --fb-livedot: #2E7C58;
+  --fb-livedot-glow: rgba(46, 124, 88, 0.0);
+
+  /* Grow with content so the screen + grain fill the page. */
   height: auto;
   min-height: 100vh;
   background-color: var(--jb-paper);
   background-image:
-    radial-gradient(1200px 620px at 50% -120px, rgba(213, 141, 111, 0.10), transparent 70%),
+    radial-gradient(1200px 620px at 50% -120px, var(--glow-tint), transparent 70%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   background-repeat: no-repeat, repeat;
   color: var(--jb-ink);
 }
-/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg.
-   A literal (not var(--jb-paper)) because that token is scoped to <body> and does
-   not cascade up to <html>. */
-html:has(body.journey-page) { background-color: #15171C; }
+
+/* Dark substrate: the journey page becomes the illuminated terminal device. */
+[data-theme="dark"] body.journey-page {
+  --jb-line-strong: #5E6258;
+  --jb-screen-rgb: 244, 236, 220;
+
+  --fb-face: #181B22;
+  --fb-flap: #242833;
+  --fb-seam: rgba(0, 0, 0, 0.50);
+  --fb-edge: #2E323C;
+  --fb-sheen: rgba(255, 255, 255, 0.06);
+  --fb-ontime: #8FCFAE;
+  --fb-departed: #9C9684;
+  --fb-flight: #C9C2B0;
+  --fb-region: #8C8675;
+  --fb-cols: #6C7160;
+  --fb-livedot: #62B98F;
+  --fb-livedot-glow: rgba(98, 185, 143, 0.60);
+}
+/* Paper the root canvas so overscroll never flashes the wrong colour; tracks the
+   active theme. (--bg-primary is defined at :root/[data-theme] which is <html>,
+   so it cascades here even though --jb-paper is body-scoped.) */
+html:has(body.journey-page) { background-color: var(--bg-primary); }
 body.journey-page .page-container { background-color: transparent; }
 /* Let the shared site footer settle onto the screen instead of its own slab. */
 body.journey-page .footer {
@@ -2836,20 +2871,6 @@ body.journey-page .social-icon:hover {
 }
 body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
-/* The shared sticky nav + mobile menu read site-level tokens; remap them to the
-   terminal palette so the bar is part of the dark screen in both site themes.
-   Journey content uses jb-* tokens, so this only retargets the shared chrome. */
-body.journey-page {
-  --nav-bg: rgba(var(--jb-paper-rgb), 0.92);
-  --bg-primary: var(--jb-paper);
-  --bg-secondary: var(--jb-paper-2);
-  --card-bg: var(--jb-card);
-  --text-primary: var(--jb-ink);
-  --text-secondary: var(--jb-ink-soft);
-  --accent-primary: var(--jb-amber);
-  --accent-secondary: var(--jb-gold);
-  --border-color: var(--jb-line);
-}
 
 .jb-board { color: var(--jb-ink); padding-bottom: 40px; }
 .jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
