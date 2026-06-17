@@ -3,32 +3,92 @@
   --font-sans: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-mono: 'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  /* Light Mode Colors */
-  --bg-primary: #F8F5F2;
-  --bg-secondary: #F2E6D8;
-  --bg-accent: #D8C6A3;
-  --text-primary: #2F4858;
-  --text-secondary: #33658A;
-  --accent-primary: #2D6AF6;
-  --accent-secondary: #F6AE2D;
-  --nav-bg: rgba(248, 245, 242, 0.95);
-  --card-bg: #FFFFFF;
-  --border-color: rgba(47, 72, 88, 0.1);
+  /* Light substrate — a warm printed-paper timetable */
+  --bg-primary: #F3EBDA;
+  --bg-primary-rgb: 243, 235, 218;
+  --bg-secondary: #ECE1CB;
+  --bg-accent: #E2D4B8;
+  --card-bg: #FBF5E9;
+
+  /* Ink */
+  --text-primary: #29251E;
+  --text-secondary: #6E6655;
+  --text-muted: #938B77;
+
+  /* Accents — the terminal family, mixed as ink (amber leads; no more bright blue) */
+  --accent-primary: #B5791A;
+  --accent-secondary: #9E7A2B;
+  --accent-oxblood: #A8512C;
+  --accent-alpine: #2E7C58;
+  --accent-sea: #2B7791;
+
+  /* Lines / chrome / depth */
+  --nav-bg: rgba(243, 235, 218, 0.95);
+  --border-color: rgba(41, 37, 30, 0.14);
+  --border-strong: rgba(41, 37, 30, 0.28);
+  --shadow-soft: rgba(41, 37, 30, 0.10);
+  --shadow-strong: rgba(41, 37, 30, 0.20);
+
+  /* Atmosphere */
+  --grain-opacity: 0.04;
+  --glow-tint: rgba(168, 81, 44, 0.06);
 }
 
 [data-theme="dark"] {
-  /* Dark Mode Colors */
-  --bg-primary: #2F4858;
-  --bg-secondary: #33658A;
-  --bg-accent: #86BBD8;
-  --text-primary: #F8F5F2;
-  --text-secondary: #86BBD8;
-  --accent-primary: #F6AE2D;
-  --accent-secondary: #86BBD8;
-  --nav-bg: rgba(47, 72, 88, 0.95);
-  --card-bg: #33658A;
-  --border-color: rgba(134, 187, 216, 0.2);
+  /* Dark substrate — the illuminated terminal screen */
+  --bg-primary: #15171C;
+  --bg-primary-rgb: 21, 23, 28;
+  --bg-secondary: #1B1E24;
+  --bg-accent: #1E232B;
+  --card-bg: #1E232B;
+
+  /* Ink — near-white screen text */
+  --text-primary: #ECE6D8;
+  --text-secondary: #B4B0A2;
+  --text-muted: #837F70;
+
+  /* Accents — screen brightness */
+  --accent-primary: #E8B23A;
+  --accent-secondary: #D9B25E;
+  --accent-oxblood: #D58D6F;
+  --accent-alpine: #5FB58E;
+  --accent-sea: #5AA9C9;
+
+  /* Lines / chrome / depth */
+  --nav-bg: rgba(21, 23, 28, 0.92);
+  --border-color: #2D323B;
+  --border-strong: #3A404A;
+  --shadow-soft: rgba(0, 0, 0, 0.30);
+  --shadow-strong: rgba(0, 0, 0, 0.50);
+
+  /* Atmosphere */
+  --grain-opacity: 0.05;
+  --glow-tint: rgba(213, 141, 111, 0.10);
 }
+
+/* ===================== SHARED MOTIF KIT ===================== */
+/* Terminal microlabel — Spline Sans Mono, wide tracking, muted. The small
+   "label above a heading" lifted from the journey board for use site-wide. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.eyebrow-amber { color: var(--accent-primary); }
+
+/* Shared panel surface — bordered, soft-shadowed card on the active substrate. */
+.screen-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px var(--shadow-soft);
+}
+
+/* Universal hover accent: links/icons/cards warm to oxblood/terracotta. */
+.hover-oxblood { transition: color 0.25s ease, border-color 0.25s ease; }
+.hover-oxblood:hover { color: var(--accent-oxblood); }
 
 body,
 html {
@@ -39,6 +99,24 @@ html {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Shared atmosphere: a faint top glow + fractal-noise grain on every non-journey
+   page, scaled per-theme by --glow-tint / --grain-opacity. The journey page paints
+   its own (heavier) version, so it's excluded here to avoid stacking two grains. */
+body:not(.journey-page) {
+  background-image: radial-gradient(1100px 520px at 50% -140px, var(--glow-tint), transparent 70%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+body:not(.journey-page)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='gn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)'/%3E%3C/svg%3E");
 }
 
 /* Only hide overflow for house page */
@@ -55,28 +133,12 @@ html.house-page {
   transition: background-color 0.3s ease;
 }
 
-.header {
-  position: absolute;
-  top: 10%;
-  right: 15%;
-  z-index: 1;
-  color: #00c49a;
-  font-family: var(--font-sans);
-}
-
-.header h1 {
-  font-size: 3rem;
-  margin: 0;
-  padding: 10px;
-  border-radius: 8px;
-}
-
 .popup {
   background-color: var(--card-bg);
   border: 2px solid var(--accent-primary);
   border-radius: 12px;
   padding: 20px 30px;
-  box-shadow: 0 8px 30px var(--border-color);
+  box-shadow: 0 8px 30px var(--shadow-strong);
   z-index: 1100; /* Higher than navbar for button interactions */
   text-align: center;
   color: var(--text-primary);
@@ -187,7 +249,7 @@ button:disabled:hover {
   background-color: transparent;
   color: var(--accent-primary);
   transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 4px 15px var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-strong);
 }
 
 .loader {
@@ -251,14 +313,6 @@ button:disabled:hover {
 
 /* New Navbar and Page Styles */
 
-/* Update body styles for new pages */
-body.page-view,
-html.page-view {
-  overflow: auto;
-  height: auto;
-  min-height: 100vh;
-}
-
 .page-container {
   min-height: 100vh;
   background-color: var(--bg-primary);
@@ -280,7 +334,7 @@ html.page-view {
 .navbar {
   background-color: var(--nav-bg);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(47, 72, 88, 0.05);
+  box-shadow: 0 2px 8px var(--shadow-soft);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -375,7 +429,7 @@ html.page-view {
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  color: var(--accent-secondary);
+  color: var(--accent-oxblood);
   transform: translateX(3px);
 }
 
@@ -400,7 +454,7 @@ html.page-view {
 
 .nav-link-button:hover::after {
   width: 100%;
-  background-color: var(--accent-secondary);
+  background-color: var(--accent-oxblood);
 }
 
 .nav-link-button.active::after {
@@ -431,7 +485,7 @@ html.page-view {
 }
 
 .nav-link:hover {
-  color: var(--accent-secondary);
+  color: var(--accent-oxblood);
   transform: translateX(3px);
 }
 
@@ -442,14 +496,14 @@ html.page-view {
 
 /* WIP Badge */
 .wip-badge {
-  font-size: 0.55rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: var(--accent-secondary);
-  color: var(--bg-primary);
-  padding: 1px 5px;
+  color: var(--accent-primary);
+  border: 1px solid var(--border-strong);
   border-radius: 4px;
+  padding: 1px 5px;
   margin-left: 6px;
   vertical-align: middle;
   line-height: 1;
@@ -471,13 +525,13 @@ html.page-view {
   justify-content: center;
   min-width: 60px;
   height: 36px;
-  color: var(--text-primary);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
 }
 
 .theme-toggle:hover {
-  background-color: var(--accent-primary);
-  border-color: var(--accent-primary);
-  color: var(--card-bg);
+  border-color: var(--accent-oxblood);
+  color: var(--accent-oxblood);
 }
 
 .theme-icon {
@@ -513,9 +567,9 @@ html.page-view {
 
 .bg-code {
   position: absolute;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
   font-weight: 400;
-  color: var(--text-primary);
+  color: var(--text-muted);
   user-select: none;
   pointer-events: none;
   white-space: pre;
@@ -628,7 +682,7 @@ html.page-view {
   margin: 0;
   font-weight: 600;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 4px var(--shadow-soft);
   z-index: 100;
   position: relative;
   pointer-events: none;
@@ -840,7 +894,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border-left: 4px solid var(--accent-primary);
 }
 
@@ -868,7 +922,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 2.5rem;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border: 2px solid var(--accent-primary);
 }
 
@@ -904,7 +958,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 20px var(--shadow-soft);
 }
 
 .blog-header h1 {
@@ -930,14 +984,14 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border-left: 4px solid var(--accent-primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .blog-post-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(175, 201, 126, 0.15);
+  box-shadow: 0 8px 25px var(--shadow-strong);
 }
 
 .post-meta {
@@ -992,7 +1046,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   color: var(--text-primary);
 }
 
@@ -1003,7 +1057,7 @@ html.page-view {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(var(--bg-primary-rgb), 0.7);
   backdrop-filter: blur(4px);
   z-index: 1200;
   display: flex;
@@ -1015,8 +1069,9 @@ html.page-view {
 
 .blog-modal {
   background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px -12px var(--shadow-strong);
   max-width: 800px;
   width: 100%;
   max-height: 90vh;
@@ -1101,6 +1156,17 @@ html.page-view {
   margin: 1rem 0;
 }
 
+.blog-modal-content a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.blog-modal-content a:hover {
+  color: var(--accent-oxblood);
+}
+
 .blog-modal-content ul, .blog-modal-content ol {
   margin: 1rem 0;
   padding-left: 1.5rem;
@@ -1123,7 +1189,7 @@ html.page-view {
   padding: 1.5rem;
   margin: 1.5rem 0;
   overflow-x: auto;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family: var(--font-mono);
 }
 
 .blog-modal-content code {
@@ -1131,7 +1197,7 @@ html.page-view {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 0.2em 0.4em;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family: var(--font-mono);
   font-size: 0.9em;
   color: var(--accent-primary);
 }
@@ -1163,7 +1229,7 @@ html.page-view {
   background-color: var(--accent-primary);
   color: var(--card-bg);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(45, 106, 246, 0.2);
+  box-shadow: 0 2px 8px var(--shadow-soft);
 }
 
 @keyframes fadeIn {
@@ -1248,7 +1314,7 @@ html.page-view {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(var(--bg-primary-rgb), 0.7);
   backdrop-filter: blur(8px);
   z-index: 2000; /* Higher than everything else */
   display: flex;
@@ -1262,7 +1328,7 @@ html.page-view {
   background-color: var(--card-bg);
   border: 2px solid var(--accent-primary);
   border-radius: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 50px -12px var(--shadow-strong);
   max-width: 500px;
   width: 100%;
   overflow: hidden;
@@ -1455,6 +1521,11 @@ html.page-view {
   margin-bottom: 3rem;
 }
 
+.about-intro .eyebrow {
+  margin-bottom: 0.75rem;
+  padding-left: calc(1.5rem + 3px);
+}
+
 .section-title {
   font-size: 2.2rem;
   font-weight: 300;
@@ -1473,7 +1544,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 20px var(--shadow-soft);
 }
 
 .projects-header h1 {
@@ -1501,21 +1572,21 @@ html.page-view {
   background-color: var(--card-bg);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   border-top: 4px solid var(--accent-primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(175, 201, 126, 0.15);
+  box-shadow: 0 8px 25px var(--shadow-strong);
 }
 
 .project-image {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: var(--bg-secondary);
 }
 
 .project-image img {
@@ -1599,7 +1670,7 @@ html.page-view {
   background-color: var(--card-bg);
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(175, 201, 126, 0.1);
+  box-shadow: 0 4px 15px var(--shadow-soft);
   text-align: center;
   border: 2px solid var(--accent-primary);
 }
@@ -1678,10 +1749,9 @@ html.page-view {
 }
 
 .social-icon:hover {
-  background-color: var(--accent-primary);
-  color: var(--card-bg);
+  color: var(--accent-oxblood);
+  border-color: var(--accent-oxblood);
   transform: translateY(-3px);
-  border-color: var(--accent-primary);
 }
 
 .footer-text {
@@ -1720,14 +1790,14 @@ html.page-view {
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 15px var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-strong);
   transition: all 0.3s ease;
 }
 
 .pc-back-btn:hover {
-  background-color: var(--accent-primary);
-  color: var(--card-bg);
-  border-color: var(--accent-primary);
+  background-color: var(--card-bg);
+  color: var(--accent-oxblood);
+  border-color: var(--accent-oxblood);
   transform: translateX(-3px);
 }
 
@@ -1737,17 +1807,17 @@ html.page-view {
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--card-bg);
-  color: var(--text-primary);
+  color: var(--text-muted);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 10px 20px;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 15px var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-strong);
   z-index: 1100;
   animation: scrollHintFade 4s ease forwards;
   pointer-events: none;
@@ -1845,7 +1915,7 @@ html.page-view {
   width: 300px;
   height: 100vh;
   background-color: var(--card-bg);
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 10px var(--shadow-strong);
   z-index: 1000;
   transition: right 0.3s ease;
   display: flex;
@@ -1889,7 +1959,7 @@ html.page-view {
 }
 
 .mobile-nav-link:hover {
-  color: var(--accent-secondary);
+  color: var(--accent-oxblood);
   transform: translateX(5px);
 }
 
@@ -1910,7 +1980,7 @@ html.page-view {
 
 .mobile-nav-link:hover::after {
   width: calc(100% - 4rem);
-  background-color: var(--accent-secondary);
+  background-color: var(--accent-oxblood);
 }
 
 .mobile-nav-link.active::after {
@@ -2392,9 +2462,12 @@ html.page-view {
 }
 
 .column-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -2420,8 +2493,12 @@ html.page-view {
 
 .project-card-compact:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(47, 72, 88, 0.15);
-  border-color: var(--accent-primary);
+  box-shadow: 0 6px 20px var(--shadow-strong);
+  border-color: var(--accent-oxblood);
+}
+
+.project-card-compact:hover .project-title-compact {
+  color: var(--accent-oxblood);
 }
 
 .project-image-compact {
@@ -2451,6 +2528,7 @@ html.page-view {
   color: var(--text-primary);
   margin: 0;
   line-height: 1.2;
+  transition: color 0.2s ease;
 }
 
 .project-description-compact {
@@ -2472,13 +2550,16 @@ html.page-view {
 }
 
 .tech-tag-compact {
-  background: var(--accent-secondary);
-  color: var(--text-primary);
+  font-family: var(--font-mono);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
   padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.65rem;
+  border-radius: 4px;
+  font-size: 0.62rem;
   font-weight: 500;
-  border: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
 }
 
 .tech-more {
@@ -2506,8 +2587,12 @@ html.page-view {
 
 .blog-post-card-compact:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(47, 72, 88, 0.15);
-  border-color: var(--accent-primary);
+  box-shadow: 0 6px 20px var(--shadow-strong);
+  border-color: var(--accent-oxblood);
+}
+
+.blog-post-card-compact:hover .post-title-compact {
+  color: var(--accent-oxblood);
 }
 
 .post-meta-compact {
@@ -2529,6 +2614,7 @@ html.page-view {
   color: var(--text-primary);
   margin: 0 0 0.5rem 0;
   line-height: 1.2;
+  transition: color 0.2s ease;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -2555,13 +2641,16 @@ html.page-view {
 }
 
 .post-tag-compact {
-  background: var(--accent-secondary);
-  color: var(--text-primary);
+  font-family: var(--font-mono);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
   padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.65rem;
+  border-radius: 4px;
+  font-size: 0.62rem;
   font-weight: 500;
-  border: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
 }
 
 .tag-more {
@@ -2745,43 +2834,78 @@ html.page-view {
    Palette is page-scoped to body.journey-page.
    ============================================================ */
 body.journey-page {
-  /* Always-dark terminal screen — one continuous FIDS display regardless of the
-     site light/dark toggle. (Formerly split into a light palette + a dark
-     override; the page now renders its own device palette unconditionally.) */
-  --jb-paper: #15171C;
-  /* RGB triplet of --jb-paper, for rgba() screens (e.g. the translucent nav). */
-  --jb-paper-rgb: 21, 23, 28;
-  --jb-paper-2: #1B1E24;
-  --jb-card: #1E232B;
-  --jb-ink: #ECE6D8;
-  --jb-ink-soft: #B4B0A2;
-  --jb-muted: #837F70;
-  --jb-line: #2D323B;
-  --jb-line-2: #3A404A;
-  --jb-line-strong: #5E6258;
-  --jb-oxblood: #D58D6F;
-  --jb-gold: #D9B25E;
-  --jb-alpine: #5FB58E;
-  --jb-sea: #5AA9C9;
-  /* Near-white "ink" printed on the board + poster screens. */
-  --jb-screen-rgb: 244, 236, 220;
-  /* Terminal amber — the board/header signage accent. */
-  --jb-amber: #E8B23A;
-  /* Grow with content so the screen + grain fill the entire page (the global
-     height:100% otherwise locks the body to one viewport). */
+  /* The journey page now follows the site theme: its --jb-* palette is sourced
+     from the global tokens, so the page is a warm printed timetable in light mode
+     and the illuminated charcoal terminal in dark. (Previously these were
+     hardcoded to an always-dark device palette.) */
+  --jb-paper: var(--bg-primary);
+  --jb-paper-rgb: var(--bg-primary-rgb);
+  --jb-paper-2: var(--bg-secondary);
+  --jb-card: var(--card-bg);
+  --jb-ink: var(--text-primary);
+  --jb-ink-soft: var(--text-secondary);
+  --jb-muted: var(--text-muted);
+  --jb-line: var(--border-color);
+  --jb-line-2: var(--border-strong);
+  --jb-oxblood: var(--accent-oxblood);
+  --jb-gold: var(--accent-secondary);
+  --jb-alpine: var(--accent-alpine);
+  --jb-sea: var(--accent-sea);
+  --jb-amber: var(--accent-primary);
+
+  /* Oddballs without a global twin — light values here, dark override below. */
+  --jb-line-strong: rgba(41, 37, 30, 0.30);
+  --jb-screen-rgb: 41, 37, 30;
+
+  /* FlapBoard device surfaces — "printed manila timetable" (light).
+     Dark device values are in the [data-theme="dark"] override below.
+     Consumed in a later task. */
+  --fb-face: #EADEC4;
+  --fb-flap: #DFD0B2;
+  --fb-seam: rgba(41, 37, 30, 0.18);
+  --fb-edge: rgba(41, 37, 30, 0.22);
+  --fb-sheen: rgba(255, 255, 255, 0.40);
+  --fb-ontime: #2E7C58;
+  --fb-departed: #8A7F66;
+  --fb-flight: #5A5345;
+  --fb-region: #8A8068;
+  --fb-cols: #8A8068;
+  --fb-livedot: #2E7C58;
+  --fb-livedot-glow: rgba(46, 124, 88, 0.0);
+
+  /* Grow with content so the screen + grain fill the page. */
   height: auto;
   min-height: 100vh;
   background-color: var(--jb-paper);
   background-image:
-    radial-gradient(1200px 620px at 50% -120px, rgba(213, 141, 111, 0.10), transparent 70%),
+    radial-gradient(1200px 620px at 50% -120px, var(--glow-tint), transparent 70%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   background-repeat: no-repeat, repeat;
   color: var(--jb-ink);
 }
-/* Paper the root canvas too, so overscroll/rubber-band never flashes the site bg.
-   A literal (not var(--jb-paper)) because that token is scoped to <body> and does
-   not cascade up to <html>. */
-html:has(body.journey-page) { background-color: #15171C; }
+
+/* Dark substrate: the journey page becomes the illuminated terminal device. */
+[data-theme="dark"] body.journey-page {
+  --jb-line-strong: #5E6258;
+  --jb-screen-rgb: 244, 236, 220;
+
+  --fb-face: #181B22;
+  --fb-flap: #242833;
+  --fb-seam: rgba(0, 0, 0, 0.50);
+  --fb-edge: #2E323C;
+  --fb-sheen: rgba(255, 255, 255, 0.06);
+  --fb-ontime: #8FCFAE;
+  --fb-departed: #9C9684;
+  --fb-flight: #C9C2B0;
+  --fb-region: #8C8675;
+  --fb-cols: #6C7160;
+  --fb-livedot: #62B98F;
+  --fb-livedot-glow: rgba(98, 185, 143, 0.60);
+}
+/* Paper the root canvas so overscroll never flashes the wrong colour; tracks the
+   active theme. (--bg-primary is defined at :root/[data-theme] which is <html>,
+   so it cascades here even though --jb-paper is body-scoped.) */
+html:has(body.journey-page) { background-color: var(--bg-primary); }
 body.journey-page .page-container { background-color: transparent; }
 /* Let the shared site footer settle onto the screen instead of its own slab. */
 body.journey-page .footer {
@@ -2800,20 +2924,6 @@ body.journey-page .social-icon:hover {
 }
 body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
-/* The shared sticky nav + mobile menu read site-level tokens; remap them to the
-   terminal palette so the bar is part of the dark screen in both site themes.
-   Journey content uses jb-* tokens, so this only retargets the shared chrome. */
-body.journey-page {
-  --nav-bg: rgba(var(--jb-paper-rgb), 0.92);
-  --bg-primary: var(--jb-paper);
-  --bg-secondary: var(--jb-paper-2);
-  --card-bg: var(--jb-card);
-  --text-primary: var(--jb-ink);
-  --text-secondary: var(--jb-ink-soft);
-  --accent-primary: var(--jb-amber);
-  --accent-secondary: var(--jb-gold);
-  --border-color: var(--jb-line);
-}
 
 .jb-board { color: var(--jb-ink); padding-bottom: 40px; }
 .jb-wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
@@ -2909,20 +3019,18 @@ body.journey-page {
 }
 
 /* =================== DEPARTURES BOARD =================== */
-/* A dark airport "screen" object — kept theme-independent so it reads the same
-   on the light paper and the dark charcoal; the page chrome around it switches. */
+/* The split-flap board is a physical device that switches substrate with the
+   theme: a warm printed manila timetable on paper (light), an illuminated screen
+   on charcoal (dark). Surfaces come from the --fb-* tokens (see body.journey-page). */
 .fb-board {
-  /* device palette — kept theme-independent so the board reads the same on
-     light paper and dark charcoal; recurring values are tokenised here. The
-     near-white "ink" comes from the shared --jb-screen-rgb. */
-  --d-line: #2E323C;
+  --d-line: var(--fb-edge);
   --d-amber: var(--jb-amber);
-  --d-ink: #1A1410;
+  --d-ink: #1A1410; /* near-black ink for the amber "boarding" chip — works on both */
   margin: 2px 0 clamp(34px, 6vw, 60px);
   border-radius: 9px; overflow: hidden; color: rgb(var(--jb-screen-rgb));
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 130px), #181B22;
+  background: linear-gradient(180deg, var(--fb-sheen), transparent 130px), var(--fb-face);
   border: 1px solid var(--d-line);
-  box-shadow: 0 28px 54px -34px rgba(8, 6, 4, 0.7), inset 0 1px 0 rgba(var(--jb-screen-rgb), 0.06);
+  box-shadow: 0 28px 54px -34px var(--shadow-strong), inset 0 1px 0 rgba(var(--jb-screen-rgb), 0.06);
   padding: clamp(15px, 2.3vw, 22px) clamp(15px, 2.6vw, 26px) clamp(11px, 1.8vw, 16px);
 }
 .fb-head {
@@ -2936,11 +3044,11 @@ body.journey-page {
 .fb-live {
   margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
   font-size: 0.62rem; letter-spacing: 0.22em;
-  text-transform: uppercase; color: #8C9A8E;
+  text-transform: uppercase; color: var(--jb-ink-soft);
 }
 .fb-live-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #62B98F;
-  box-shadow: 0 0 8px 1px rgba(98, 185, 143, 0.6); animation: fbBlink 1.6s steps(1) infinite;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--fb-livedot);
+  box-shadow: 0 0 8px 1px var(--fb-livedot-glow); animation: fbBlink 1.6s steps(1) infinite;
 }
 .fb-clock {
   font-weight: 600; font-size: 0.92rem;
@@ -2955,7 +3063,7 @@ body.journey-page {
 }
 .fb-cols {
   padding: 4px 8px 8px; font-size: 0.58rem;
-  letter-spacing: 0.22em; text-transform: uppercase; color: #6C7160;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--fb-cols);
 }
 .fb-rows { display: flex; flex-direction: column; }
 .fb-row {
@@ -2968,14 +3076,14 @@ body.journey-page {
 /* Solari flap tile — a seam across the middle, flips down into place on load. */
 .fb-flap {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  background: #242833; border-radius: 3px; padding: 6px 10px;
+  background: var(--fb-flap); border-radius: 3px; padding: 6px 10px;
   font-weight: 600; letter-spacing: 0.07em; color: rgb(var(--jb-screen-rgb));
   position: relative; transform-origin: top center; backface-visibility: hidden;
   animation: fbFlap 0.5s cubic-bezier(0.3, 0.9, 0.3, 1) both; animation-delay: var(--d, 0s);
 }
 .fb-flap::after {
   content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
-  background: rgba(0, 0, 0, 0.5); transform: translateY(-0.5px); pointer-events: none;
+  background: var(--fb-seam); transform: translateY(-0.5px); pointer-events: none;
 }
 @keyframes fbFlap {
   0% { transform: perspective(240px) rotateX(-90deg); opacity: 0; }
@@ -2987,9 +3095,9 @@ body.journey-page {
 .fb-city { font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; max-width: 100%; }
 .fb-region {
   font-size: 0.6rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #8C8675; padding-left: 2px;
+  text-transform: uppercase; color: var(--fb-region); padding-left: 2px;
 }
-.fb-flight { font-size: 0.76rem; color: #C9C2B0; justify-self: start; }
+.fb-flight { font-size: 0.76rem; color: var(--fb-flight); justify-self: start; }
 .fb-status { justify-self: start; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; }
 .fb-status .fb-arrow { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .fb-row:hover .fb-status .fb-arrow { transform: translateX(5px); }
@@ -2998,16 +3106,16 @@ body.journey-page {
   content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--d-ink);
   animation: fbBlink 1.1s steps(1) infinite;
 }
-.fb-status-ontime { color: #8FCFAE; }
-.fb-status-departed { color: #9C9684; }
+.fb-status-ontime { color: var(--fb-ontime); }
+.fb-status-departed { color: var(--fb-departed); }
 /* Arrivals — year-divider band + arrival remark variants (mirror Departures). */
 .fb-divider {
   display: flex; justify-content: center; padding: 14px 8px 8px;
   font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.34em;
-  text-transform: uppercase; color: #6C7160;
+  text-transform: uppercase; color: var(--fb-cols);
 }
-.fb-row-live { background: rgba(232, 178, 58, 0.06); }
-.fb-status-arrived { color: #8FCFAE; }
+.fb-row-live { background: var(--glow-tint); }
+.fb-status-arrived { color: var(--fb-ontime); }
 .fb-status-home { color: var(--d-amber); }
 .fb-status-live { color: var(--d-amber); display: inline-flex; align-items: center; gap: 7px; }
 .fb-live-ping {

@@ -434,6 +434,7 @@ public class AtmosphericController : MonoBehaviour {
             {/* About content section */}
             <div className="about-content" id="about-section">
                 <div className="about-intro">
+                    <div className="eyebrow">whoami</div>
                     <div className="section-title">
                         about me
                     </div>
