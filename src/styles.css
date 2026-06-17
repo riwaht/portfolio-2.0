@@ -77,6 +77,24 @@ html {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Shared atmosphere: a faint top glow + fractal-noise grain on every non-journey
+   page, scaled per-theme by --glow-tint / --grain-opacity. The journey page paints
+   its own (heavier) version, so it's excluded here to avoid stacking two grains. */
+body:not(.journey-page) {
+  background-image: radial-gradient(1100px 520px at 50% -140px, var(--glow-tint), transparent 70%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+body:not(.journey-page)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='gn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)'/%3E%3C/svg%3E");
+}
+
 /* Only hide overflow for house page */
 body.house-page,
 html.house-page {
