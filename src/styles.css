@@ -154,7 +154,7 @@ html.house-page {
   border: 2px solid var(--accent-primary);
   border-radius: 12px;
   padding: 20px 30px;
-  box-shadow: 0 8px 30px var(--border-color);
+  box-shadow: 0 8px 30px var(--shadow-strong);
   z-index: 1100; /* Higher than navbar for button interactions */
   text-align: center;
   color: var(--text-primary);
@@ -265,7 +265,7 @@ button:disabled:hover {
   background-color: transparent;
   color: var(--accent-primary);
   transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 4px 15px var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-strong);
 }
 
 .loader {
@@ -1338,7 +1338,7 @@ html.page-view {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(var(--bg-primary-rgb), 0.7);
   backdrop-filter: blur(8px);
   z-index: 2000; /* Higher than everything else */
   display: flex;
@@ -1352,7 +1352,7 @@ html.page-view {
   background-color: var(--card-bg);
   border: 2px solid var(--accent-primary);
   border-radius: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 50px -12px var(--shadow-strong);
   max-width: 500px;
   width: 100%;
   overflow: hidden;
@@ -1814,14 +1814,14 @@ html.page-view {
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 15px var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-strong);
   transition: all 0.3s ease;
 }
 
 .pc-back-btn:hover {
-  background-color: var(--accent-primary);
-  color: var(--card-bg);
-  border-color: var(--accent-primary);
+  background-color: var(--card-bg);
+  color: var(--accent-oxblood);
+  border-color: var(--accent-oxblood);
   transform: translateX(-3px);
 }
 
@@ -1831,17 +1831,17 @@ html.page-view {
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--card-bg);
-  color: var(--text-primary);
+  color: var(--text-muted);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 10px 20px;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 15px var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-strong);
   z-index: 1100;
   animation: scrollHintFade 4s ease forwards;
   pointer-events: none;
