@@ -3,31 +3,67 @@
   --font-sans: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-mono: 'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  /* Light Mode Colors */
-  --bg-primary: #F8F5F2;
-  --bg-secondary: #F2E6D8;
-  --bg-accent: #D8C6A3;
-  --text-primary: #2F4858;
-  --text-secondary: #33658A;
-  --accent-primary: #2D6AF6;
-  --accent-secondary: #F6AE2D;
-  --nav-bg: rgba(248, 245, 242, 0.95);
-  --card-bg: #FFFFFF;
-  --border-color: rgba(47, 72, 88, 0.1);
+  /* Light substrate — a warm printed-paper timetable */
+  --bg-primary: #F3EBDA;
+  --bg-primary-rgb: 243, 235, 218;
+  --bg-secondary: #ECE1CB;
+  --bg-accent: #E2D4B8;
+  --card-bg: #FBF5E9;
+
+  /* Ink */
+  --text-primary: #29251E;
+  --text-secondary: #6E6655;
+  --text-muted: #938B77;
+
+  /* Accents — the terminal family, mixed as ink (amber leads; no more bright blue) */
+  --accent-primary: #B5791A;
+  --accent-secondary: #9E7A2B;
+  --accent-oxblood: #A8512C;
+  --accent-alpine: #2E7C58;
+  --accent-sea: #2B7791;
+
+  /* Lines / chrome / depth */
+  --nav-bg: rgba(243, 235, 218, 0.95);
+  --border-color: rgba(41, 37, 30, 0.14);
+  --border-strong: rgba(41, 37, 30, 0.28);
+  --shadow-soft: rgba(41, 37, 30, 0.10);
+  --shadow-strong: rgba(41, 37, 30, 0.20);
+
+  /* Atmosphere */
+  --grain-opacity: 0.04;
+  --glow-tint: rgba(168, 81, 44, 0.06);
 }
 
 [data-theme="dark"] {
-  /* Dark Mode Colors */
-  --bg-primary: #2F4858;
-  --bg-secondary: #33658A;
-  --bg-accent: #86BBD8;
-  --text-primary: #F8F5F2;
-  --text-secondary: #86BBD8;
-  --accent-primary: #F6AE2D;
-  --accent-secondary: #86BBD8;
-  --nav-bg: rgba(47, 72, 88, 0.95);
-  --card-bg: #33658A;
-  --border-color: rgba(134, 187, 216, 0.2);
+  /* Dark substrate — the illuminated terminal screen */
+  --bg-primary: #15171C;
+  --bg-primary-rgb: 21, 23, 28;
+  --bg-secondary: #1B1E24;
+  --bg-accent: #1E232B;
+  --card-bg: #1E232B;
+
+  /* Ink — near-white screen text */
+  --text-primary: #ECE6D8;
+  --text-secondary: #B4B0A2;
+  --text-muted: #837F70;
+
+  /* Accents — screen brightness */
+  --accent-primary: #E8B23A;
+  --accent-secondary: #D9B25E;
+  --accent-oxblood: #D58D6F;
+  --accent-alpine: #5FB58E;
+  --accent-sea: #5AA9C9;
+
+  /* Lines / chrome / depth */
+  --nav-bg: rgba(21, 23, 28, 0.92);
+  --border-color: #2D323B;
+  --border-strong: #3A404A;
+  --shadow-soft: rgba(0, 0, 0, 0.30);
+  --shadow-strong: rgba(0, 0, 0, 0.50);
+
+  /* Atmosphere */
+  --grain-opacity: 0.05;
+  --glow-tint: rgba(213, 141, 111, 0.10);
 }
 
 body,
