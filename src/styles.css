@@ -152,6 +152,13 @@
 .landing-hero > .pm-compact {
   position: absolute; top: clamp(16px, 3vh, 30px); left: 0; right: 0; z-index: 2;
 }
+@media (max-width: 640px) {
+  .pm-h1 { font-size: clamp(3rem, 15vw, 5rem); }
+  .pm-id { gap: 6px 14px; }
+  .pm-stats { gap: 8px 16px; }
+  /* when the stats row wraps, the live pip aligns under the cells, not pushed right */
+  .pm-live-wrap { margin-left: 0; }
+}
 
 body,
 html {
