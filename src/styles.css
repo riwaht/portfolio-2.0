@@ -90,6 +90,63 @@
 .hover-oxblood { transition: color 0.25s ease, border-color 0.25s ease; }
 .hover-oxblood:hover { color: var(--accent-oxblood); }
 
+/* ===================== SHARED PAGE MASTHEAD (.pm-*) =====================
+   The journey masthead's language (live system line + Fraunces display title +
+   stats strip) lifted to the non-journey pages, on GLOBAL tokens so it follows
+   both substrates. No ticker / split-flap here — those stay unique to /journey. */
+.pm {
+  width: min(1180px, 92vw); margin: 0 auto;
+  padding: clamp(24px, 4vw, 44px) 0 clamp(16px, 2.5vw, 28px);
+  position: relative; z-index: 1;
+}
+.pm-id {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px 20px;
+  flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+}
+.pm-code {
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--accent-primary);
+}
+.pm-sys { color: var(--text-secondary); }
+.pm-now { display: inline-flex; align-items: center; gap: 14px; }
+.pm-clock {
+  font-family: var(--font-mono); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.1em;
+  color: var(--text-primary); font-variant-numeric: tabular-nums;
+}
+.pm-date {
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);
+}
+.pm-eyebrow {
+  margin: clamp(24px, 3.5vw, 38px) 0 16px;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.42em;
+  text-transform: uppercase; color: var(--accent-primary);
+}
+.pm-h1 {
+  font-size: clamp(3.4rem, 11vw, 9rem); line-height: 0.84; margin: 0;
+  font-style: italic; font-weight: 360; font-variation-settings: 'opsz' 144;
+  letter-spacing: -0.025em; color: var(--text-primary);
+}
+.pm-h1 .pm-dot { color: var(--accent-primary); }
+.pm-stats {
+  margin-top: clamp(24px, 3.5vw, 40px);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px;
+  padding-top: 18px; border-top: 1px solid var(--border-strong);
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-secondary);
+}
+.pm-stats > span { display: inline-flex; align-items: center; gap: 10px 26px; }
+.pm-stats .pm-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border-strong); }
+.pm-stats b { color: var(--text-primary); font-weight: 600; }
+.pm-live-wrap { margin-left: auto; display: inline-flex; align-items: center; gap: 9px; color: var(--text-primary); }
+.pm-live {
+  --ping: 46, 124, 88;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent-alpine);
+  box-shadow: 0 0 0 0 rgba(var(--ping), 0.45); animation: jbPing 2.4s ease-out infinite;
+}
+.pm-compact { padding-top: 0; padding-bottom: 0; }
+.pm-compact .pm-id { border-bottom: none; padding-bottom: 0; }
+
 body,
 html {
   margin: 0;
@@ -3286,7 +3343,7 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .th-live, .jb-fstatus-dot { animation: none; }
+  .th-live, .jb-fstatus-dot, .pm-live { animation: none; }
   .th-track { animation: none; }
   .th, .jb-slabel, .jb-feature, .jb-foot { animation: none; }
   .jb-feature:hover .jb-fplate svg { transform: none; }
