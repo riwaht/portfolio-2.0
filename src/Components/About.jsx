@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import PageMasthead from './PageMasthead';
 import '../styles.css';
 
 function About() {
@@ -284,6 +285,7 @@ function About() {
             
             {/* Full-screen landing hero */}
             <div className="landing-hero">
+                <PageMasthead section="PARIS" compact />
                 <div className="hero-background" id="hero-background">
                     <div className="bg-code bg-code-1">
                         {`const developer = {
@@ -433,12 +435,16 @@ public class AtmosphericController : MonoBehaviour {
             
             {/* About content section */}
             <div className="about-content" id="about-section">
-                <div className="about-intro">
-                    <div className="eyebrow">whoami</div>
-                    <div className="section-title">
-                        about me
-                    </div>
-                </div>
+                <PageMasthead
+                    section="PROFILE"
+                    eyebrow="whoami"
+                    title="About"
+                    stats={[
+                        { label: 'Lebanese–Canadian' },
+                        { label: 'Based in Paris' },
+                    ]}
+                    live="SWE @ Mistral"
+                />
                 
                 <div className="about-two-column">
                     <div className="about-photo">
@@ -450,7 +456,7 @@ public class AtmosphericController : MonoBehaviour {
                     </div>
                     <div className="about-text">
                         <p>
-                            hey! i'm a lebanese-canadian computer engineering student who loves building things that make developers' lives easier. 
+                            hey! i'm a lebanese-canadian computer engineering graduate who loves building things that make developers' lives easier.
                             currently working as a software engineer at mistral in paris, doing fullstack work on many cool projects. previously interned at snowflake and worked as a simulation engineer at inmind.ai.
                         </p>
                         
