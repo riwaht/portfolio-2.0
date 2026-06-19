@@ -456,7 +456,7 @@ public class AtmosphericController : MonoBehaviour {
                     </div>
                     <div className="about-text">
                         <p>
-                            hey! i'm a lebanese-canadian computer engineering student who loves building things that make developers' lives easier. 
+                            hey! i'm a lebanese-canadian computer engineering graduate who loves building things that make developers' lives easier.
                             currently working as a software engineer at mistral in paris, doing fullstack work on many cool projects. previously interned at snowflake and worked as a simulation engineer at inmind.ai.
                         </p>
                         
