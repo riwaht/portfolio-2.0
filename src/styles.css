@@ -146,6 +146,12 @@
 }
 .pm-compact { padding-top: 0; padding-bottom: 0; }
 .pm-compact .pm-id { border-bottom: none; padding-bottom: 0; }
+/* Pin the compact system line to the top of the landing hero (a centered flex
+   column), above the code-rain, so the live clock greets you the way the journey
+   terminal header does. */
+.landing-hero > .pm-compact {
+  position: absolute; top: clamp(16px, 3vh, 30px); left: 0; right: 0; z-index: 2;
+}
 
 body,
 html {
