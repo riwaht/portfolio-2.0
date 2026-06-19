@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import PageMasthead from './PageMasthead';
+import { pad2 } from '../Utils/ui';
 import '../styles.css';
 
 function ProjectsAndBlog() {
@@ -251,6 +253,18 @@ function ProjectsAndBlog() {
     return (
         <div className="page-container">
             <Navbar />
+
+            {/* Worklog masthead */}
+            <PageMasthead
+                section="WORKLOG"
+                eyebrow="What I've shipped"
+                title="Work"
+                stats={[
+                    { value: pad2(projects.length), label: 'Projects' },
+                    { value: pad2(blogPosts.length), label: 'Writeups' },
+                ]}
+                live="Now at Mistral"
+            />
 
             {/* Professional Experience Header */}
             <div className="professional-experience-compact">
