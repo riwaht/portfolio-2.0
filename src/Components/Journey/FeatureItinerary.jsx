@@ -113,23 +113,24 @@ function SeaPoster({ uid }) {
 function FeatureItinerary({ trip, index, alt, phase = 'documented', days = 0, onOpen }) {
   const theme = trip.theme === 'sea' ? 'sea' : 'alpine';
   const upcoming = phase !== 'documented';
+  const hasItinerary = !!trip.itinerary;
   const regionLabel = (trip.region || trip.country).replace(' · ', ' / ');
   const stops = trip.stops || [];
   const uid = `fp${index}`;
 
   return (
     <a
-      className={`jb-feature${alt ? ' jb-feature-alt' : ''}`}
-      href={trip.itinerary}
+      className={`jb-feature${alt ? ' jb-feature-alt' : ''}${hasItinerary ? '' : ' jb-feature-static'}`}
+      href={hasItinerary ? trip.itinerary : undefined}
       style={{ '--jb-accent': ACCENT[theme] }}
-      onClick={onOpen ? (e) => onOpen(e, trip) : undefined}
+      onClick={hasItinerary && onOpen ? (e) => onOpen(e, trip) : undefined}
     >
       <div className="jb-fbody">
         <div className="jb-findex">{pad2(index + 1)} — {regionLabel}</div>
         <h3 className="jb-fcity">{trip.city}</h3>
         <div className="jb-fmeta">
           <span>{trip.kind}</span><span className="jb-d" aria-hidden="true" />
-          <span>{trip.nights} nights</span><span className="jb-d" aria-hidden="true" />
+          {trip.nights ? (<><span>{trip.nights} nights</span><span className="jb-d" aria-hidden="true" /></>) : null}
           <span>{trip.dateRange}</span>
         </div>
         <p className="jb-ftagline">{trip.description}</p>
@@ -140,11 +141,15 @@ function FeatureItinerary({ trip, index, alt, phase = 'documented', days = 0, on
             ))}
           </div>
         )}
-        <span className="jb-fcta">
-          {upcoming ? 'See the plan' : 'Read the itinerary'}
-          <span className="jb-line" aria-hidden="true" />
-          <span className="jb-arrow" aria-hidden="true">{'→'}</span>
-        </span>
+        {hasItinerary ? (
+          <span className="jb-fcta">
+            {upcoming ? 'See the plan' : 'Read the itinerary'}
+            <span className="jb-line" aria-hidden="true" />
+            <span className="jb-arrow" aria-hidden="true">{'→'}</span>
+          </span>
+        ) : (
+          <span className="jb-fcta jb-fcta-static">Going home</span>
+        )}
       </div>
       <div className="jb-fplate">
         {theme === 'sea' ? <SeaPoster uid={uid} /> : <AlpinePoster uid={uid} />}

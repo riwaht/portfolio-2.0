@@ -512,6 +512,18 @@ export const journeyPoints = [
     professional: null,
   },
   {
+    id: 'deauville-jun-2026',
+    city: 'Deauville',
+    country: 'France',
+    geo: { lon: 0.07, lat: 49.36 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Jun 2026',
+    month: 6,
+    type: 'travel',
+    description: 'A day on the Normandy coast — the long boardwalk, striped parasols, and the grey-green Channel. Oysters and sea air, an hour from Paris.',
+    professional: null,
+  },
+  {
     id: 'dolomites-jul-2026',
     city: 'Dolomites',
     country: 'Italy',
@@ -560,6 +572,29 @@ export const journeyPoints = [
     theme: 'sea',
     stops: ['Dassia', 'Old Town', 'Paleokastritsa', "Canal d'Amour"],
     mrz: 'P<GRCCORFU<<DASSIA<<<<<<<<<<<<<<<0508CFU<<4N',
+  },
+  {
+    id: 'beirut-jul-2026',
+    city: 'Beirut',
+    country: 'Lebanon',
+    geo: { lon: 35.5, lat: 33.9 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: '11 Jul 2026',
+    month: 7,
+    type: 'upcoming',
+    description: 'Heading home for the summer — family, the Mediterranean, and the food I miss most. No plan this time, just Beirut.',
+    // A homecoming, not a written-up trip — it rides the Departures board and its
+    // date-accurate countdown, then folds back into the Beirut base once the day passes.
+    itinerary: null,
+    professional: null,
+    kind: 'Homecoming',
+    region: 'Lebanon · Home',
+    depart: 'Jul 11',
+    code: 'LB',
+    iata: 'BEY',
+    startDate: '2026-07-11',
+    endDate: '2026-07-11',
+    theme: 'sea',
   }
 ];
 
@@ -592,7 +627,7 @@ const IATA = {
   Tokyo: 'HND', Osaka: 'KIX', Kyoto: 'UKY', Nara: 'NAR', 'Mt Fuji': 'NGO',
   Warsaw: 'WAW', Prague: 'PRG', Budapest: 'BUD', Krakow: 'KRK', Vienna: 'VIE',
   Copenhagen: 'CPH', 'Malmö': 'MMX', London: 'LHR', Strasbourg: 'SXB',
-  Amsterdam: 'AMS', Dolomites: 'VCE', Corfu: 'CFU',
+  Amsterdam: 'AMS', Dolomites: 'VCE', Corfu: 'CFU', Deauville: 'DOL',
 };
 
 export function iataFor(city) {
@@ -623,15 +658,15 @@ function daysToDeparture(startDate, iso) {
   return Math.max(0, Math.round((Date.parse(startDate) - Date.parse(iso)) / DAY_MS));
 }
 
-// The featured spread is the live slate only: itinerary trips still ahead or in
-// progress, soonest departure first. Once a trip's dates pass it graduates out of
-// here and into the Arrivals ledger (below), so a finished trip is never shown
-// twice. Carrying an itinerary link no longer pins a trip here — that's now just
-// an optional link any stay can have, so older trips can be written up too.
+// The featured spread is the live slate only: any dated trip (one carrying a
+// start/end window) still ahead or in progress, soonest departure first. Once a
+// trip's dates pass it graduates out of here and into the Arrivals ledger (below),
+// so a finished trip is never shown twice. A written-up itinerary is optional — a
+// trip with no write-up (e.g. a homecoming) still rides the board and its countdown.
 export function getFeaturedItineraries(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
   return journeyPoints
-    .filter((p) => p.itinerary && tripPhase(p, iso) !== 'documented')
+    .filter((p) => p.startDate && p.endDate && tripPhase(p, iso) !== 'documented')
     .map((p) => ({
       ...p,
       phase: tripPhase(p, iso),
@@ -649,7 +684,7 @@ export function getArrivalsLedger(today = new Date()) {
   // featured departure (an itinerary trip not yet past its dates) or otherwise
   // still upcoming; the moment it's documented it graduates in here. Older trips
   // that gain an itinerary link stay put and simply become clickable rows.
-  const isLiveFeature = (p) => p.itinerary && tripPhase(p, iso) !== 'documented';
+  const isLiveFeature = (p) => p.startDate && p.endDate && tripPhase(p, iso) !== 'documented';
   const isFutureUpcoming = (p) => p.type === 'upcoming' && !(p.endDate < iso);
   const arrived = journeyPoints.filter((p) => !isLiveFeature(p) && !isFutureUpcoming(p));
 

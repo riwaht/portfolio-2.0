@@ -50,21 +50,22 @@ function DeparturesBoard({ trips, origin, onOpen }) {
 
   const rows = trips.map((trip) => {
     const r = remark(trip);
+    const linked = !!trip.itinerary;
     return {
       key: trip.id,
-      href: trip.itinerary,
-      onClick: onOpen ? (e) => onOpen(e, trip) : undefined,
+      href: trip.itinerary || undefined,
+      onClick: linked && onOpen ? (e) => onOpen(e, trip) : undefined,
       cells: [
         { content: departDate(trip), className: 'fb-when' },
         { content: trip.city, className: 'fb-city', sub: trip.region || trip.country },
         { content: flightNo(trip), className: 'fb-flight' },
         {
-          content: (
+          content: linked ? (
             <>
               {r.text}
               <span className="fb-arrow" aria-hidden="true">→</span>
             </>
-          ),
+          ) : r.text,
           className: `fb-status fb-status-${r.kind}`,
           // Live countdown under "On time" while a trip is still ahead; the
           // departure day, mid-trip and write-up rows speak for themselves.
