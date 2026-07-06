@@ -594,7 +594,7 @@ export const journeyPoints = [
     iata: 'BEY',
     startDate: '2026-07-11',
     endDate: '2026-07-11',
-    theme: 'sea',
+    theme: 'city',
   }
 ];
 
