@@ -167,17 +167,25 @@
 }
 .pot-shelf-wrap { width: min(680px, 94vw); margin: clamp(22px, 4vw, 40px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
 /* the shelves sit straight on the page (no panel), spaced well apart, pots on top */
-.pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(14px, 3vw, 28px); }
+.pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(34px, 6.5vw, 62px); }
 .pot-level { position: relative; z-index: 1; display: flex; flex-direction: column; }
 .pot-level-pots {
-  display: flex; align-items: flex-end; justify-content: center; gap: clamp(18px, 4.5vw, 46px);
+  display: flex; align-items: flex-end; justify-content: center; gap: 0;
   min-height: clamp(74px, 11vw, 112px); padding: 0 clamp(8px, 3vw, 24px);
 }
 .pot-vessel { display: block; width: 100%; height: auto; }
-.pot-stand { background: none; border: none; padding: 0; cursor: pointer; display: block; line-height: 0; }
+.pot-stand { background: none; border: none; padding: 0; margin: 0; flex: 0 0 auto; cursor: pointer; display: block; line-height: 0; }
 .pot-stand .pot-vessel { width: clamp(72px, 11vw, 112px); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .pot-stand:hover .pot-vessel, .pot-stand:focus-visible .pot-vessel { transform: translateY(-6px); }
 .pot-stand:focus-visible { outline: none; }
+/* pots vary a little in size and spacing so they read as a hand-set cluster, not a row */
+.pot-stand:nth-child(1) .pot-vessel { width: clamp(70px, 10.5vw, 104px); }
+.pot-stand:nth-child(2) .pot-vessel { width: clamp(78px, 12vw, 120px); }
+.pot-stand:nth-child(3) .pot-vessel { width: clamp(64px, 9.5vw, 96px); }
+/* Each vessel drawing carries a lot of empty frame; overlap the frames so the pots
+   themselves sit close, and leave one gap wider so it never reads as a tidy row. */
+.pot-stand + .pot-stand { margin-left: clamp(-30px, -4vw, -16px); }
+.pot-stand:nth-child(3) { margin-left: clamp(-14px, -2vw, -6px); }
 /* a real-ish wooden shelf board: a lit top edge, grain along the length, a darker
    under-face for thickness, and a soft cast shadow — floating (no cartoon brackets). */
 /* natural, lighter matte wood; the two shelves differ in length so they don't read
@@ -194,8 +202,6 @@
   content: ""; position: absolute; left: 5px; right: 5px; bottom: -3px; height: 3px;
   border-radius: 0 0 2px 2px; background: #a3834f;
 }
-.pot-level:nth-child(2) .pot-level-pots { min-height: clamp(8px, 2.5vw, 20px); }
-.pot-level:nth-child(2) .pot-plank { margin-left: clamp(46px, 11vw, 96px); margin-right: clamp(12px, 3vw, 28px); }
 
 .pot-modal-overlay {
   position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
