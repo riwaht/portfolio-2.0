@@ -28,6 +28,16 @@ function Pottery() {
   const [selected, setSelected] = useState(null);
   const stats = getPotteryStats();
 
+  // Fill shelves top-down, then pad with empty shelves so it reads as a whole
+  // shelf unit / wall with room to grow as more pots are made.
+  const PER_SHELF = 3;
+  const MIN_SHELVES = 2;
+  const shelves = [];
+  for (let i = 0; i < potteryPieces.length; i += PER_SHELF) {
+    shelves.push(potteryPieces.slice(i, i + PER_SHELF));
+  }
+  while (shelves.length < MIN_SHELVES) shelves.push([]);
+
   // Esc closes the field notes; lock the background scroll while they're open.
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setSelected(null); };
@@ -61,34 +71,26 @@ function Pottery() {
       </div>
 
       <section className="pot-shelf-wrap" aria-label="Pottery shelf">
-        <div className="pot-shelf" style={{ '--pot-cols': potteryPieces.length }}>
-          <div className="pot-row">
-            {potteryPieces.map((p) => (
-              <button
-                key={p.id}
-                className="pot-stand"
-                style={{ '--pot-accent': p.accent }}
-                onClick={() => setSelected(p)}
-                aria-label={`${p.name}, open field notes`}
-              >
-                <PotteryVessel art={p.art} />
-              </button>
-            ))}
-          </div>
-          <div className="pot-board" aria-hidden="true" />
-          <div className="pot-row pot-names">
-            {potteryPieces.map((p) => (
-              <button
-                key={p.id}
-                className="pot-name"
-                style={{ '--pot-accent': p.accent }}
-                onClick={() => setSelected(p)}
-              >
-                <span className="pot-name-t">{p.name}</span>
-                <span className="pot-name-m">{p.glaze} · {p.fired}</span>
-              </button>
-            ))}
-          </div>
+        <div className="pot-studio">
+          {shelves.map((row, i) => (
+            <div className="pot-level" key={i}>
+              <div className="pot-level-pots">
+                {row.map((p) => (
+                  <button
+                    key={p.id}
+                    className="pot-stand"
+                    style={{ '--pot-accent': p.accent }}
+                    onClick={() => setSelected(p)}
+                    title={`${p.name} · ${p.glaze}`}
+                    aria-label={`${p.name}, open field notes`}
+                  >
+                    <PotteryVessel art={p.art} />
+                  </button>
+                ))}
+              </div>
+              <div className="pot-plank" aria-hidden="true" />
+            </div>
+          ))}
         </div>
       </section>
 
