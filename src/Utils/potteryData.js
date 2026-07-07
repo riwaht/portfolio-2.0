@@ -1,11 +1,11 @@
 // A wheel-throwing log, oldest first, so the shelf reads as real progress. Each
-// piece carries its glaze, when it was fired, and honest notes on what came out
-// nice and what went wrong. The little vessel drawings (Pottery/PotteryVessel,
-// keyed by `art`) sit on the shelf; a real `photo` shows inside the field notes.
+// piece carries its glaze, when it was fired, and honest notes on the form and the
+// glaze, what came out nice and what went wrong. The little vessel drawings
+// (Pottery/PotteryVessel, keyed by `art`) sit on the shelf; the real `photo` shows
+// inside the field notes on click.
 //
-// NOTE: `fired` dates and `notes` below are placeholders — swap in your own.
-// Photos: drop the files at the `photo` paths (in public/Images/pottery/) and they
-// appear in the field notes automatically; until then it falls back to the drawing.
+// The running thread: the walls were thick and a bit fat on the first two, and the
+// pull finally clicked on the blue one. Tweak any wording freely.
 export const potteryPieces = [
   {
     id: 'celadon-bowl',
@@ -16,12 +16,12 @@ export const potteryPieces = [
     art: 'greenBowl',
     accent: '#7D9E76',
     photo: '/Images/pottery/celadon-bowl.jpg',
-    tag: { nice: 'pale rim break', oops: 'ran to foot' },
+    tag: { nice: 'pale rim', oops: 'thick walls' },
     notes: {
-      tried: 'My first one. A thick celadon pulled over a dark iron slip.',
-      nice: 'The glaze broke pale over the rim, exactly how I hoped.',
-      oops: 'It ran to the foot and nearly stuck to the kiln shelf.',
-      next: 'Wax the foot, and go one coat thinner near the base.',
+      tried: 'My very first one on the wheel, a green celadon over dark iron.',
+      nice: 'The celadon broke pale over the rim, just how I wanted.',
+      oops: 'The walls came out thick and a bit fat. I could have kept pulling them taller and thinner.',
+      next: 'Trust the clay and pull more before it firms up.',
     },
   },
   {
@@ -33,12 +33,12 @@ export const potteryPieces = [
     art: 'amberCup',
     accent: '#C0842F',
     photo: '/Images/pottery/honey-cup.jpg',
-    tag: { nice: 'glossy pool', oops: 'rim crawl' },
+    tag: { nice: 'glossy pool', oops: 'still thick' },
     notes: {
-      tried: 'A thick amber glaze over pale stoneware, dipped in one go.',
-      nice: 'It pooled thick and glossy where it ran down the walls.',
-      oops: 'The glaze crawled back off the rim and left a dry, raw patch.',
-      next: 'Wipe the bisque dust off the rim before glazing.',
+      tried: 'Same fight with the walls, this time under a thick amber glaze.',
+      nice: 'The glaze pooled deep and glossy down the sides.',
+      oops: 'Still a bit fat. I pulled more than the first but stopped too early, and the glaze crawled off the rim.',
+      next: 'One more pull each time, and wipe the dust off the rim before glazing.',
     },
   },
   {
@@ -50,12 +50,12 @@ export const potteryPieces = [
     art: 'blueBowl',
     accent: '#6E93C8',
     photo: '/Images/pottery/speckle-bowl.jpg',
-    tag: { nice: 'even speckle', oops: 'warped rim' },
+    tag: { nice: 'thin at last', oops: 'uneven rim' },
     notes: {
-      tried: 'A white glaze with blue specks flicked over the inside.',
-      nice: 'The speckle scattered just right, nothing too heavy.',
-      oops: 'The rim warped a little on the wheel and dried not-quite-round.',
-      next: 'Slow down on the last pull and compress the rim more.',
+      tried: 'Blue specks over white, and finally really committing to the pull.',
+      nice: 'This is where it clicked, thinner and taller walls at last, and the speckle scattered just right.',
+      oops: 'The rim went a little uneven on the last pull, but the wall was the best yet.',
+      next: 'Keep this height, and steady the rim as I finish.',
     },
   },
 ];
