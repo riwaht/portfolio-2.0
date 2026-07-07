@@ -165,53 +165,37 @@
   width: min(1180px, 92vw); margin: clamp(18px, 3vw, 30px) auto 0;
   font-family: var(--font-sans); color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; max-width: 62ch;
 }
-.pot-shelf-wrap { width: min(600px, 94vw); margin: clamp(30px, 5vw, 54px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
-/* a warm, softly-lit studio nook: pots stand on stacked wooden shelves set into a
-   textured plaster wall, with window light spilling in from the top-left. */
-.pot-studio {
-  position: relative; overflow: hidden; border-radius: 10px;
-  display: flex; flex-direction: column; gap: clamp(4px, 1.4vw, 12px);
-  padding: clamp(28px, 4.5vw, 44px) clamp(16px, 3vw, 30px) clamp(20px, 3vw, 28px);
-  background: linear-gradient(165deg, #ECE0C8 0%, #DECDAD 100%);
-  border: 1px solid rgba(92, 70, 44, 0.22);
-  box-shadow: inset 0 2px 22px rgba(92, 62, 30, 0.14), 0 22px 52px -30px rgba(0, 0, 0, 0.4);
-}
-[data-theme="dark"] .pot-studio {
-  background: linear-gradient(165deg, #2A2219 0%, #1D1710 100%);
-  border-color: rgba(255, 228, 186, 0.10);
-  box-shadow: inset 0 2px 26px rgba(0, 0, 0, 0.55), 0 24px 60px -30px rgba(0, 0, 0, 0.6);
-}
-.pot-studio::before {
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(120% 95% at 6% -8%, rgba(255, 198, 112, 0.28), transparent 52%);
-}
-[data-theme="dark"] .pot-studio::before { background: radial-gradient(120% 95% at 6% -8%, rgba(255, 190, 104, 0.16), transparent 52%); }
-.pot-studio::after {
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='pn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23pn)'/%3E%3C/svg%3E");
-}
+.pot-shelf-wrap { width: min(560px, 92vw); margin: clamp(22px, 4vw, 40px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
+/* the shelves sit straight on the page (no panel), spaced well apart, pots on top */
+.pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(36px, 7vw, 66px); }
 .pot-level { position: relative; z-index: 1; display: flex; flex-direction: column; }
 .pot-level-pots {
-  display: flex; align-items: flex-end; justify-content: center; gap: clamp(14px, 3.5vw, 34px);
-  min-height: clamp(72px, 11vw, 112px); padding: 0 clamp(12px, 3vw, 28px);
+  display: flex; align-items: flex-end; justify-content: center; gap: clamp(18px, 4.5vw, 46px);
+  min-height: clamp(74px, 11vw, 112px); padding: 0 clamp(8px, 3vw, 24px);
 }
 .pot-vessel { display: block; width: 100%; height: auto; }
 .pot-stand { background: none; border: none; padding: 0; cursor: pointer; display: block; line-height: 0; }
-.pot-stand .pot-vessel { width: clamp(66px, 10vw, 108px); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.pot-stand:hover .pot-vessel, .pot-stand:focus-visible .pot-vessel { transform: translateY(-7px); }
+.pot-stand .pot-vessel { width: clamp(72px, 11vw, 112px); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.pot-stand:hover .pot-vessel, .pot-stand:focus-visible .pot-vessel { transform: translateY(-6px); }
 .pot-stand:focus-visible { outline: none; }
+/* a real-ish wooden shelf board: a lit top edge, grain along the length, a darker
+   under-face for thickness, and a soft cast shadow — floating (no cartoon brackets). */
 .pot-plank {
-  position: relative; height: 15px; border-radius: 2px; margin-top: -3px;
-  background: linear-gradient(180deg, #8c6c46 0%, #6b4e2f 55%, #573e25 100%);
-  box-shadow: 0 13px 20px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 240, 214, 0.18), inset 0 -3px 6px -3px rgba(0, 0, 0, 0.45);
+  position: relative; height: 15px; margin: -2px clamp(10px, 7vw, 52px) 0;
+  border-radius: 2px 2px 3px 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 219, 0.34) 0, rgba(255, 243, 219, 0) 2.5px),
+    repeating-linear-gradient(0deg, rgba(70, 45, 20, 0.07) 0 1px, rgba(70, 45, 20, 0) 1px 4px),
+    linear-gradient(180deg, #bd9260 0%, #a3743f 40%, #855c31 74%, #6a4a26 100%);
+  box-shadow:
+    0 13px 17px -8px rgba(56, 36, 16, 0.5),
+    inset 0 -3px 4px rgba(52, 32, 12, 0.42),
+    inset 0 1px 0 rgba(255, 244, 220, 0.28);
 }
-.pot-plank::before, .pot-plank::after {
-  content: ""; position: absolute; top: 15px; width: 0; height: 0;
-  border-style: solid; border-width: 0 0 13px 9px;
-  border-color: transparent transparent transparent #573e25; opacity: 0.85;
+.pot-plank::after {
+  content: ""; position: absolute; left: 6px; right: 6px; bottom: -4px; height: 4px;
+  border-radius: 0 0 3px 3px; background: #4f3720;
 }
-.pot-plank::before { left: 9%; }
-.pot-plank::after { right: 9%; transform: scaleX(-1); }
 
 .pot-modal-overlay {
   position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
