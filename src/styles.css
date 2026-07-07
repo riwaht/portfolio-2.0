@@ -1888,19 +1888,21 @@ button:disabled:hover {
 .footer {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
-  padding: 3rem 2rem 2rem;
-  text-align: center;
+  padding: 3rem 0 2rem;
+  text-align: left;
   transition: all 0.3s ease;
 }
 
+/* the footer shares the masthead's content column and left-aligns, so it reads as
+   part of the page instead of a block floating in the dead centre */
 .footer-content {
-  max-width: 1200px;
+  width: min(1180px, 92vw);
   margin: 0 auto;
 }
 
 .social-links {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2rem;
   margin-bottom: 2rem;
 }
