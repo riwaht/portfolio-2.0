@@ -7,7 +7,7 @@ const MONS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OC
 /**
  * The terminal header — the airport identity strip that opens the page:
  * a mono ID strip (RIWA HOTEIT INTL · RWA + live HH:MM:SS clock and date),
- * the Fraunces "Journeys." title, a stats readout with the live "now" ping,
+ * the Spectral "Journeys." title, a stats readout with the live "now" ping,
  * and a scrolling LED ticker of the lead line + boarding call.
  */
 function TerminalHeader({ stats, currentCity, boarding = [], upcoming = [] }) {

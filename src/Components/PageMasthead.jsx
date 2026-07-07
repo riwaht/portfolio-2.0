@@ -14,7 +14,7 @@ const MONS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OC
  *
  * @param {string} section  right-hand system id, e.g. "WORKLOG" (rendered upper)
  * @param {string} [eyebrow] small mono kicker above the title
- * @param {string} [title]   Fraunces display word (a trailing "." dot is added)
+ * @param {string} [title]   Spectral display word (a trailing "." dot is added)
  * @param {Array<{value?:string,label:string}>} [stats]  stat cells
  * @param {string} [live]    optional live-pip label, e.g. "Now at Mistral"
  * @param {boolean} [compact] slim variant — system line only (no title/stats)

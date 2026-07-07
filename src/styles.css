@@ -1,6 +1,6 @@
 :root {
-  /* Typography — Fraunces is the site-wide signature face, Spline Sans Mono for data */
-  --font-sans: 'Fraunces', Georgia, 'Times New Roman', serif;
+  /* Typography: Spectral is the site-wide signature face, Spline Sans Mono for data */
+  --font-sans: 'Spectral', Georgia, 'Times New Roman', serif;
   --font-mono: 'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* Light substrate — a warm printed-paper timetable */
