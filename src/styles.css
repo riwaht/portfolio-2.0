@@ -167,7 +167,7 @@
 }
 .pot-shelf-wrap { width: min(680px, 94vw); margin: clamp(22px, 4vw, 40px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
 /* the shelves sit straight on the page (no panel), spaced well apart, pots on top */
-.pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(36px, 7vw, 66px); }
+.pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(14px, 3vw, 28px); }
 .pot-level { position: relative; z-index: 1; display: flex; flex-direction: column; }
 .pot-level-pots {
   display: flex; align-items: flex-end; justify-content: center; gap: clamp(18px, 4.5vw, 46px);
@@ -180,22 +180,22 @@
 .pot-stand:focus-visible { outline: none; }
 /* a real-ish wooden shelf board: a lit top edge, grain along the length, a darker
    under-face for thickness, and a soft cast shadow — floating (no cartoon brackets). */
+/* natural, lighter matte wood; the two shelves differ in length so they don't read
+   as two identical bars. */
 .pot-plank {
-  position: relative; height: 9px; margin: -2px clamp(0px, 1vw, 10px) 0;
-  border-radius: 2px 2px 3px 3px;
+  position: relative; height: 9px; margin: -2px clamp(0px, 1vw, 8px) 0;
+  border-radius: 2px;
   background:
-    linear-gradient(180deg, rgba(255, 243, 219, 0.34) 0, rgba(255, 243, 219, 0) 1.5px),
-    repeating-linear-gradient(0deg, rgba(70, 45, 20, 0.07) 0 1px, rgba(70, 45, 20, 0) 1px 4px),
-    linear-gradient(180deg, #bd9260 0%, #a3743f 40%, #855c31 74%, #6a4a26 100%);
-  box-shadow:
-    0 10px 15px -8px rgba(56, 36, 16, 0.46),
-    inset 0 -2px 3px rgba(52, 32, 12, 0.42),
-    inset 0 1px 0 rgba(255, 244, 220, 0.28);
+    repeating-linear-gradient(0deg, rgba(120, 90, 52, 0.05) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #c9ad7f 0%, #b7986a 100%);
+  box-shadow: 0 7px 12px -9px rgba(96, 70, 38, 0.34), inset 0 -1.5px 2px rgba(120, 88, 50, 0.28);
 }
 .pot-plank::after {
-  content: ""; position: absolute; left: 6px; right: 6px; bottom: -3px; height: 3px;
-  border-radius: 0 0 3px 3px; background: #4f3720;
+  content: ""; position: absolute; left: 5px; right: 5px; bottom: -3px; height: 3px;
+  border-radius: 0 0 2px 2px; background: #a3834f;
 }
+.pot-level:nth-child(2) .pot-level-pots { min-height: clamp(8px, 2.5vw, 20px); }
+.pot-level:nth-child(2) .pot-plank { margin-left: clamp(46px, 11vw, 96px); margin-right: clamp(12px, 3vw, 28px); }
 
 .pot-modal-overlay {
   position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
