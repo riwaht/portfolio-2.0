@@ -37,14 +37,14 @@ function BlueBowl() {
 function GreenBowl() {
   return (
     <>
-      <ellipse cx="50" cy="86" rx="24" ry="4.5" fill="rgba(0,0,0,0.26)" />
-      <path d="M23,42 C24,68 36,82 50,82 C64,82 76,68 77,42 Z" fill="#7D9E76" />
-      <path d="M30,58 C36,76 44,80 50,80 C56,80 64,76 70,58 C60,66 40,66 30,58 Z" fill="#4E6E4A" opacity="0.5" />
-      <path d="M48,80 C47,86 47,90 49,91 C51,90 51,86 51,80 Z" fill="#5E7E54" />
-      <path d="M23,42 C28,37 40,35 50,35 C60,35 72,37 77,43 C72,47 60,49 50,49 C40,49 28,47 23,42 Z" fill="#A9CFC0" />
-      <ellipse cx="50" cy="42" rx="21" ry="5.2" fill="#4E6E4A" />
+      <ellipse cx="50" cy="85" rx="28" ry="4.5" fill="rgba(0,0,0,0.26)" />
+      <path d="M19,45 C21,71 34,83 50,83 C66,83 79,71 81,45 Z" fill="#7D9E76" />
+      <path d="M27,67 C33,79 42,81 50,81 C58,81 67,79 73,67 C64,73 36,73 27,67 Z" fill="#4E6E4A" opacity="0.5" />
+      <path d="M19,45 C23,39 40,37 50,37 C60,37 77,39 81,46 C77,51 60,53 50,53 C40,53 23,51 19,45 Z" fill="#A9CFC0" />
+      <ellipse cx="50" cy="45" rx="25" ry="6.2" fill="#4E6E4A" />
       <g fill="#CBB86A">
-        <circle cx="45" cy="41" r="1" /><circle cx="54" cy="43" r="1" /><circle cx="50" cy="40" r="0.9" /><circle cx="57" cy="41" r="0.8" />
+        <circle cx="43" cy="44" r="1.3" /><circle cx="55" cy="46" r="1.2" /><circle cx="49" cy="43" r="1" />
+        <circle cx="59" cy="44" r="1.1" /><circle cx="46" cy="47" r="0.9" /><circle cx="52" cy="48" r="1" />
       </g>
     </>
   );

@@ -61,30 +61,35 @@ function Pottery() {
       </div>
 
       <section className="pot-shelf-wrap" aria-label="Pottery shelf">
-        <div className="pot-shelf">
-          {potteryPieces.map((p) => (
-            <button
-              key={p.id}
-              className="pot-card"
-              style={{ '--pot-accent': p.accent }}
-              onClick={() => setSelected(p)}
-              aria-label={`${p.name}, read the field notes`}
-            >
-              <div className="pot-photo">
+        <div className="pot-shelf" style={{ '--pot-cols': potteryPieces.length }}>
+          <div className="pot-row">
+            {potteryPieces.map((p) => (
+              <button
+                key={p.id}
+                className="pot-stand"
+                style={{ '--pot-accent': p.accent }}
+                onClick={() => setSelected(p)}
+                aria-label={`${p.name}, open field notes`}
+              >
                 <PotteryVessel art={p.art} />
-              </div>
-              <div className="pot-cbody">
-                <div className="pot-cname">{p.name}</div>
-                <div className="pot-cmeta">{p.glaze} · {p.fired}</div>
-                <div className="pot-tags">
-                  <span className="pot-tag pot-tag-nice">{p.tag.nice}</span>
-                  <span className="pot-tag pot-tag-oops">{p.tag.oops}</span>
-                </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            ))}
+          </div>
+          <div className="pot-board" aria-hidden="true" />
+          <div className="pot-row pot-names">
+            {potteryPieces.map((p) => (
+              <button
+                key={p.id}
+                className="pot-name"
+                style={{ '--pot-accent': p.accent }}
+                onClick={() => setSelected(p)}
+              >
+                <span className="pot-name-t">{p.name}</span>
+                <span className="pot-name-m">{p.glaze} · {p.fired}</span>
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="pot-shelf-line" aria-hidden="true" />
       </section>
 
       {selected && (
