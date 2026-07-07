@@ -67,7 +67,7 @@ function Pottery() {
       />
 
       <div className="pot-intro">
-        <p>A shelf of the pots I've thrown, with an honest note on what came out nice and what went wrong. Tap a piece for its field notes.</p>
+        <p>{stats.pieces} pots off the wheel so far. The {stats.finished} that made it all the way through glazing and firing earn a spot on the shelf. An honest note on each: what came out nice and what went wrong. Tap a piece for its field notes.</p>
       </div>
 
       <section className="pot-shelf-wrap" aria-label="Pottery shelf">

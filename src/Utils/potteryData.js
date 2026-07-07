@@ -60,8 +60,15 @@ export const potteryPieces = [
   },
 ];
 
-// Little kiln-log stats for the masthead.
+// Total pots off the wheel so far. Only the finished ones (glazed, fired, and
+// photographed) earn a spot on the shelf above and appear in `potteryPieces`;
+// this counts everything thrown, including pieces still drying or unglazed.
+// Bump it as more come out of the kiln.
+export const potsThrown = 8;
+
+// Little kiln-log stats for the masthead. `pieces` is everything thrown;
+// `finished` is how many made it onto the shelf.
 export function getPotteryStats() {
   const glazes = new Set(potteryPieces.map((p) => p.glaze));
-  return { pieces: potteryPieces.length, glazes: glazes.size };
+  return { pieces: potsThrown, glazes: glazes.size, finished: potteryPieces.length };
 }
