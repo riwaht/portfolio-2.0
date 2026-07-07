@@ -221,7 +221,7 @@
   background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px;
 }
 .pot-vessel-lg { width: 78%; }
-.pot-modal-plate img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+.pot-modal-plate img { width: 100%; height: 100%; object-fit: cover; object-position: center 64%; border-radius: 8px; }
 .pot-modal-eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pot-accent); }
 .pot-modal-title { font-family: var(--font-sans); font-style: italic; font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--text-primary); margin: 0.15em 0 0.1em; }
 .pot-modal-meta { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
