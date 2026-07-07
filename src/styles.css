@@ -160,6 +160,87 @@
   .pm-live-wrap { margin-left: 0; }
 }
 
+/* ===================== POTTERY — kiln shelf + field notes ===================== */
+.pot-intro {
+  width: min(1180px, 92vw); margin: clamp(18px, 3vw, 30px) auto 0;
+  font-family: var(--font-sans); color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; max-width: 62ch;
+}
+.pot-shelf-wrap { width: min(1180px, 92vw); margin: clamp(26px, 4vw, 42px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
+.pot-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: clamp(16px, 2.2vw, 26px); }
+.pot-card {
+  --pot-accent: var(--accent-primary);
+  display: flex; flex-direction: column; text-align: left; padding: 0; font: inherit; color: inherit; cursor: pointer;
+  background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow-soft);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.pot-card:hover, .pot-card:focus-visible {
+  transform: translateY(-4px); outline: none;
+  border-color: color-mix(in srgb, var(--pot-accent) 55%, var(--border-strong));
+  box-shadow: 0 12px 30px var(--shadow-strong);
+}
+.pot-photo {
+  aspect-ratio: 4 / 3; display: flex; align-items: flex-end; justify-content: center; padding: 16px 16px 0;
+  background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);
+}
+.pot-vessel { width: 58%; height: auto; }
+.pot-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pot-cbody { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 5px; }
+.pot-cname { font-family: var(--font-sans); font-style: italic; font-size: 1.2rem; color: var(--text-primary); }
+.pot-cmeta { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.pot-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.pot-tag {
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 9px 3px 8px; border-radius: 100px; border: 1px solid; display: inline-flex; align-items: center; gap: 6px;
+}
+.pot-tag::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.pot-tag-nice { color: var(--accent-alpine); border-color: color-mix(in srgb, var(--accent-alpine) 42%, transparent); }
+.pot-tag-oops { color: var(--accent-oxblood); border-color: color-mix(in srgb, var(--accent-oxblood) 42%, transparent); }
+
+.pot-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
+  padding: clamp(16px, 4vw, 40px); background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); animation: potFade 0.2s ease;
+}
+.pot-modal {
+  --pot-accent: var(--accent-primary);
+  position: relative; width: min(760px, 100%); max-height: 88vh; overflow: auto;
+  display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(16px, 2.5vw, 28px);
+  background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: clamp(20px, 3vw, 32px); box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.5);
+  animation: potRise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pot-modal-close {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-secondary);
+  cursor: pointer; font-size: 13px; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.pot-modal-close:hover { color: var(--accent-oxblood); border-color: var(--accent-oxblood); }
+.pot-modal-plate {
+  align-self: start; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px;
+}
+.pot-vessel-lg { width: 78%; }
+.pot-modal-plate img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+.pot-modal-eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pot-accent); }
+.pot-modal-title { font-family: var(--font-sans); font-style: italic; font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--text-primary); margin: 0.15em 0 0.1em; }
+.pot-modal-meta { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.pot-notes { margin-top: 18px; display: flex; flex-direction: column; gap: 13px; }
+.pot-note { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: start; }
+.pot-nlab { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); padding-top: 4px; }
+.pot-nlab-nice { color: var(--accent-alpine); }
+.pot-nlab-oops { color: var(--accent-oxblood); }
+.pot-note span:last-child { font-family: var(--font-sans); font-size: 1rem; line-height: 1.5; color: var(--text-primary); }
+@keyframes potFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes potRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) {
+  .pot-modal { grid-template-columns: 1fr; }
+  .pot-modal-plate { max-width: 200px; margin: 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pot-card, .pot-modal-overlay, .pot-modal { transition: none; animation: none; }
+}
+
 body,
 html {
   margin: 0;
