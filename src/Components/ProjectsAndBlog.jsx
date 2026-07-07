@@ -39,7 +39,7 @@ function ProjectsAndBlog() {
         {
             id: 2,
             title: "Beirut: LLM assistant backend",
-            description: "Service that answers user queries about venues and menus using an LLM. Handles prompt building, retrieval, and response shaping for the mobile client.",
+            description: "A backend that answers questions about venues and menus using an LLM. I handled the prompt building, retrieval, and shaping the responses for the mobile app.",
             technologies: ["node.js", "typescript", "openai", "express"],
             image: "/Images/beirut-llm.png",
             codeLink: "https://github.com/riwaht/beirut-chatbot-llm-proj"
@@ -47,7 +47,7 @@ function ProjectsAndBlog() {
         {
             id: 3,
             title: "Notion ↔ Revolut server",
-            description: "Sync + automation service that mirrors financial events into Notion and surfaces Notion data into workflows. Built the endpoints, webhooks, and schema mapping.",
+            description: "A sync and automation service that mirrors financial events into Notion and pulls Notion data back into my workflows. I built the endpoints, webhooks, and schema mapping.",
             technologies: ["node.js", "express", "notion api", "revolut api", "webhooks"],
             image: "/Images/notion-revolut.png",
             codeLink: "https://github.com/riwaht/notion-revolut-server"
@@ -55,7 +55,7 @@ function ProjectsAndBlog() {
         {
             id: 4,
             title: "Portfolio (3D + web)",
-            description: "Your current 3D house experience plus the new multi-page site structure. Built with React/Three.js and a clean content layer for case studies.",
+            description: "The 3D house experience plus this new multi-page site. Built with React and Three.js, with a clean content layer for the case studies.",
             technologies: ["react", "three.js", "r3f", "vite"],
             image: "/Images/MainScreen.png",
             codeLink: "https://github.com/riwaht/portfolio-2.0"
@@ -93,7 +93,7 @@ function ProjectsAndBlog() {
             date: "March 2026",
             readTime: "4 min read",
             tags: ["AI", "Mistral"],
-            excerpt: "Spaces is an internal platform tool that scaffolds projects, manages dev environments, and enables deployments. This post explores how designing a CLI to work with both human developers and AI agents led to better developer experience overall.",
+            excerpt: "Spaces is an internal platform tool that scaffolds projects, manages dev environments, and handles deployments. I wrote about what it was like designing a CLI for both human developers and AI agents, and how building for both ended up making the whole thing better to use.",
             externalUrl: "https://mistral.ai/news/spaces",
             variant: "mistral"
         },
@@ -103,7 +103,7 @@ function ProjectsAndBlog() {
             date: "June 2025",
             readTime: "5 min read",
             tags: ["Game Development", "Technical"],
-            excerpt: "I've been working on a narrative-driven puzzle-platformer inspired by Inside, Limbo, and Fahrenheit 451. Instead of dialogue, the game tells its story through movement, puzzles, and environments. Here's a look at how I'm building a world where silence speaks louder than words.",
+            excerpt: "I've been working on a narrative-driven puzzle-platformer inspired by Inside, Limbo, and Fahrenheit 451. Instead of dialogue, the game tells its story through movement, puzzles, and environments. Here's how I'm building a world where silence does most of the talking.",
             content: `
                 <h2>The Vision</h2>
                 <p>The idea was simple: build a game where the story unfolds without a single line of dialogue. Inspired by titles like <em>Inside</em> and <em>Limbo</em>, and layered with the emotional weight of <em>Fahrenheit 451</em>, I wanted to create a platformer where silence, atmosphere, and the player's imagination become the narrative engine.</p>
@@ -153,7 +153,7 @@ function ProjectsAndBlog() {
             excerpt: "Ever wished your bank transactions could automatically sync to Notion? I built a small FastAPI backend that links TrueLayer and Notion to give me complete control over how my financial data is categorized and visualized.",
             content: `
               <h2>The Problem</h2>
-              <p>As someone who tracks everything in Notion — from tasks to goals to even memories — managing my expenses separately through banking apps never felt complete. I wanted my financial transactions to show up in Notion automatically, categorized, converted, and ready to analyze.</p>
+              <p>As someone who tracks everything in Notion, from tasks to goals to even memories, managing my expenses separately through banking apps never felt complete. I wanted my financial transactions to show up in Notion automatically, categorized, converted, and ready to analyze.</p>
           
               <h2>The Solution</h2>
               <p>I built a FastAPI backend that connects to my bank via <a href="https://truelayer.com" target="_blank">TrueLayer</a> (I use Revolut) and syncs transactions to Notion. The system handles categorization, multi-currency conversion, and supports multiple bank accounts with ease.</p>
@@ -197,10 +197,10 @@ function ProjectsAndBlog() {
               </ul>
           
               <h2>The Result</h2>
-              <p>Every day, my Notion workspace updates with the latest transactions — no more manual copying or guessing where my money went. It's simple, fast, and tailored to my setup.</p>
+              <p>Every day, my Notion workspace updates with the latest transactions. No more manual copying or guessing where my money went. It's simple, fast, and tailored to my setup.</p>
           
               <h2>What I Learned</h2>
-              <p>This project reminded me how powerful small automation tools can be. By combining a few APIs and keeping the system modular, I built something I actually use every day. I'm deliberately keeping the scope limited — no bloated dashboards or 3rd-party dependencies — but I'm always open to suggestions or improvements.</p>
+              <p>This project reminded me how powerful small automation tools can be. By combining a few APIs and keeping the system modular, I built something I actually use every day. I'm deliberately keeping the scope limited, no bloated dashboards or 3rd-party dependencies, but I'm always open to suggestions or improvements.</p>
           
               <p>It's still a work in progress, but it's already saved me hours of tracking and budgeting time. If you like automating personal finance or organizing everything in Notion like I do, feel free to check it out or reach out!</p>
             `
@@ -214,7 +214,7 @@ function ProjectsAndBlog() {
             excerpt: "Before APIs, internships, or even proper side projects, there was one chaotic Discord bot. It was my very first coding project, built with Discord4J, and it taught me more about reading documentation (and patience) than anything else.",
             content: `
                 <h2>The Context</h2>
-                <p>Back when I started, there was no ChatGPT I could ask for help. It was just me, a Java library called <strong>Discord4J</strong>, and about four short subpages of documentation with tiny examples. No walkthroughs, no deep explanations—just enough to say, "Good luck."</p>
+                <p>Back when I started, there was no ChatGPT I could ask for help. It was just me, a Java library called <strong>Discord4J</strong>, and about four short subpages of documentation with tiny examples. No walkthroughs, no deep explanations, just enough to say, "Good luck."</p>
         
                 <h2>Learning by Chaos</h2>
                 <p>I had no clue what I was doing. So I did the only thing I could: <em>fuck around and find out</em>. I copy-pasted, broke things, fixed them, broke them again. Slowly, I started to understand how event-driven code worked.</p>
@@ -233,7 +233,7 @@ function ProjectsAndBlog() {
                 <p>It wasn't much, but when that message appeared in the server, I felt unstoppable. I had just written code that <em>talked back to me</em>.</p>
         
                 <h2>Why It Stuck</h2>
-                <p>What made this project special wasn't the code itself, but the feeling. For the first time, I realized that I could use programming to replace myself—to literally automate my presence in a Discord server and have a bot talk to my friends for me. That was hilarious, but also strangely powerful.</p>
+                <p>What made this project special wasn't the code itself, but the feeling. For the first time, I realized that I could use programming to replace myself, to literally automate my presence in a Discord server and have a bot talk to my friends for me. That was hilarious, but also strangely powerful.</p>
         
                 <h2>What It Taught Me</h2>
                 <ul>
@@ -243,7 +243,7 @@ function ProjectsAndBlog() {
                 </ul>
         
                 <h2>Looking Back</h2>
-                <p>That Discord bot wasn't impressive. It was clunky, barely useful, and honestly kind of spammy. But it was the first time I felt the spark—that <em>this</em> is what I want to keep doing. And honestly, that spark is still here today.</p>
+                <p>That Discord bot wasn't impressive. It was clunky, barely useful, and honestly kind of spammy. But it was the first time I felt the spark, that <em>this</em> is what I want to keep doing. And honestly, that spark is still here today.</p>
         
                 <p><em>If I could add a gif here, it would be the bot happily spamming "Hello world" in chat while my friends begged me to turn it off.</em></p>
             `
