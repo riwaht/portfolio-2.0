@@ -7,6 +7,16 @@ import { potteryPieces, getPotteryStats } from '../Utils/potteryData';
 import { pad2 } from '../Utils/ui';
 import '../styles.css';
 
+// The field-notes hero: the real photo if it's in the repo, otherwise the drawing.
+// (So the shelf always shows the illustration; the photo only appears on click.)
+function PieceImage({ piece }) {
+  const [failed, setFailed] = useState(false);
+  if (piece.photo && !failed) {
+    return <img src={piece.photo} alt={piece.name} onError={() => setFailed(true)} />;
+  }
+  return <PotteryVessel art={piece.art} className="pot-vessel pot-vessel-lg" />;
+}
+
 /**
  * The /pottery page — a wheel-throwing log. An illustrated "shelf" of every pot,
  * each with a two-word win/oops; tapping a piece opens its full field notes
@@ -61,9 +71,7 @@ function Pottery() {
               aria-label={`${p.name}, read the field notes`}
             >
               <div className="pot-photo">
-                {p.photo
-                  ? <img src={p.photo} alt={p.name} />
-                  : <PotteryVessel art={p.art} />}
+                <PotteryVessel art={p.art} />
               </div>
               <div className="pot-cbody">
                 <div className="pot-cname">{p.name}</div>
@@ -91,9 +99,7 @@ function Pottery() {
           >
             <button className="pot-modal-close" onClick={() => setSelected(null)} aria-label="Close field notes">✕</button>
             <div className="pot-modal-plate">
-              {selected.photo
-                ? <img src={selected.photo} alt={selected.name} />
-                : <PotteryVessel art={selected.art} className="pot-vessel pot-vessel-lg" />}
+              <PieceImage piece={selected} />
             </div>
             <div className="pot-modal-body">
               <div className="pot-modal-eyebrow">{selected.form}</div>
