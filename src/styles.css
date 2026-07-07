@@ -1891,6 +1891,9 @@ button:disabled:hover {
   padding: 3rem 2rem 2rem;
   text-align: center;
   transition: all 0.3s ease;
+  /* the page-container is a min-height:100vh flex column; this soaks up any
+     leftover space so a short page's footer sits at the bottom, not mid-page */
+  margin-top: auto;
 }
 
 .footer-content {
