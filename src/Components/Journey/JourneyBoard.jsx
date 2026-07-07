@@ -39,6 +39,7 @@ function JourneyBoard() {
 
   // Wash the screen in the trip's palette, then hand off to the live itinerary.
   const handleOpen = useCallback((e, trip) => {
+    if (!trip.itinerary) return; // a write-up-less trip (e.g. a homecoming) isn't a link
     if (prefersReducedMotion()) return; // let the <a href> navigate normally
     e.preventDefault();
     setDeparting(trip);

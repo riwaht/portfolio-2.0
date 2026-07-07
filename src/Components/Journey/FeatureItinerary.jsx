@@ -1,7 +1,7 @@
 import { pad2 } from '../../Utils/ui';
 
-const ACCENT = { alpine: 'var(--jb-alpine)', sea: 'var(--jb-sea)' };
-const GLYPH = { alpine: '▲', sea: '≈' }; // ▲ peak · ≈ sea
+const ACCENT = { alpine: 'var(--jb-alpine)', sea: 'var(--jb-sea)', city: 'var(--jb-sea)' };
+const GLYPH = { alpine: '▲', sea: '≈', city: '⌂' }; // ▲ peak · ≈ sea · ⌂ home city
 
 // Poster badge per date-accurate phase. Scheduled spreads count down to the
 // departure; the day itself reads "Boarding today"; mid-trip "En route".
@@ -103,6 +103,68 @@ function SeaPoster({ uid }) {
 }
 
 /**
+ * A printed travel-poster of a Mediterranean city at dusk — Beirut: a mauve-to-gold
+ * sky over a low sun, the Mount Lebanon range hazed behind, a coastal skyline whose
+ * towers catch a few warm lit windows, and the sea laying the sun back up the water.
+ */
+function CityPoster({ uid }) {
+  return (
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#26243B" />
+          <stop offset="0.45" stopColor="#64466A" />
+          <stop offset="0.76" stopColor="#C67A5E" />
+          <stop offset="1" stopColor="#EEAA5E" />
+        </linearGradient>
+        <linearGradient id={`${uid}-sea`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#C98A54" />
+          <stop offset="0.4" stopColor="#437284" />
+          <stop offset="1" stopColor="#16323E" />
+        </linearGradient>
+      </defs>
+      {/* sky */}
+      <rect width="400" height="188" fill={`url(#${uid}-sky)`} />
+      {/* low dusk sun + glow */}
+      <circle cx="256" cy="120" r="46" fill="#F6D98C" opacity="0.28" />
+      <circle cx="256" cy="122" r="26" fill="#FBE7A8" />
+      {/* Mount Lebanon — two hazy ranges behind the city */}
+      <polygon points="0,150 58,110 130,150 196,104 262,150 330,112 400,146 400,190 0,190" fill="#584359" opacity="0.55" />
+      <polygon points="0,170 66,140 140,168 214,134 288,166 356,138 400,158 400,190 0,190" fill="#3E3149" opacity="0.85" />
+      {/* sea */}
+      <rect y="184" width="400" height="116" fill={`url(#${uid}-sea)`} />
+      {/* sun laid back up the water */}
+      <polygon points="240,184 272,184 286,300 226,300" fill="#F5D488" opacity="0.22" />
+      {/* coastal skyline along the shore, in front of the ranges */}
+      <g fill="#221B29">
+        <rect x="8" y="162" width="16" height="28" />
+        <rect x="28" y="150" width="12" height="40" />
+        <rect x="44" y="168" width="20" height="22" />
+        <rect x="68" y="136" width="13" height="54" />
+        <rect x="85" y="158" width="18" height="32" />
+        <rect x="107" y="170" width="15" height="20" />
+        <rect x="126" y="154" width="12" height="36" />
+        <rect x="250" y="164" width="16" height="26" />
+        <rect x="268" y="146" width="12" height="44" />
+        <rect x="284" y="168" width="20" height="22" />
+        <rect x="308" y="150" width="13" height="40" />
+        <rect x="325" y="166" width="17" height="24" />
+        <rect x="346" y="172" width="16" height="18" />
+        <rect x="366" y="158" width="12" height="32" />
+      </g>
+      {/* warm lit windows at dusk */}
+      <g fill="#F4C56B">
+        <rect x="72" y="144" width="2.4" height="3" /><rect x="76" y="152" width="2.4" height="3" /><rect x="72" y="160" width="2.4" height="3" />
+        <rect x="31" y="156" width="2.4" height="3" /><rect x="35" y="166" width="2.4" height="3" />
+        <rect x="271" y="154" width="2.4" height="3" /><rect x="275" y="164" width="2.4" height="3" />
+        <rect x="311" y="158" width="2.4" height="3" /><rect x="315" y="168" width="2.4" height="3" />
+        <rect x="129" y="160" width="2.4" height="3" />
+      </g>
+    </svg>
+  );
+}
+
+/**
  * One documented itinerary as a large editorial spread: body (index, city,
  * meta, tagline, stop chips, CTA) beside a printed travel-poster "plate".
  * Alternating layouts (`alt`) flip the columns. A date-accurate badge counts the
@@ -111,25 +173,26 @@ function SeaPoster({ uid }) {
  * links to the live itinerary; onOpen washes the screen in the trip's palette first.
  */
 function FeatureItinerary({ trip, index, alt, phase = 'documented', days = 0, onOpen }) {
-  const theme = trip.theme === 'sea' ? 'sea' : 'alpine';
+  const theme = trip.theme === 'sea' || trip.theme === 'city' ? trip.theme : 'alpine';
   const upcoming = phase !== 'documented';
+  const hasItinerary = !!trip.itinerary;
   const regionLabel = (trip.region || trip.country).replace(' · ', ' / ');
   const stops = trip.stops || [];
   const uid = `fp${index}`;
 
   return (
     <a
-      className={`jb-feature${alt ? ' jb-feature-alt' : ''}`}
-      href={trip.itinerary}
+      className={`jb-feature${alt ? ' jb-feature-alt' : ''}${hasItinerary ? '' : ' jb-feature-static'}`}
+      href={hasItinerary ? trip.itinerary : undefined}
       style={{ '--jb-accent': ACCENT[theme] }}
-      onClick={onOpen ? (e) => onOpen(e, trip) : undefined}
+      onClick={hasItinerary && onOpen ? (e) => onOpen(e, trip) : undefined}
     >
       <div className="jb-fbody">
         <div className="jb-findex">{pad2(index + 1)} — {regionLabel}</div>
         <h3 className="jb-fcity">{trip.city}</h3>
         <div className="jb-fmeta">
           <span>{trip.kind}</span><span className="jb-d" aria-hidden="true" />
-          <span>{trip.nights} nights</span><span className="jb-d" aria-hidden="true" />
+          {trip.nights ? (<><span>{trip.nights} nights</span><span className="jb-d" aria-hidden="true" /></>) : null}
           <span>{trip.dateRange}</span>
         </div>
         <p className="jb-ftagline">{trip.description}</p>
@@ -140,14 +203,18 @@ function FeatureItinerary({ trip, index, alt, phase = 'documented', days = 0, on
             ))}
           </div>
         )}
-        <span className="jb-fcta">
-          {upcoming ? 'See the plan' : 'Read the itinerary'}
-          <span className="jb-line" aria-hidden="true" />
-          <span className="jb-arrow" aria-hidden="true">{'→'}</span>
-        </span>
+        {hasItinerary ? (
+          <span className="jb-fcta">
+            {upcoming ? 'See the plan' : 'Read the itinerary'}
+            <span className="jb-line" aria-hidden="true" />
+            <span className="jb-arrow" aria-hidden="true">{'→'}</span>
+          </span>
+        ) : (
+          <span className="jb-fcta jb-fcta-static">Going home</span>
+        )}
       </div>
       <div className="jb-fplate">
-        {theme === 'sea' ? <SeaPoster uid={uid} /> : <AlpinePoster uid={uid} />}
+        {theme === 'sea' ? <SeaPoster uid={uid} /> : theme === 'city' ? <CityPoster uid={uid} /> : <AlpinePoster uid={uid} />}
         <span className={`jb-fstatus jb-fstatus-${phase}`}>
           {upcoming && <span className="jb-fstatus-dot" aria-hidden="true" />}
           {badgeText(phase, days)}

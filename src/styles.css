@@ -3262,6 +3262,11 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 .jb-feature:hover .jb-fcta .jb-arrow { transform: translateX(8px); }
 .jb-fcta .jb-line { flex: 1; height: 1px; background: var(--jb-line-2); min-width: 28px; transition: background 0.4s ease; }
 .jb-feature:hover .jb-fcta .jb-line { background: var(--jb-accent); }
+/* A featured trip with no write-up (e.g. a homecoming) rides the board but isn't a
+   link — default cursor, a muted non-arrowed label, and no hover lift on its plate. */
+.jb-feature-static { cursor: default; }
+.jb-feature-static:hover .jb-fplate svg { transform: none; }
+.jb-fcta-static { color: var(--jb-muted); }
 
 /* the printed travel-poster "plate" */
 .jb-fplate {
