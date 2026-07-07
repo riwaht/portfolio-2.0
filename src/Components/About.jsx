@@ -440,7 +440,7 @@ public class AtmosphericController : MonoBehaviour {
                     eyebrow="whoami"
                     title="About"
                     stats={[
-                        { label: 'Lebanese–Canadian' },
+                        { label: 'Lebanese-Canadian' },
                         { label: 'Based in Paris' },
                     ]}
                     live="SWE @ Mistral"

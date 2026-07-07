@@ -96,7 +96,7 @@ export const journeyPoints = [
     dateRange: 'Feb 2025',
     month: 2,
     type: 'travel',
-    description: 'A trip I had been planning for years. Wandered through Tokyo: Shibuya, Akihabara, Shinjuku -- every neighborhood a different world.',
+    description: 'A trip I had been planning for years. Wandered through Tokyo: Shibuya, Akihabara, Shinjuku. Every neighborhood felt like its own little world.',
     professional: null,
   },
   {
@@ -206,7 +206,7 @@ export const journeyPoints = [
     dateRange: 'Aug 2025',
     month: 8,
     type: 'travel',
-    description: 'Thermal baths and ruin bars. Budapest has an energy like no other city -- half historic grandeur, half underground cool.',
+    description: 'Thermal baths and ruin bars. Budapest has an energy like no other city, half historic grandeur and half underground cool.',
     professional: null,
   },
   {
@@ -472,7 +472,7 @@ export const journeyPoints = [
     dateRange: 'May 2026',
     month: 5,
     type: 'travel',
-    description: 'A quick London trip. Strolled through Hyde Park and ate incredible Chinese and Indian food, then went to Code with Claude on May 20 -- made some amazing connections there.',
+    description: 'A quick London trip. Strolled through Hyde Park and ate incredible Chinese and Indian food, then went to Code with Claude on May 20 and made some amazing connections there.',
     professional: null,
   },
   {
@@ -496,7 +496,7 @@ export const journeyPoints = [
     dateRange: 'May 2026',
     month: 5,
     type: 'travel',
-    description: 'Four days in Amsterdam with my boyfriend. Wandered the canals, the Van Gogh Museum, and the NEMO Science Museum -- then watched Harry Styles live, a dream I had been holding onto for years.',
+    description: 'Four days in Amsterdam with my boyfriend. Wandered the canals, the Van Gogh Museum, and the NEMO Science Museum, then watched Harry Styles live, a dream I had been holding onto for years.',
     professional: null,
   },
   {
@@ -520,7 +520,7 @@ export const journeyPoints = [
     dateRange: 'Jun 2026',
     month: 6,
     type: 'travel',
-    description: 'A day on the Normandy coast — the long boardwalk, striped parasols, and the grey-green Channel. Oysters and sea air, an hour from Paris.',
+    description: 'A day trip to the Normandy coast. The long boardwalk, the striped parasols, oysters, and sea air, an hour from Paris.',
     professional: null,
   },
   {
@@ -532,7 +532,7 @@ export const journeyPoints = [
     dateRange: '23–27 Jul 2026',
     month: 7,
     type: 'upcoming',
-    description: 'A clockwise loop out of Venice — east to the Tre Cime and the pale lakes, then west to Val Gardena, with two nights spent high on the mountain.',
+    description: 'A loop out of Venice by car. East to the Tre Cime and the pale lakes first, then west to Val Gardena, with two nights spent up on the mountain.',
     itinerary: 'https://itineraries.riwashouse.live/dolomites',
     professional: null,
     kind: "Couple's road trip",
@@ -557,7 +557,7 @@ export const journeyPoints = [
     dateRange: '5–9 Aug 2026',
     month: 8,
     type: 'upcoming',
-    description: 'Four of us converging on one Ionian island — parents from Athens, sister from Birmingham, me from Paris — based in Dassia on the green northeast coast.',
+    description: 'Four of us meeting on one Ionian island. My parents coming in from Athens, my sister from Birmingham, me from Paris, all of us based in Dassia on the green northeast coast.',
     itinerary: 'https://itineraries.riwashouse.live/corfu',
     professional: null,
     kind: 'Family trip',
@@ -582,7 +582,7 @@ export const journeyPoints = [
     dateRange: '11 Jul 2026',
     month: 7,
     type: 'upcoming',
-    description: 'Heading home for the summer — family, the Mediterranean, and the food I miss most. No plan this time, just Beirut.',
+    description: 'Heading home for the summer. Family, the sea, and the food I miss most. No plan this time, just Beirut.',
     // A homecoming, not a written-up trip — it rides the Departures board and its
     // date-accurate countdown, then folds back into the Beirut base once the day passes.
     itinerary: null,
