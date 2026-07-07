@@ -165,7 +165,7 @@
   width: min(1180px, 92vw); margin: clamp(18px, 3vw, 30px) auto 0;
   font-family: var(--font-sans); color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; max-width: 62ch;
 }
-.pot-shelf-wrap { width: min(560px, 92vw); margin: clamp(22px, 4vw, 40px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
+.pot-shelf-wrap { width: min(680px, 94vw); margin: clamp(22px, 4vw, 40px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
 /* the shelves sit straight on the page (no panel), spaced well apart, pots on top */
 .pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(36px, 7vw, 66px); }
 .pot-level { position: relative; z-index: 1; display: flex; flex-direction: column; }
@@ -181,19 +181,19 @@
 /* a real-ish wooden shelf board: a lit top edge, grain along the length, a darker
    under-face for thickness, and a soft cast shadow — floating (no cartoon brackets). */
 .pot-plank {
-  position: relative; height: 15px; margin: -2px clamp(10px, 7vw, 52px) 0;
+  position: relative; height: 9px; margin: -2px clamp(0px, 1vw, 10px) 0;
   border-radius: 2px 2px 3px 3px;
   background:
-    linear-gradient(180deg, rgba(255, 243, 219, 0.34) 0, rgba(255, 243, 219, 0) 2.5px),
+    linear-gradient(180deg, rgba(255, 243, 219, 0.34) 0, rgba(255, 243, 219, 0) 1.5px),
     repeating-linear-gradient(0deg, rgba(70, 45, 20, 0.07) 0 1px, rgba(70, 45, 20, 0) 1px 4px),
     linear-gradient(180deg, #bd9260 0%, #a3743f 40%, #855c31 74%, #6a4a26 100%);
   box-shadow:
-    0 13px 17px -8px rgba(56, 36, 16, 0.5),
-    inset 0 -3px 4px rgba(52, 32, 12, 0.42),
+    0 10px 15px -8px rgba(56, 36, 16, 0.46),
+    inset 0 -2px 3px rgba(52, 32, 12, 0.42),
     inset 0 1px 0 rgba(255, 244, 220, 0.28);
 }
 .pot-plank::after {
-  content: ""; position: absolute; left: 6px; right: 6px; bottom: -4px; height: 4px;
+  content: ""; position: absolute; left: 6px; right: 6px; bottom: -3px; height: 3px;
   border-radius: 0 0 3px 3px; background: #4f3720;
 }
 
