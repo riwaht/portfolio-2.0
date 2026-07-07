@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Pottery from '../Components/Pottery.jsx';
+import '../styles.css';
+---
+
+<BaseLayout
+  title="Pottery — Riwa Hoteit"
+  description="A wheel-throwing log: the pots I've made, and what went right and wrong."
+  url="/pottery"
+  bodyClass="pottery-page"
+>
+  <Pottery client:only="react" />
+</BaseLayout>

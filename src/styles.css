@@ -160,6 +160,108 @@
   .pm-live-wrap { margin-left: 0; }
 }
 
+/* ===================== POTTERY — kiln shelf + field notes ===================== */
+.pot-intro {
+  width: min(1180px, 92vw); margin: clamp(18px, 3vw, 30px) auto 0;
+  font-family: var(--font-sans); color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; max-width: 62ch;
+}
+.pot-shelf-wrap { width: min(680px, 94vw); margin: clamp(22px, 4vw, 40px) auto clamp(40px, 6vw, 72px); position: relative; z-index: 1; }
+/* the shelves sit straight on the page (no panel), spaced well apart, pots on top */
+.pot-studio { position: relative; display: flex; flex-direction: column; gap: clamp(34px, 6.5vw, 62px); }
+.pot-level { position: relative; z-index: 1; display: flex; flex-direction: column; }
+.pot-level-pots {
+  position: relative; z-index: 2;
+  display: flex; align-items: flex-end; justify-content: flex-start; gap: 0;
+  min-height: clamp(82px, 12.5vw, 126px); padding: 0 clamp(18px, 5vw, 52px);
+}
+.pot-vessel { display: block; width: 100%; height: auto; }
+.pot-stand { position: relative; background: none; border: none; padding: 0; margin: 0; flex: 0 0 auto; cursor: pointer; display: block; line-height: 0; }
+/* soft contact shadow painted on the shelf under each pot (replaces the flat
+   ellipses that used to live in the drawings and stacked into a muddy blob) */
+.pot-stand::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  left: 50%; bottom: 13px; transform: translateX(-50%);
+  width: 54%; height: 7px; border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(48, 32, 15, 0.32) 0%, rgba(48, 32, 15, 0) 72%);
+  transition: opacity 0.35s ease;
+}
+.pot-stand:hover::after, .pot-stand:focus-visible::after { opacity: 0.6; }
+.pot-stand .pot-vessel { width: clamp(72px, 11vw, 112px); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.pot-stand:hover .pot-vessel, .pot-stand:focus-visible .pot-vessel { transform: translateY(-6px); }
+/* the pots are bare drawings, not buttons — cancel the global button hover chrome
+   (box-shadow halo, border-radius, lift, outline) so only the pot itself reacts */
+.pot-stand:hover, .pot-stand:focus, .pot-stand:active, .pot-stand:focus-visible {
+  background: none; border: none; border-radius: 0; box-shadow: none; transform: none; outline: none;
+}
+/* pots vary a little in size and spacing so they read as a hand-set cluster, not a row */
+.pot-stand:nth-child(1) .pot-vessel { width: clamp(80px, 12vw, 118px); }
+.pot-stand:nth-child(2) .pot-vessel { width: clamp(90px, 14vw, 138px); }
+.pot-stand:nth-child(3) .pot-vessel { width: clamp(74px, 11vw, 110px); }
+/* Each vessel drawing carries a lot of empty frame; overlap the frames so the pots
+   themselves sit close, and leave one gap wider so it never reads as a tidy row. */
+.pot-stand + .pot-stand { margin-left: clamp(-34px, -4.6vw, -18px); }
+.pot-stand:nth-child(3) { margin-left: clamp(-16px, -2.3vw, -7px); }
+/* a real-ish wooden shelf board: a lit top edge, grain along the length, a darker
+   under-face for thickness, and a soft cast shadow — floating (no cartoon brackets). */
+/* natural, lighter matte wood; the two shelves differ in length so they don't read
+   as two identical bars. */
+.pot-plank {
+  position: relative; z-index: 1; height: 9px; margin: -12px clamp(0px, 1vw, 8px) 0;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 90, 52, 0.05) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #c9ad7f 0%, #b7986a 100%);
+  box-shadow: 0 7px 12px -9px rgba(96, 70, 38, 0.34), inset 0 -1.5px 2px rgba(120, 88, 50, 0.28);
+}
+.pot-plank::after {
+  content: ""; position: absolute; left: 5px; right: 5px; bottom: -3px; height: 3px;
+  border-radius: 0 0 2px 2px; background: #a3834f;
+}
+
+.pot-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
+  padding: clamp(16px, 4vw, 40px); background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); animation: potFade 0.2s ease;
+}
+.pot-modal {
+  --pot-accent: var(--accent-primary);
+  position: relative; width: min(760px, 100%); max-height: 88vh; overflow: auto;
+  display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(16px, 2.5vw, 28px);
+  background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: clamp(20px, 3vw, 32px); box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.5);
+  animation: potRise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pot-modal-close {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-secondary);
+  cursor: pointer; font-size: 13px; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.pot-modal-close:hover { color: var(--accent-oxblood); border-color: var(--accent-oxblood); }
+.pot-modal-plate {
+  align-self: start; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px;
+}
+.pot-vessel-lg { width: 78%; }
+.pot-modal-plate img { width: 100%; height: 100%; object-fit: cover; object-position: center 64%; border-radius: 8px; }
+.pot-modal-eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pot-accent); }
+.pot-modal-title { font-family: var(--font-sans); font-style: italic; font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--text-primary); margin: 0.15em 0 0.1em; }
+.pot-modal-meta { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.pot-notes { margin-top: 18px; display: flex; flex-direction: column; gap: 13px; }
+.pot-note { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: start; }
+.pot-nlab { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); padding-top: 4px; }
+.pot-nlab-nice { color: var(--accent-alpine); }
+.pot-nlab-oops { color: var(--accent-oxblood); }
+.pot-note span:last-child { font-family: var(--font-sans); font-size: 1rem; line-height: 1.5; color: var(--text-primary); }
+@keyframes potFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes potRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) {
+  .pot-modal { grid-template-columns: 1fr; }
+  .pot-modal-plate { max-width: 200px; margin: 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pot-stand .pot-vessel, .pot-modal-overlay, .pot-modal { transition: none; animation: none; }
+}
+
 body,
 html {
   margin: 0;

@@ -26,6 +26,7 @@ function Navbar({ onNavigationAttempt }) {
         { path: '/', label: '< about />' },
         { path: '/projects', label: '< work />' },
         { path: '/journey', label: '< journey />' },
+        { path: '/pottery', label: '< pottery />' },
         { path: '/house', label: '< experience />', wip: true }
     ];
 
