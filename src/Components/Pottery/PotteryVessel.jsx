@@ -5,7 +5,6 @@
 function AmberCup() {
   return (
     <>
-      <ellipse cx="50" cy="86" rx="22" ry="4.5" fill="rgba(0,0,0,0.26)" />
       <path d="M29,30 C27,60 33,82 50,82 C67,82 73,60 71,30 Z" fill="#C0842F" />
       <path d="M33,54 C32,72 40,80 50,80 C60,80 68,72 67,54 C60,60 40,60 33,54 Z" fill="#8A5A1C" />
       <path d="M37,34 C35,55 38,74 42,78 C40,60 39,42 41,34 Z" fill="#E4B25E" opacity="0.7" />
@@ -21,7 +20,6 @@ function AmberCup() {
 function BlueBowl() {
   return (
     <>
-      <ellipse cx="50" cy="86" rx="26" ry="4.5" fill="rgba(0,0,0,0.26)" />
       <path d="M20,44 C22,70 35,82 50,82 C65,82 78,70 80,44 Z" fill="#6E93C8" />
       <path d="M28,66 C34,78 42,80 50,80 C58,80 66,78 72,66 C64,72 36,72 28,66 Z" fill="#B79A72" opacity="0.5" />
       <path d="M20,44 C24,38 40,36 50,36 C61,36 76,38 80,45 C76,50 61,52 50,52 C39,52 24,50 20,44 Z" fill="#88A9D6" />
@@ -37,7 +35,6 @@ function BlueBowl() {
 function GreenBowl() {
   return (
     <>
-      <ellipse cx="50" cy="85" rx="28" ry="4.5" fill="rgba(0,0,0,0.26)" />
       <path d="M19,45 C21,71 34,83 50,83 C66,83 79,71 81,45 Z" fill="#7D9E76" />
       <path d="M27,67 C33,79 42,81 50,81 C58,81 67,79 73,67 C64,73 36,73 27,67 Z" fill="#4E6E4A" opacity="0.5" />
       <path d="M19,45 C23,39 40,37 50,37 C60,37 77,39 81,46 C77,51 60,53 50,53 C40,53 23,51 19,45 Z" fill="#A9CFC0" />
