@@ -171,7 +171,7 @@
 .pot-level { position: relative; z-index: 1; display: flex; flex-direction: column; }
 .pot-level-pots {
   display: flex; align-items: flex-end; justify-content: center; gap: 0;
-  min-height: clamp(74px, 11vw, 112px); padding: 0 clamp(8px, 3vw, 24px);
+  min-height: clamp(82px, 12.5vw, 126px); padding: 0 clamp(8px, 3vw, 24px);
 }
 .pot-vessel { display: block; width: 100%; height: auto; }
 .pot-stand { background: none; border: none; padding: 0; margin: 0; flex: 0 0 auto; cursor: pointer; display: block; line-height: 0; }
@@ -179,19 +179,19 @@
 .pot-stand:hover .pot-vessel, .pot-stand:focus-visible .pot-vessel { transform: translateY(-6px); }
 .pot-stand:focus-visible { outline: none; }
 /* pots vary a little in size and spacing so they read as a hand-set cluster, not a row */
-.pot-stand:nth-child(1) .pot-vessel { width: clamp(70px, 10.5vw, 104px); }
-.pot-stand:nth-child(2) .pot-vessel { width: clamp(78px, 12vw, 120px); }
-.pot-stand:nth-child(3) .pot-vessel { width: clamp(64px, 9.5vw, 96px); }
+.pot-stand:nth-child(1) .pot-vessel { width: clamp(80px, 12vw, 118px); }
+.pot-stand:nth-child(2) .pot-vessel { width: clamp(90px, 14vw, 138px); }
+.pot-stand:nth-child(3) .pot-vessel { width: clamp(74px, 11vw, 110px); }
 /* Each vessel drawing carries a lot of empty frame; overlap the frames so the pots
    themselves sit close, and leave one gap wider so it never reads as a tidy row. */
-.pot-stand + .pot-stand { margin-left: clamp(-30px, -4vw, -16px); }
-.pot-stand:nth-child(3) { margin-left: clamp(-14px, -2vw, -6px); }
+.pot-stand + .pot-stand { margin-left: clamp(-34px, -4.6vw, -18px); }
+.pot-stand:nth-child(3) { margin-left: clamp(-16px, -2.3vw, -7px); }
 /* a real-ish wooden shelf board: a lit top edge, grain along the length, a darker
    under-face for thickness, and a soft cast shadow — floating (no cartoon brackets). */
 /* natural, lighter matte wood; the two shelves differ in length so they don't read
    as two identical bars. */
 .pot-plank {
-  position: relative; height: 9px; margin: -8px clamp(0px, 1vw, 8px) 0;
+  position: relative; height: 9px; margin: -10px clamp(0px, 1vw, 8px) 0;
   border-radius: 2px;
   background:
     repeating-linear-gradient(0deg, rgba(120, 90, 52, 0.05) 0 1px, transparent 1px 5px),
