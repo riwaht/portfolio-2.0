@@ -188,7 +188,11 @@
 .pot-stand:hover::after, .pot-stand:focus-visible::after { opacity: 0.6; }
 .pot-stand .pot-vessel { width: clamp(72px, 11vw, 112px); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .pot-stand:hover .pot-vessel, .pot-stand:focus-visible .pot-vessel { transform: translateY(-6px); }
-.pot-stand:focus-visible { outline: none; }
+/* the pots are bare drawings, not buttons — cancel the global button hover chrome
+   (box-shadow halo, border-radius, lift, outline) so only the pot itself reacts */
+.pot-stand:hover, .pot-stand:focus, .pot-stand:active, .pot-stand:focus-visible {
+  background: none; border: none; border-radius: 0; box-shadow: none; transform: none; outline: none;
+}
 /* pots vary a little in size and spacing so they read as a hand-set cluster, not a row */
 .pot-stand:nth-child(1) .pot-vessel { width: clamp(80px, 12vw, 118px); }
 .pot-stand:nth-child(2) .pot-vessel { width: clamp(90px, 14vw, 138px); }
