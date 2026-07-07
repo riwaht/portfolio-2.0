@@ -3270,6 +3270,10 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 
 /* the printed travel-poster "plate" */
 .jb-fplate {
+  /* The plate is always a dark image (dark bg + dusk/alpine/sea poster), so pin its
+     "screen ink" to the light value in BOTH themes. Otherwise the corner labels
+     (status pill, IATA, coordinates) inherit the light-substrate dark ink and vanish. */
+  --jb-screen-rgb: 244, 236, 220;
   position: relative; border-radius: 5px; overflow: hidden; min-height: 320px;
   background: #1C2430;
   border: 1px solid var(--jb-line);
