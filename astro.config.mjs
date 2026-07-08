@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://riwashouse.live',
+  site: 'https://riwashouse.com',
   integrations: [react(), sitemap()],
   adapter: vercel(),
   vite: {
