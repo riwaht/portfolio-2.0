@@ -48,4 +48,4 @@ It’s playful, creative, and a different way to show what I love working on.
 ---
 
 ## 🌐 Let’s Connect
-[GitHub](https://github.com/riwaht) • [LinkedIn](https://linkedin.com/in/riwa-hoteit) • [Portfolio](https://riwashouse.live)
+[GitHub](https://github.com/riwaht) • [LinkedIn](https://linkedin.com/in/riwa-hoteit) • [Portfolio](https://riwashouse.com)
