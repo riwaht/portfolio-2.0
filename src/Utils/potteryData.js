@@ -58,6 +58,40 @@ export const potteryPieces = [
       next: 'Keep this height, and steady the rim as I finish.',
     },
   },
+  {
+    id: 'brushed-bowl',
+    name: 'Brushed bowl',
+    form: 'Wheel-thrown bowl',
+    glaze: 'Iron brushed on white',
+    fired: 'Jul 2026',
+    art: 'brushedBowl',
+    accent: '#A9784B',
+    photo: '/Images/pottery/brushed-bowl.jpg',
+    tag: { nice: 'soft brushwork', oops: 'glaze ran' },
+    notes: {
+      tried: 'Left the outside bare clay and kept all the colour inside, iron brushed under a milky white.',
+      nice: 'The brush marks stayed soft and warm under the white, and the bare outside shows every throwing ring.',
+      oops: 'I poured in too much glaze, so it ran over the lip and dripped down the outside, and the rim dried a little wavy.',
+      next: 'Less glaze in the pour, and wipe the rim back before it goes in the kiln.',
+    },
+  },
+  {
+    id: 'cobalt-cup',
+    name: 'Cobalt cup',
+    form: 'Wheel-thrown tumbler',
+    glaze: 'Cobalt on cream',
+    fired: 'Jul 2026',
+    art: 'cobaltCup',
+    accent: '#3A63AE',
+    photo: '/Images/pottery/cobalt-cup.jpg',
+    tag: { nice: 'round belly', oops: 'low glaze line' },
+    notes: {
+      tried: 'A rounder tumbler this time, cream down the outside and a deep cobalt dipped inside.',
+      nice: 'The belly came out full and even, thin walls all the way up, and the cobalt pooled dark and glossy.',
+      oops: 'One drip of cream ran down the front, and the line where the glaze stops sits low and a bit crooked.',
+      next: 'Dip slower and hold it level so the glaze line lands straight.',
+    },
+  },
 ];
 
 // Total pots off the wheel so far. Only the finished ones (glazed, fired, and
