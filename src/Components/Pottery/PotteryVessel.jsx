@@ -47,7 +47,53 @@ function GreenBowl() {
   );
 }
 
-const ART = { amberCup: AmberCup, blueBowl: BlueBowl, greenBowl: GreenBowl };
+function BrushedBowl() {
+  return (
+    <>
+      <path d="M20,44 C22,70 35,82 50,82 C65,82 78,70 80,44 Z" fill="#C89C6D" />
+      <path d="M28,66 C34,78 42,80 50,80 C58,80 66,78 72,66 C64,72 36,72 28,66 Z" fill="#9E7443" opacity="0.45" />
+      <path d="M24,52 C36,56 64,56 76,52" stroke="#A87C4B" strokeWidth="1" fill="none" opacity="0.4" />
+      <path d="M27,61 C37,65 63,65 73,61" stroke="#A87C4B" strokeWidth="1" fill="none" opacity="0.3" />
+      <path d="M20,44 C24,38 40,36 50,36 C61,36 76,38 80,45 C76,50 61,52 50,52 C39,52 24,50 20,44 Z" fill="#EDE4D3" />
+      <ellipse cx="50" cy="44" rx="24.6" ry="6" fill="#E3D8C2" />
+      <g fill="#8C6142" opacity="0.72">
+        <path d="M37,40.5 L40,40.2 L41,47.6 L38,47.9 Z" />
+        <path d="M45,39.6 L47.6,39.5 L48.4,47.8 L45.8,47.9 Z" />
+        <path d="M55,40 L57.6,40.3 L56.8,47.9 L54.2,47.6 Z" />
+        <path d="M62,41.4 L64.4,42 L63,48.2 L60.8,47.6 Z" />
+      </g>
+      <path d="M65,48 C66.2,54 65.6,59 64.4,59 C63.3,59 62.9,54 63.4,47.6 Z" fill="#EDE4D3" opacity="0.9" />
+      <path d="M32,47.4 C31.4,52 31.8,55 32.8,55 C33.8,55 34,52 34,46.8 Z" fill="#EDE4D3" opacity="0.75" />
+    </>
+  );
+}
+
+function CobaltCup() {
+  return (
+    <>
+      <path d="M34.6,42 C28.4,63 33,82 50,82 C67,82 71.6,63 65.4,42 Z" fill="#E6DCC7" />
+      <path d="M31.9,67 C32.5,77.2 40,82 50,82 C60,82 67.5,77.2 68.1,67 C60,71.8 40,71.8 31.9,67 Z" fill="#C09A6C" />
+      <path d="M38.4,44.8 C34.2,63 36,77.2 41,80.4 C38,64.6 37.4,51.9 41,44.8 Z" fill="#F3EDE1" opacity="0.7" />
+      <path d="M52.2,42.9 C53.4,51.9 52.6,57 50.8,57 C49.1,57 48.6,51.9 49.4,42.9 Z" fill="#F6F1E6" />
+      <path d="M31,53.5 C42,55.9 58,55.9 69,53.5" stroke="#C7B899" strokeWidth="1" fill="none" opacity="0.4" />
+      <ellipse cx="50" cy="42" rx="15.5" ry="4.4" fill="#DCD0B7" />
+      <ellipse cx="50" cy="42" rx="11.4" ry="3.1" fill="#3159A4" />
+      <path d="M39.4,41.2 C42,39.7 58,39.7 60.6,41.2 C58,42.7 42,42.7 39.4,41.2 Z" fill="#4A75C2" opacity="0.55" />
+      <g fill="#1F3F7C">
+        <circle cx="45.6" cy="42.1" r="0.8" /><circle cx="52.4" cy="42.9" r="0.7" /><circle cx="55.8" cy="41.6" r="0.7" />
+        <circle cx="49" cy="41.1" r="0.6" /><circle cx="42.6" cy="42" r="0.6" />
+      </g>
+    </>
+  );
+}
+
+const ART = {
+  amberCup: AmberCup,
+  blueBowl: BlueBowl,
+  greenBowl: GreenBowl,
+  brushedBowl: BrushedBowl,
+  cobaltCup: CobaltCup,
+};
 
 function PotteryVessel({ art, className = 'pot-vessel' }) {
   const Shape = ART[art] || AmberCup;
