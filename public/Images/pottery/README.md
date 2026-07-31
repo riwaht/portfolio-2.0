@@ -7,7 +7,7 @@ appears when you click a piece):
 - `celadon-bowl.jpg` — the green bowl (the first one you made)
 - `honey-cup.jpg` — the amber / mustard honey cup
 - `speckle-bowl.jpg` — the blue speckled bowl
-- `brushed-bowl.jpg` — the bare-clay bowl with iron brushwork inside
+- `brushed-bowl.jpg` — the sand-coloured bowl with iron brushwork inside
 - `cobalt-cup.jpg` — the cream tumbler with the cobalt interior
 
 Any orientation is fine — the field-notes plate crops to a square, so a roughly

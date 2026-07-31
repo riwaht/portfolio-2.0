@@ -69,8 +69,8 @@ export const potteryPieces = [
     photo: '/Images/pottery/brushed-bowl.jpg',
     tag: { nice: 'soft brushwork', oops: 'glaze ran' },
     notes: {
-      tried: 'Left the outside bare clay and kept all the colour inside, iron brushed under a milky white.',
-      nice: 'The brush marks stayed soft and warm under the white, and the bare outside shows every throwing ring.',
+      tried: 'Kept the outside plain and warm and put all the colour inside, iron brushed under a milky white.',
+      nice: 'The brush marks stayed soft and warm under the white, and the throwing rings still read right through the outside.',
       oops: 'I poured in too much glaze, so it ran over the lip and dripped down the outside, and the rim dried a little wavy.',
       next: 'Less glaze in the pour, and wipe the rim back before it goes in the kiln.',
     },
