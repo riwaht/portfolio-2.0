@@ -136,6 +136,18 @@ export const journeyPoints = [
     professional: null,
   },
   {
+    id: 'paris-jul-2023',
+    city: 'Paris',
+    country: 'France',
+    geo: { lon: 2.35, lat: 48.9 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Jul 2023',
+    month: 7,
+    type: 'travel',
+    description: 'A summer trip to Paris.',
+    professional: null,
+  },
+  {
     id: 'athens-2023',
     city: 'Athens',
     country: 'Greece',
