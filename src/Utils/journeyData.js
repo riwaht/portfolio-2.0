@@ -144,7 +144,7 @@ export const journeyPoints = [
     dateRange: 'Jul 2023',
     month: 7,
     type: 'travel',
-    description: 'A summer trip to Paris.',
+    description: 'Second time to Paris. A summer visit.',
     professional: null,
   },
   {
@@ -482,7 +482,7 @@ export const journeyPoints = [
     dateRange: 'Nov 2025',
     month: 11,
     type: 'travel',
-    description: 'Second time to Paris. Autumn leaves, croissants, and a city that felt like it was waiting for me. (Spoiler alert: it was.)',
+    description: 'Third time to Paris. Autumn leaves, croissants, and a city that felt like it was waiting for me. (Spoiler alert: it was.)',
     professional: null,
   },
   {
@@ -506,7 +506,7 @@ export const journeyPoints = [
     dateRange: 'Dec 2025',
     month: 12,
     type: 'travel',
-    description: 'Third time to Paris. A quick trip while doing my interviews, Christmas was starting.',
+    description: 'Fourth time to Paris. A quick trip while doing my interviews, Christmas was starting.',
     professional: null,
   },
   {
