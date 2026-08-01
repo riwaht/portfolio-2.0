@@ -486,13 +486,13 @@ export const journeyPoints = [
     professional: null,
   },
   {
-    id: 'paris-dec-2025',
+    id: 'paris-dec-2025-interviews',
     city: 'Paris',
     country: 'France',
     geo: { lon: 2.35, lat: 48.9 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
     dateRange: 'Dec 2025',
-    month: 11,
+    month: 12,
     type: 'travel',
     description: 'Third time to Paris. A quick trip while doing my interviews, Christmas was starting.',
     professional: null,
@@ -510,7 +510,7 @@ export const journeyPoints = [
     professional: null,
   },
   {
-    id: 'paris-dec-2025',
+    id: 'paris-dec-2025-christmas',
     city: 'Paris',
     country: 'France',
     geo: { lon: 2.35, lat: 48.9 },
@@ -761,8 +761,6 @@ export function getJourneyStats() {
 
 /* ---- Arrivals & Departures board model ---- */
 
-// How "significant" a stay is when choosing the representative entry for a city.
-const TYPE_RANK = { current: 4, work: 3, home: 2, travel: 1, upcoming: 0 };
 const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 // City → IATA code for the board's mono "flight code" column.
@@ -823,67 +821,71 @@ export function getFeaturedItineraries(today = new Date()) {
     .sort((a, b) => a.startDate.localeCompare(b.startDate)); // soonest departure first
 }
 
-// Deduped, newest-first ledger of every place already arrived in.
-// journeyPoints stays intact (the map route needs its order + transit duplicates);
-// this view collapses it to one row per city.
+// The automatic "back to base" / "back home" transit rows — they pad the world-map
+// route (the return legs between trips) but shouldn't each earn an arrivals row, so
+// they're hidden from the ledger. The live resident row (paris-after-amsterdam-2026,
+// type 'current') and the Beirut holiday stay (lebanon-return, a genuine dated visit)
+// are deliberately NOT in this set.
+const RETURN_STUB_IDS = new Set([
+  'beirut-after-paris-2018',
+  'beirut-after-italy',
+  'beirut-after-japan',
+  'warsaw-after-prague',
+  'warsaw-after-budapest',
+  'warsaw-after-vienna',
+  'warsaw-after-krakow',
+  'warsaw-after-scandinavia',
+  'warsaw-after-london',
+  'warsaw-after-paris',
+  'warsaw-return-2025',
+  'paris-after-strasbourg',
+  'paris-after-london-may-2026',
+]);
+
+// Newest-first ledger of every place already arrived in — one row per visit, so a
+// city visited more than once (Paris, London, Athens…) appears once per trip.
+// journeyPoints stays intact (the map route needs its full order); this view only
+// drops trips still upcoming and the "back to base" transit stubs above.
 export function getArrivalsLedger(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
-  // Everything already landed in. A trip is held out only while it's still a live
-  // featured departure (an itinerary trip not yet past its dates) or otherwise
-  // still upcoming; the moment it's documented it graduates in here. Older trips
-  // that gain an itinerary link stay put and simply become clickable rows.
+  // Held out only while still a live featured departure (an itinerary trip not yet
+  // past its dates) or otherwise still upcoming; the moment a trip is documented it
+  // graduates in here. Return-to-base transit stubs are dropped entirely.
   const isLiveFeature = (p) => p.startDate && p.endDate && tripPhase(p, iso) !== 'documented';
   const isFutureUpcoming = (p) => p.type === 'upcoming' && !(p.endDate < iso);
-  const arrived = journeyPoints.filter((p) => !isLiveFeature(p) && !isFutureUpcoming(p));
+  const arrived = journeyPoints.filter(
+    (p) => !isLiveFeature(p) && !isFutureUpcoming(p) && !RETURN_STUB_IDS.has(p.id)
+  );
 
-  const byCity = new Map();
-  arrived.forEach((p, i) => {
-    const e = byCity.get(p.city) || { city: p.city, country: p.country, entries: [] };
-    e.entries.push({ p, i });
-    byCity.set(p.city, e);
-  });
-
-  const items = [];
-  for (const { city, country, entries } of byCity.values()) {
-    // Representative = most significant stay; ties broken by earliest appearance.
-    const rep = entries
-      .slice()
-      .sort((a, b) => TYPE_RANK[b.p.type] - TYPE_RANK[a.p.type] || a.i - b.i)[0].p;
-    // Pull a company from any entry for the city (e.g. Paris → Mistral, Warsaw → Snowflake).
-    const withRole = entries.find((e) => e.p.professional);
-    const company = withRole ? withRole.p.professional[0].company : null;
-    // A written-up trip makes its city's row link out (e.g. Dolomites, Corfu once
-    // their dates pass — or any older stay you later document).
-    const withItin = entries.find((e) => e.p.itinerary);
-    const itinerary = withItin ? withItin.p.itinerary : null;
-
+  const items = arrived.map((p) => {
+    const y = yearOf(p);
     const status =
-      rep.type === 'current' ? 'RESIDENT' : rep.type === 'home' ? 'HOME' : 'STAMPED';
-    const y = yearOf(rep);
+      p.type === 'current' ? 'RESIDENT' : p.type === 'home' ? 'HOME' : 'STAMPED';
     const label =
-      rep.type === 'current'
+      p.type === 'current'
         ? 'NOW'
-        : rep.month && y
-          ? `${MONTHS[rep.month]} ${y}`
+        : p.month && y
+          ? `${MONTHS[p.month]} ${y}`
           : y
             ? String(y)
             : 'HOME';
     const sortKey =
-      rep.type === 'current' ? Infinity : y ? y * 100 + (rep.month || 0) : 0;
-
-    items.push({
-      id: rep.id,
-      city,
-      country,
-      iata: IATA[city] || '',
-      region: company ? `${country} · ${company}` : country,
+      p.type === 'current' ? Infinity : y ? y * 100 + (p.month || 0) : 0;
+    return {
+      id: p.id,
+      city: p.city,
+      country: p.country,
+      iata: IATA[p.city] || '',
+      region: p.professional ? `${p.country} · ${p.professional[0].company}` : p.country,
       label,
       status,
       sortKey,
-      itinerary,
-    });
-  }
+      itinerary: p.itinerary || null,
+    };
+  });
 
+  // Stable sort keeps journeyPoints order within a month, so same-month cities read
+  // in trip order (e.g. Vienna → Krakow → Copenhagen → Malmö in Sep 2025).
   items.sort((a, b) => b.sortKey - a.sortKey);
   return items;
 }
