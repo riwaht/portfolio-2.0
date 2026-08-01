@@ -88,6 +88,138 @@ export const journeyPoints = [
     professional: null,
   },
   {
+    id: 'athens-2022',
+    city: 'Athens',
+    country: 'Greece',
+    geo: { lon: 23.73, lat: 37.98 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2022',
+    month: 8,
+    type: 'travel',
+    description: 'The base for my first Greek summer — the Acropolis, the Plaka lanes, and the National Archaeological Museum.',
+    professional: null,
+  },
+  {
+    id: 'aegina-2022',
+    city: 'Aegina',
+    country: 'Greece',
+    geo: { lon: 23.43, lat: 37.74 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2022',
+    month: 8,
+    type: 'travel',
+    description: 'A short ferry into the Saronic Gulf — pistachio groves and the hilltop Temple of Aphaia.',
+    professional: null,
+  },
+  {
+    id: 'corinth-2022',
+    city: 'Corinth',
+    country: 'Greece',
+    geo: { lon: 22.93, lat: 37.94 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2022',
+    month: 8,
+    type: 'travel',
+    description: 'The Corinth Canal and the ruins of Ancient Corinth, at the edge of the Peloponnese.',
+    professional: null,
+  },
+  {
+    id: 'meteora-2022',
+    city: 'Meteora',
+    country: 'Greece',
+    geo: { lon: 21.63, lat: 39.71 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2022',
+    month: 8,
+    type: 'travel',
+    description: 'Monasteries perched on sandstone pillars, high above the plain of Thessaly.',
+    professional: null,
+  },
+  {
+    id: 'athens-2023',
+    city: 'Athens',
+    country: 'Greece',
+    geo: { lon: 23.73, lat: 37.98 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Jul 2023',
+    month: 7,
+    type: 'travel',
+    description: 'Back to Athens, the base for a second Greek summer.',
+    professional: null,
+  },
+  {
+    id: 'zakynthos-2023',
+    city: 'Zakynthos',
+    country: 'Greece',
+    geo: { lon: 20.90, lat: 37.79 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Jul 2023',
+    month: 7,
+    type: 'travel',
+    description: 'An Ionian island — Navagio beach and the blue caves.',
+    professional: null,
+  },
+  {
+    id: 'sounio-2023',
+    city: 'Cape Sounio',
+    country: 'Greece',
+    geo: { lon: 24.03, lat: 37.65 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Jul 2023',
+    month: 7,
+    type: 'travel',
+    description: 'The Temple of Poseidon on the cliff at the southern tip of Attica.',
+    professional: null,
+  },
+  {
+    id: 'nafplio-2023',
+    city: 'Nafplio',
+    country: 'Greece',
+    geo: { lon: 22.81, lat: 37.57 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Jul 2023',
+    month: 7,
+    type: 'travel',
+    description: 'A Venetian seaside old town beneath the Palamidi fortress, in the Peloponnese.',
+    professional: null,
+  },
+  {
+    id: 'athens-2024',
+    city: 'Athens',
+    country: 'Greece',
+    geo: { lon: 23.73, lat: 37.98 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2024',
+    month: 8,
+    type: 'travel',
+    description: 'Athens once more, the base for a third Greek summer.',
+    professional: null,
+  },
+  {
+    id: 'crete-2024',
+    city: 'Crete',
+    country: 'Greece',
+    geo: { lon: 25.13, lat: 35.34 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2024',
+    month: 8,
+    type: 'travel',
+    description: 'The largest Greek island — Knossos, Chania, and long stretches of beach.',
+    professional: null,
+  },
+  {
+    id: 'paros-2024',
+    city: 'Paros',
+    country: 'Greece',
+    geo: { lon: 25.15, lat: 37.08 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Aug 2024',
+    month: 8,
+    type: 'travel',
+    description: 'A Cycladic island of whitewashed lanes — Parikia and the harbour at Naoussa.',
+    professional: null,
+  },
+  {
     id: 'tokyo-2025',
     city: 'Tokyo',
     country: 'Japan',
@@ -222,30 +354,6 @@ export const journeyPoints = [
     professional: null,
   },
   {
-    id: 'krakow-2025',
-    city: 'Krakow',
-    country: 'Poland',
-    geo: { lon: 19.9, lat: 50.1 },
-    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
-    dateRange: 'Sep 2025',
-    month: 9,
-    type: 'travel',
-    description: 'Salt mines, pierogi (again), and some of the most powerful history I have ever walked through. Went mainly for an amusement park.',
-    professional: null,
-  },
-  {
-    id: 'warsaw-after-krakow',
-    city: 'Warsaw',
-    country: 'Poland',
-    geo: { lon: 21.0, lat: 52.2 },
-    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
-    dateRange: 'Sep 2025',
-    month: 9,
-    type: 'work',
-    description: 'Back to base.',
-    professional: null,
-  },
-  {
     id: 'vienna-2025',
     city: 'Vienna',
     country: 'Austria',
@@ -259,6 +367,30 @@ export const journeyPoints = [
   },
   {
     id: 'warsaw-after-vienna',
+    city: 'Warsaw',
+    country: 'Poland',
+    geo: { lon: 21.0, lat: 52.2 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Sep 2025',
+    month: 9,
+    type: 'work',
+    description: 'Back to base.',
+    professional: null,
+  },
+  {
+    id: 'krakow-2025',
+    city: 'Krakow',
+    country: 'Poland',
+    geo: { lon: 19.9, lat: 50.1 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Sep 2025',
+    month: 9,
+    type: 'travel',
+    description: 'Salt mines, pierogi (again), and some of the most powerful history I have ever walked through. Went mainly for an amusement park.',
+    professional: null,
+  },
+  {
+    id: 'warsaw-after-krakow',
     city: 'Warsaw',
     country: 'Poland',
     geo: { lon: 21.0, lat: 52.2 },
@@ -354,13 +486,13 @@ export const journeyPoints = [
     professional: null,
   },
   {
-    id: 'paris-dec-2025',
+    id: 'paris-dec-2025-interviews',
     city: 'Paris',
     country: 'France',
     geo: { lon: 2.35, lat: 48.9 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
     dateRange: 'Dec 2025',
-    month: 11,
+    month: 12,
     type: 'travel',
     description: 'Third time to Paris. A quick trip while doing my interviews, Christmas was starting.',
     professional: null,
@@ -378,7 +510,7 @@ export const journeyPoints = [
     professional: null,
   },
   {
-    id: 'paris-dec-2025',
+    id: 'paris-dec-2025-christmas',
     city: 'Paris',
     country: 'France',
     geo: { lon: 2.35, lat: 48.9 },
@@ -438,6 +570,18 @@ export const journeyPoints = [
     professional: [
       { role: 'Software Engineer', company: 'Mistral AI' }
     ],
+  },
+  {
+    id: 'hyeres-2026',
+    city: 'Hyères',
+    country: 'France',
+    geo: { lon: 6.13, lat: 43.12 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Mar 2026',
+    month: 3,
+    type: 'travel',
+    description: 'A work offsite on the Côte d’Azur — palm-lined Hyères and the Giens peninsula, all sun and sea.',
+    professional: null,
   },
   {
     id: 'london-apr-2026',
@@ -524,6 +668,29 @@ export const journeyPoints = [
     professional: null,
   },
   {
+    id: 'beirut-jul-2026',
+    city: 'Beirut',
+    country: 'Lebanon',
+    geo: { lon: 35.5, lat: 33.9 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: '11 Jul 2026',
+    month: 7,
+    type: 'upcoming',
+    description: 'Heading home for the summer. Family, the sea, and the food I miss most. No plan this time, just Beirut.',
+    // A homecoming, not a written-up trip — it rides the Departures board and its
+    // date-accurate countdown, then folds back into the Beirut base once the day passes.
+    itinerary: null,
+    professional: null,
+    kind: 'Homecoming',
+    region: 'Lebanon · Home',
+    depart: 'Jul 11',
+    code: 'LB',
+    iata: 'BEY',
+    startDate: '2026-07-11',
+    endDate: '2026-07-11',
+    theme: 'city',
+  },
+  {
     id: 'dolomites-jul-2026',
     city: 'Dolomites',
     country: 'Italy',
@@ -572,29 +739,6 @@ export const journeyPoints = [
     theme: 'sea',
     stops: ['Dassia', 'Old Town', 'Paleokastritsa', "Canal d'Amour"],
     mrz: 'P<GRCCORFU<<DASSIA<<<<<<<<<<<<<<<0508CFU<<4N',
-  },
-  {
-    id: 'beirut-jul-2026',
-    city: 'Beirut',
-    country: 'Lebanon',
-    geo: { lon: 35.5, lat: 33.9 },
-    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
-    dateRange: '11 Jul 2026',
-    month: 7,
-    type: 'upcoming',
-    description: 'Heading home for the summer. Family, the sea, and the food I miss most. No plan this time, just Beirut.',
-    // A homecoming, not a written-up trip — it rides the Departures board and its
-    // date-accurate countdown, then folds back into the Beirut base once the day passes.
-    itinerary: null,
-    professional: null,
-    kind: 'Homecoming',
-    region: 'Lebanon · Home',
-    depart: 'Jul 11',
-    code: 'LB',
-    iata: 'BEY',
-    startDate: '2026-07-11',
-    endDate: '2026-07-11',
-    theme: 'city',
   }
 ];
 
@@ -617,8 +761,6 @@ export function getJourneyStats() {
 
 /* ---- Arrivals & Departures board model ---- */
 
-// How "significant" a stay is when choosing the representative entry for a city.
-const TYPE_RANK = { current: 4, work: 3, home: 2, travel: 1, upcoming: 0 };
 const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 // City → IATA code for the board's mono "flight code" column.
@@ -628,6 +770,10 @@ const IATA = {
   Warsaw: 'WAW', Prague: 'PRG', Budapest: 'BUD', Krakow: 'KRK', Vienna: 'VIE',
   Copenhagen: 'CPH', 'Malmö': 'MMX', London: 'LHR', Strasbourg: 'SXB',
   Amsterdam: 'AMS', Dolomites: 'VCE', Corfu: 'CFU', Deauville: 'DOL',
+  'Hyères': 'TLN',
+  Athens: 'ATH', Aegina: 'AEG', Corinth: 'COR', Meteora: 'MET',
+  Zakynthos: 'ZTH', 'Cape Sounio': 'SOU', Nafplio: 'NAF', Crete: 'HER',
+  Paros: 'PAS',
 };
 
 export function iataFor(city) {
@@ -675,67 +821,71 @@ export function getFeaturedItineraries(today = new Date()) {
     .sort((a, b) => a.startDate.localeCompare(b.startDate)); // soonest departure first
 }
 
-// Deduped, newest-first ledger of every place already arrived in.
-// journeyPoints stays intact (the map route needs its order + transit duplicates);
-// this view collapses it to one row per city.
+// The automatic "back to base" / "back home" transit rows — they pad the world-map
+// route (the return legs between trips) but shouldn't each earn an arrivals row, so
+// they're hidden from the ledger. The live resident row (paris-after-amsterdam-2026,
+// type 'current') and the Beirut holiday stay (lebanon-return, a genuine dated visit)
+// are deliberately NOT in this set.
+const RETURN_STUB_IDS = new Set([
+  'beirut-after-paris-2018',
+  'beirut-after-italy',
+  'beirut-after-japan',
+  'warsaw-after-prague',
+  'warsaw-after-budapest',
+  'warsaw-after-vienna',
+  'warsaw-after-krakow',
+  'warsaw-after-scandinavia',
+  'warsaw-after-london',
+  'warsaw-after-paris',
+  'warsaw-return-2025',
+  'paris-after-strasbourg',
+  'paris-after-london-may-2026',
+]);
+
+// Newest-first ledger of every place already arrived in — one row per visit, so a
+// city visited more than once (Paris, London, Athens…) appears once per trip.
+// journeyPoints stays intact (the map route needs its full order); this view only
+// drops trips still upcoming and the "back to base" transit stubs above.
 export function getArrivalsLedger(today = new Date()) {
   const iso = today.toISOString().slice(0, 10);
-  // Everything already landed in. A trip is held out only while it's still a live
-  // featured departure (an itinerary trip not yet past its dates) or otherwise
-  // still upcoming; the moment it's documented it graduates in here. Older trips
-  // that gain an itinerary link stay put and simply become clickable rows.
+  // Held out only while still a live featured departure (an itinerary trip not yet
+  // past its dates) or otherwise still upcoming; the moment a trip is documented it
+  // graduates in here. Return-to-base transit stubs are dropped entirely.
   const isLiveFeature = (p) => p.startDate && p.endDate && tripPhase(p, iso) !== 'documented';
   const isFutureUpcoming = (p) => p.type === 'upcoming' && !(p.endDate < iso);
-  const arrived = journeyPoints.filter((p) => !isLiveFeature(p) && !isFutureUpcoming(p));
+  const arrived = journeyPoints.filter(
+    (p) => !isLiveFeature(p) && !isFutureUpcoming(p) && !RETURN_STUB_IDS.has(p.id)
+  );
 
-  const byCity = new Map();
-  arrived.forEach((p, i) => {
-    const e = byCity.get(p.city) || { city: p.city, country: p.country, entries: [] };
-    e.entries.push({ p, i });
-    byCity.set(p.city, e);
-  });
-
-  const items = [];
-  for (const { city, country, entries } of byCity.values()) {
-    // Representative = most significant stay; ties broken by earliest appearance.
-    const rep = entries
-      .slice()
-      .sort((a, b) => TYPE_RANK[b.p.type] - TYPE_RANK[a.p.type] || a.i - b.i)[0].p;
-    // Pull a company from any entry for the city (e.g. Paris → Mistral, Warsaw → Snowflake).
-    const withRole = entries.find((e) => e.p.professional);
-    const company = withRole ? withRole.p.professional[0].company : null;
-    // A written-up trip makes its city's row link out (e.g. Dolomites, Corfu once
-    // their dates pass — or any older stay you later document).
-    const withItin = entries.find((e) => e.p.itinerary);
-    const itinerary = withItin ? withItin.p.itinerary : null;
-
+  const items = arrived.map((p) => {
+    const y = yearOf(p);
     const status =
-      rep.type === 'current' ? 'RESIDENT' : rep.type === 'home' ? 'HOME' : 'STAMPED';
-    const y = yearOf(rep);
+      p.type === 'current' ? 'RESIDENT' : p.type === 'home' ? 'HOME' : 'STAMPED';
     const label =
-      rep.type === 'current'
+      p.type === 'current'
         ? 'NOW'
-        : rep.month && y
-          ? `${MONTHS[rep.month]} ${y}`
+        : p.month && y
+          ? `${MONTHS[p.month]} ${y}`
           : y
             ? String(y)
             : 'HOME';
     const sortKey =
-      rep.type === 'current' ? Infinity : y ? y * 100 + (rep.month || 0) : 0;
-
-    items.push({
-      id: rep.id,
-      city,
-      country,
-      iata: IATA[city] || '',
-      region: company ? `${country} · ${company}` : country,
+      p.type === 'current' ? Infinity : y ? y * 100 + (p.month || 0) : 0;
+    return {
+      id: p.id,
+      city: p.city,
+      country: p.country,
+      iata: IATA[p.city] || '',
+      region: p.professional ? `${p.country} · ${p.professional[0].company}` : p.country,
       label,
       status,
       sortKey,
-      itinerary,
-    });
-  }
+      itinerary: p.itinerary || null,
+    };
+  });
 
+  // Stable sort keeps journeyPoints order within a month, so same-month cities read
+  // in trip order (e.g. Vienna → Krakow → Copenhagen → Malmö in Sep 2025).
   items.sort((a, b) => b.sortKey - a.sortKey);
   return items;
 }
