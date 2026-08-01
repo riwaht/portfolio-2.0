@@ -839,6 +839,7 @@ const RETURN_STUB_IDS = new Set([
   'warsaw-after-paris',
   'warsaw-return-2025',
   'paris-after-strasbourg',
+  'paris-apr-2026',
   'paris-after-london-may-2026',
 ]);
 
