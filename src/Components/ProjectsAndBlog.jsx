@@ -166,8 +166,6 @@ config = load(given_path or find_upwards("project.yaml", Path.cwd()))</code></pr
                 <p>Not because agents matter more than people, but because the constraints they impose are the constraints that were always good for you: composable, scriptable, testable, explicit. Agents just made it impossible to keep ignoring them.</p>
 
                 <p>If you're building developer tooling right now, the exercise is short. Find every <code>input()</code>, every assumption about where the user is standing, every output that only makes sense when a human reads it — and ask what happens if the thing on the other end is a process instead of a person. You'll fix real problems either way.</p>
-
-                <p><em>These are my own reflections, written from scratch. A different piece covering some of the same ground, written as part of my work, was published on my employer's blog.</em></p>
             `
         },
         {
