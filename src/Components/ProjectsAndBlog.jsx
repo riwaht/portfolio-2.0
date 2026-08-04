@@ -89,13 +89,84 @@ function ProjectsAndBlog() {
     const blogPosts = [
         {
             id: 4,
-            title: "Spaces: A CLI Built for Humans and Agents",
-            date: "March 2026",
-            readTime: "4 min read",
-            tags: ["AI", "Mistral"],
-            excerpt: "Spaces is an internal platform tool that scaffolds projects, manages dev environments, and handles deployments. I wrote about what it was like designing a CLI for both human developers and AI agents, and how building for both ended up making the whole thing better to use.",
-            externalUrl: "https://mistral.ai/news/spaces",
-            variant: "mistral"
+            title: "Your CLI Has a Second User Now",
+            date: "August 2026",
+            readTime: "6 min read",
+            tags: ["Developer Tools", "AI"],
+            excerpt: "I spent a chunk of the last year working on an internal developer CLI, and somewhere in the middle of it the user base quietly doubled: half the people running our commands weren't people. These are my own notes on what that changed, and why designing for agents made the tool better for humans too.",
+            variant: "featured",
+            content: `
+                <h2>How I got here</h2>
+                <p>Over the past year a good part of my work has been on internal developer tooling: the kind of command-line tool that scaffolds a project, runs your services locally, and pushes things to an environment somewhere. Ordinary infrastructure work. The interesting part wasn't the tool, it was a shift I didn't see coming.</p>
+
+                <p>We had built a nice interactive setup flow. Arrow keys, checkboxes, colors, the works. I was proud of it. Then someone pointed a coding agent at the same command and it fell over immediately — the agent got a wall of escape sequences and no way to press "down". It couldn't answer a question that only existed as a rendered widget.</p>
+
+                <p>My first instinct was to patch it: add a flag, move on. What actually came out of the conversations that followed was a rule I now apply to everything I build.</p>
+
+                <h2>Decide what you need to know before you decide how to ask</h2>
+                <p>Every interactive prompt is a confession that your program is missing a piece of information. The prompt is just one way of collecting it. Once I started separating the <em>information</em> from the <em>collection method</em>, most of the design questions answered themselves.</p>
+
+                <p>Concretely, it means your command has one execution path and several front doors into it:</p>
+
+                <pre><code class="language-python">def setup(parts: str | None = None, headless: bool = False):
+    if parts is not None:
+        chosen = [p.strip() for p in parts.split(",")]
+    elif headless:
+        chosen = sensible_defaults()
+    else:
+        chosen = ask_interactively()
+
+    # everything below here has no idea which door you came through
+    return build(chosen)</code></pre>
+
+                <p>Three ways in, one thing to test. The moment the business logic stops caring whether a value came from a human, a flag, or a config file, your test surface collapses and your tool becomes scriptable almost by accident.</p>
+
+                <h2>"Headless" is a promise, not a shortcut</h2>
+                <p>I used to think of the <code>--yes</code>-style flag as "stop asking me things". That framing is wrong and it produces flaky tools. The better framing is a contract in two directions: <em>I promise I've given you everything you need; you promise not to block on stdin.</em></p>
+
+                <p>The part people skip is the second half of that contract. If a headless run hits a value it genuinely can't resolve, it must fail immediately and say which input was missing. What it must never do is hang on a prompt nobody will ever answer. A hung command in CI is a twenty-minute timeout and a confused human; a clear error is a ten-second fix.</p>
+
+                <h2>Hidden state is where agents trip</h2>
+                <p>This was the subtlest thing I ran into, and the one I now look for first when reviewing anyone's tooling.</p>
+
+                <p>A lot of CLIs quietly read the world around them: the current working directory, a dotfile in your home folder, an environment variable someone set six months ago. Humans absorb that invisibly — you <code>cd</code> into the right folder without registering that you did it. An agent working from a repository root has no such reflex, and neither does a CI runner, and neither does you-in-a-hurry-writing-a-bash-script.</p>
+
+                <pre><code class="language-python"># implicit: works only if you happen to be standing in the right place
+config = load(Path.cwd() / "project.yaml")
+
+# explicit: an argument, with a fallback that searches upward
+config = load(given_path or find_upwards("project.yaml", Path.cwd()))</code></pre>
+
+                <p>Every hidden assumption is a place where a non-human user derails. Making them explicit inputs with reasonable fallbacks fixes it for agents and, as a side effect, makes the tool far easier to script.</p>
+
+                <h2>Make your data readable, not just printable</h2>
+                <p>The other thing that paid off was treating the tool's internal concepts as data models rather than as code buried in a rendering function. If the set of things your CLI can create lives in a structured registry, a human can browse it in a pretty picker and a program can ask for the same set as JSON. Same source of truth, two renderings.</p>
+
+                <p>The unexpected win was on the maintenance side. When the description of a thing lives in one place, adding a new one is a single change instead of a scavenger hunt through a picker, a template, and three generators. I'd have wanted that even if agents had never shown up.</p>
+
+                <h2>Write down what an agent can't ask you</h2>
+                <p>A new engineer joining a project asks questions. They ask which command runs the tests, which port the frontend is on, whether dependencies are managed by the toolchain or by hand. An agent doesn't ask — it guesses, and it guesses confidently.</p>
+
+                <p>So the highest-leverage thing I did was cheap: make the tool emit a machine-readable description of the project it just created, and keep it current. What exists, what runs it, what it needs. Pair that with a plain-language rules file — the <code>AGENTS.md</code> convention has become a reasonable default here — written imperatively rather than descriptively. Not "this project uses a task runner" but "run the migration command before touching database tests."</p>
+
+                <p>The trick is that this file has to be regenerated, not written once. A stale description is worse than none, because it's confidently wrong. When it updates on every scaffold and every dev run, it doubles as a cache-buster for assumptions the agent formed three turns ago.</p>
+
+                <h2>What I'd hand someone starting today</h2>
+                <ul>
+                    <li>Every interactive question has a flag equivalent.</li>
+                    <li>Every flag has a defensible default, and headless mode fails loudly instead of hanging.</li>
+                    <li>Working directory, environment variables, and config paths are inputs — not assumptions.</li>
+                    <li>Your domain concepts are introspectable data, not logic hidden inside a renderer.</li>
+                    <li>Something in the repo describes the project in a form a program can read, and it regenerates itself.</li>
+                </ul>
+
+                <h2>None of this made it worse for humans</h2>
+                <p>That's the part I keep coming back to. The interactive flow still exists. The spinners still spin. Nothing was taken away — we just added a second door, and the second door turned out to be load-bearing for everyone.</p>
+
+                <p>Not because agents matter more than people, but because the constraints they impose are the constraints that were always good for you: composable, scriptable, testable, explicit. Agents just made it impossible to keep ignoring them.</p>
+
+                <p>If you're building developer tooling right now, the exercise is short. Find every <code>input()</code>, every assumption about where the user is standing, every output that only makes sense when a human reads it — and ask what happens if the thing on the other end is a process instead of a person. You'll fix real problems either way.</p>
+            `
         },
         {
             id: 1,
@@ -339,8 +410,8 @@ function ProjectsAndBlog() {
                                         }
                                     }}
                                 >
-                                    {post.variant === 'mistral' && (
-                                        <span className="blog-card-badge blog-card-badge--mistral">Published on Mistral</span>
+                                    {post.variant === 'featured' && (
+                                        <span className="blog-card-badge blog-card-badge--featured">Latest</span>
                                     )}
                                     <div className="post-meta-compact">
                                         <span className="post-date-compact">{post.date}</span>
@@ -357,7 +428,7 @@ function ProjectsAndBlog() {
                                         </div>
                                     )}
                                     {post.externalUrl && (
-                                        <span className="blog-card-external-hint">↗ Read on mistral.ai</span>
+                                        <span className="blog-card-external-hint">↗ Read the full post</span>
                                     )}
                                 </article>
                             ))}
