@@ -751,6 +751,31 @@ export const journeyPoints = [
     theme: 'sea',
     stops: ['Dassia', 'Old Town', 'Paleokastritsa', "Canal d'Amour"],
     mrz: 'P<GRCCORFU<<DASSIA<<<<<<<<<<<<<<<0508CFU<<4N',
+  },
+  {
+    id: 'london-sep-2026',
+    city: 'London',
+    country: 'United Kingdom',
+    geo: { lon: -0.1, lat: 51.5 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: '9–13 Sep 2026',
+    month: 9,
+    type: 'upcoming',
+    description: 'Back in London for my birthday. Five days with nothing booked but the flights — the museums, the record shops, and the walks I already know I want.',
+    // Deliberately unplanned — like the Beirut homecoming, it rides the Departures
+    // board and its date-accurate countdown without a written-up itinerary.
+    itinerary: null,
+    professional: null,
+    kind: 'Birthday trip',
+    region: 'United Kingdom · Birthday',
+    nights: 4,
+    depart: 'Sep 9',
+    ret: 'Sep 13',
+    code: 'GB',
+    iata: 'LHR',
+    startDate: '2026-09-09',
+    endDate: '2026-09-13',
+    theme: 'city',
   }
 ];
 
