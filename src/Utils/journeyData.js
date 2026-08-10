@@ -907,8 +907,12 @@ export function getArrivalsLedger(today = new Date()) {
           : y
             ? String(y)
             : 'HOME';
+    // Day-of-month off the trip's own start date, so two dated trips sharing a
+    // month still read newest-first (Dolomites Jul 23 above Beirut Jul 11).
+    // Undated rows fall back to 0 and keep journeyPoints order via the stable sort.
+    const day = p.startDate ? Number(p.startDate.slice(8, 10)) : 0;
     const sortKey =
-      p.type === 'current' ? Infinity : y ? y * 100 + (p.month || 0) : 0;
+      p.type === 'current' ? Infinity : y ? y * 10000 + (p.month || 0) * 100 + day : 0;
     return {
       id: p.id,
       city: p.city,
@@ -922,8 +926,9 @@ export function getArrivalsLedger(today = new Date()) {
     };
   });
 
-  // Stable sort keeps journeyPoints order within a month, so same-month cities read
-  // in trip order (e.g. Vienna → Krakow → Copenhagen → Malmö in Sep 2025).
+  // Stable sort keeps journeyPoints order within a month for undated rows, so the
+  // legs of one multi-city trip still read in trip order (e.g. Vienna → Krakow →
+  // Copenhagen → Malmö in Sep 2025). Dated trips break that tie by start date above.
   items.sort((a, b) => b.sortKey - a.sortKey);
   return items;
 }
