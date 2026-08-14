@@ -30,7 +30,7 @@ function Pottery() {
 
   // Fill shelves top-down, then pad with empty shelves so it reads as a whole
   // shelf unit / wall with room to grow as more pots are made.
-  const PER_SHELF = 3;
+  const PER_SHELF = 4;
   const MIN_SHELVES = 2;
   const shelves = [];
   for (let i = 0; i < potteryPieces.length; i += PER_SHELF) {
