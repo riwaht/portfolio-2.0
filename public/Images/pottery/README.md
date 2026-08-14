@@ -9,6 +9,8 @@ appears when you click a piece):
 - `speckle-bowl.jpg` — the blue speckled bowl
 - `brushed-bowl.jpg` — the sand-coloured bowl with iron brushwork inside
 - `cobalt-cup.jpg` — the cream tumbler with the cobalt interior
+- `periwinkle-bowl.jpg` — the wide, shallow bowl in mottled blue
+- `sage-bowl.jpg` — the straight-sided bowl with the sage interior
 
 Any orientation is fine — the field-notes plate crops to a square, so a roughly
 centred pot works best. If you use different filenames, update the `photo` paths in

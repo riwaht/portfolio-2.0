@@ -92,6 +92,40 @@ export const potteryPieces = [
       next: 'Dip slower and hold it level so the glaze line lands straight.',
     },
   },
+  {
+    id: 'periwinkle-bowl',
+    name: 'Periwinkle bowl',
+    form: 'Wheel-thrown low bowl',
+    glaze: 'Mottled periwinkle',
+    fired: 'Aug 2026',
+    art: 'periwinkleBowl',
+    accent: '#7B92CC',
+    photo: '/Images/pottery/periwinkle-bowl.jpg',
+    tag: { nice: 'speckled blue', oops: 'oval rim' },
+    notes: {
+      tried: 'A wide, shallow bowl. A friend glazed this one for me, a mottled periwinkle inside and out.',
+      nice: 'The blue broke light and speckled over the rim and went deep and even down in the well.',
+      oops: 'The rim went properly oval, and a couple of patches by the foot missed the glaze.',
+      next: 'Let a wide one firm up before I cut it off the wheel, and lift it with both hands.',
+    },
+  },
+  {
+    id: 'sage-bowl',
+    name: 'Sage bowl',
+    form: 'Wheel-thrown bowl',
+    glaze: 'Sage celadon',
+    fired: 'Aug 2026',
+    art: 'sageBowl',
+    accent: '#93A98C',
+    photo: '/Images/pottery/sage-bowl.jpg',
+    tag: { nice: 'straight walls', oops: 'heavy base' },
+    notes: {
+      tried: 'Straight walls this time, plain sand outside and a soft sage pooled inside.',
+      nice: 'The sage settled into the throwing rings and went warm and gold where it ran thin.',
+      oops: 'The wall is thicker at the bottom than the top, and the rim came out a touch wavy again.',
+      next: 'Even the wall out from the base up before the last pull, and true the rim as I finish.',
+    },
+  },
 ];
 
 // Total pots off the wheel so far. Only the finished ones (glazed, fired, and

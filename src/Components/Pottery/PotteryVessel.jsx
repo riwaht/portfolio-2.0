@@ -87,12 +87,49 @@ function CobaltCup() {
   );
 }
 
+function PeriwinkleBowl() {
+  return (
+    <>
+      <path d="M14,56 C16,72 30,82 50,82 C70,82 84,72 86,56 Z" fill="#8FA5D2" />
+      <path d="M24,72 C31,80 40,82 50,82 C60,82 69,80 76,72 C65,77 35,77 24,72 Z" fill="#6D85B8" opacity="0.45" />
+      <path d="M14,56 C19,49.6 36,47.6 50,47.6 C64,47.6 81,50 86,56 C81,61.6 64,63.6 50,63.6 C36,63.6 19,61.6 14,56 Z" fill="#AABDE1" />
+      {/* the rim went oval on this one, so the opening sits a few degrees off level */}
+      <g transform="rotate(-3.5 50 55.8)">
+        <ellipse cx="50" cy="55.8" rx="30" ry="7.2" fill="#7C93C6" />
+        <ellipse cx="50.8" cy="57.2" rx="19.4" ry="4.3" fill="#6A83BD" />
+      </g>
+      <path d="M76.4,52.8 C80.4,53.8 83.6,55 85.8,56.4 C82.4,56 78.6,54.8 75.2,53.8 Z" fill="#C6B189" opacity="0.8" />
+      <g fill="#4E68A4">
+        <circle cx="40" cy="55.2" r="1" /><circle cx="58" cy="56.8" r="0.9" /><circle cx="64" cy="54.6" r="0.9" />
+        <circle cx="33" cy="56" r="0.8" /><circle cx="48" cy="53.6" r="0.7" />
+      </g>
+    </>
+  );
+}
+
+function SageBowl() {
+  return (
+    <>
+      <path d="M24,46 C24,70 30,82 50,82 C70,82 76,70 76,46 Z" fill="#D9C6A4" />
+      <path d="M27,68 C33,79 41,82 50,82 C59,82 67,79 73,68 C63,74 37,74 27,68 Z" fill="#B69E77" opacity="0.45" />
+      <path d="M25,55 C37,58 63,58 75,55" stroke="#B99F76" strokeWidth="1" fill="none" opacity="0.45" />
+      <path d="M25,63 C37,66 63,66 75,63" stroke="#B99F76" strokeWidth="1" fill="none" opacity="0.35" />
+      <path d="M24,46 C28,40 40,38 50,38 C60,38 72,40 76,47 C72,52 60,54 50,54 C40,54 28,52 24,46 Z" fill="#E4D5B4" />
+      <ellipse cx="50" cy="46" rx="24.6" ry="7.2" fill="#B7CAB2" />
+      <ellipse cx="50" cy="47.4" rx="14.6" ry="4" fill="#C2B589" opacity="0.65" />
+      <path d="M31,44.6 C37,49 63,49 69,44.6" stroke="#A5BDA1" strokeWidth="1.2" fill="none" opacity="0.5" />
+    </>
+  );
+}
+
 const ART = {
   amberCup: AmberCup,
   blueBowl: BlueBowl,
   greenBowl: GreenBowl,
   brushedBowl: BrushedBowl,
   cobaltCup: CobaltCup,
+  periwinkleBowl: PeriwinkleBowl,
+  sageBowl: SageBowl,
 };
 
 function PotteryVessel({ art, className = 'pot-vessel' }) {
