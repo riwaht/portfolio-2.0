@@ -761,10 +761,8 @@ export const journeyPoints = [
     dateRange: '9–13 Sep 2026',
     month: 9,
     type: 'upcoming',
-    description: 'Back in London for my birthday. Five days with nothing booked but the flights — the museums, the record shops, and the walks I already know I want.',
-    // Deliberately unplanned — like the Beirut homecoming, it rides the Departures
-    // board and its date-accurate countdown without a written-up itinerary.
-    itinerary: null,
+    description: 'Back in London for my birthday. Five days built around one castle, one wooden O, and an unreasonable number of bookshops.',
+    itinerary: '/itineraries/london',
     professional: null,
     kind: 'Birthday trip',
     region: 'United Kingdom · Birthday',
@@ -775,7 +773,7 @@ export const journeyPoints = [
     iata: 'LHR',
     startDate: '2026-09-09',
     endDate: '2026-09-13',
-    theme: 'city',
+    theme: 'parchment',
   }
 ];
 

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import London from '../../Components/London.jsx';
+import '../../styles.css';
+---
+
+<BaseLayout
+  title="London, 9 to 13 September 2026 · Riwa Hoteit"
+  description="A five-day birthday itinerary in London: the Studio Tour, the Globe, Diagon Alley's real lanes, and a Marauder's Map of every stop."
+  url="/itineraries/london"
+  bodyClass="london-page"
+>
+  <London client:only="react" />
+</BaseLayout>
