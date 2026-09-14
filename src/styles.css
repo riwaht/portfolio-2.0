@@ -2988,6 +2988,9 @@ button:disabled:hover {
 .departure-wash-sea {
   background: radial-gradient(circle at 50% 60%, #114E5C, #0C3B45);
 }
+.departure-wash-parchment {
+  background: radial-gradient(circle at 50% 60%, #F1E6C8, #8A6535);
+}
 .departure-wash-label {
   font-family: var(--font-sans);
   font-size: clamp(2rem, 8vw, 4rem);
@@ -2997,6 +3000,7 @@ button:disabled:hover {
   animation: washLabel 0.7s ease forwards;
 }
 .departure-wash-alpine .departure-wash-label { color: #2C353C; }
+.departure-wash-parchment .departure-wash-label { color: #2A1A10; font-style: italic; font-weight: 500; letter-spacing: 0; }
 
 @keyframes washIn {
   from { clip-path: circle(0% at 50% 60%); opacity: 0.6; }
@@ -3487,3 +3491,315 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
   .jb-feature:hover .jb-fplate svg { transform: none; }
 }
 
+/* ==========================================================================
+   /itineraries/london: a birthday itinerary as wizarding stationery.
+   One bold object: the Marauder's Map, walked in footprints. The footprints
+   carry through the ticket, the day timelines and each day's own small map.
+   ========================================================================== */
+
+.ld {
+  --ld-ink: #4A3421;               /* aged sepia, the map's own ink */
+  --ld-ink-soft: rgba(74, 52, 33, 0.45);
+  --ld-ink-wed: #7A3B2E; --ld-ink-thu: #8A6A1F; --ld-ink-fri: #3E5F6E; --ld-ink-sat: #3F5C46; --ld-ink-sun: #6B4A6A;
+  --ld-parch-1: #F4E9D0; --ld-parch-2: #EBDCBB; --ld-parch-3: #DFCBA2;
+  --ld-stain: #8B6430; --ld-crease: rgba(74, 52, 33, 0.14);
+  --ld-green: #B9C39C; --ld-river: #A7BEC4;
+  --ld-vignette: rgba(84, 58, 22, 0.32);
+  --ld-tip-bg: #FBF3E2; --ld-cream: #F6EEDC;
+  --ld-fold-dk: #4A3421; --ld-fold-lt: #FFF9EA; --ld-facet: rgba(74, 52, 33, 0.05); --ld-fox: #6B4A22;
+}
+[data-theme="dark"] .ld {
+  --ld-ink: #D9C6A3; --ld-ink-soft: rgba(217, 198, 163, 0.42);
+  --ld-ink-wed: #D9836F; --ld-ink-thu: #E1B85A; --ld-ink-fri: #7FB6CC; --ld-ink-sat: #7FBF97; --ld-ink-sun: #C093B8;
+  --ld-parch-1: #262A31; --ld-parch-2: #1F2329; --ld-parch-3: #191C22;
+  --ld-stain: #0B0D11; --ld-crease: rgba(217, 198, 163, 0.09);
+  --ld-green: #33503E; --ld-river: #2C4956;
+  --ld-vignette: rgba(0, 0, 0, 0.55);
+  --ld-tip-bg: #2A2F38; --ld-cream: #23272E;
+  --ld-fold-dk: #000000; --ld-fold-lt: #FFFFFF; --ld-facet: rgba(255, 255, 255, 0.03); --ld-fox: #C9B48F;
+}
+
+.ld-wrap { max-width: 1120px; margin: 0 auto; padding: 8px 24px 96px; }
+
+/* ---------- the map ---------- */
+.ld-map { margin: 0; border-radius: 2px; overflow: hidden; background: var(--ld-parch-1);
+  box-shadow: 0 1px 0 var(--shadow-soft), 0 24px 48px -30px var(--shadow-strong); }
+.ld-map-plate { position: relative; }
+.ld-grain { mix-blend-mode: multiply; }
+[data-theme="dark"] .ld-grain { mix-blend-mode: soft-light; opacity: 0.35; }
+.ld-map svg { display: block; width: 100%; height: auto; }
+.ld-m-ribbon { font-family: var(--font-sans); font-style: italic; font-size: 19px; fill: var(--ld-ink); text-anchor: middle; }
+.ld-m-ribbon-s { font-family: var(--font-sans); font-style: italic; font-size: 10.5px; fill: var(--ld-ink); opacity: 0.75; text-anchor: middle; letter-spacing: 0.04em; }
+.ld-m-river { font-family: var(--font-sans); font-style: italic; font-size: 13px; letter-spacing: 0.24em; fill: var(--ld-ink); opacity: 0.6; }
+.ld-m-place { font-family: var(--font-sans); font-style: italic; font-size: 12px; fill: var(--ld-ink); opacity: 0.55; text-anchor: middle; pointer-events: none; letter-spacing: 0.05em; }
+.ld-m-label { font-family: var(--font-sans); font-style: italic; font-size: 12.5px; paint-order: stroke; stroke: var(--ld-parch-1); stroke-width: 4px; stroke-linejoin: round; pointer-events: none; }
+.ld-m-off { font-family: var(--font-sans); font-style: italic; font-size: 11.5px; fill: var(--ld-ink); text-anchor: middle; opacity: 0.85; }
+.ld-m-n { font-family: var(--font-sans); font-size: 13px; fill: var(--ld-ink); text-anchor: middle; }
+.ld-m-tick-t { font-family: var(--font-mono); font-size: 8.5px; fill: var(--ld-ink); letter-spacing: 0.04em; opacity: 0.75; }
+.ld-m-foot { font-family: var(--font-sans); font-style: italic; font-size: 12.5px; fill: var(--ld-ink); opacity: 0.7; }
+.ld-m-wiz { font-family: var(--font-sans); font-style: italic; font-size: 10.5px; fill: var(--ld-ink); opacity: 0.8; paint-order: stroke; stroke: var(--ld-parch-1); stroke-width: 3px; pointer-events: none; }
+.ld-m-wizstar { font-size: 9px; fill: var(--ld-ink); text-anchor: middle; opacity: 0.85; pointer-events: none; }
+.ld-m-banner { font-family: var(--font-sans); font-style: italic; font-size: 9.5px; fill: var(--ld-ink); text-anchor: middle; }
+.ld-walker { animation: ldWalkerIn 0.9s ease both; }
+@keyframes ldWalkerIn { from { opacity: 0; } to { opacity: 1; } }
+.ld-wiz, .ld-lm-hit { cursor: help; }
+.ld-owl { animation: ldBob 5.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes ldBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
+.ld-map-mini .ld-m-wiz, .ld-map-mini .ld-m-wizstar { display: none; }
+
+.ld-reveal { animation: ldDraw 2.6s cubic-bezier(0.3, 0.6, 0.2, 1) both; }
+@keyframes ldDraw { to { stroke-dashoffset: 0; } }
+.ld-pin { cursor: pointer; animation: ldPin 0.5s ease both; transition: opacity 0.35s ease; }
+.ld-map-mini .ld-pin { cursor: default; }
+@keyframes ldPin { from { opacity: 0; } }
+.ld-trail { transition: opacity 0.35s ease; }
+.ld-pin-dot { transition: r 0.18s ease; }
+.ld-pin:focus-visible { outline: none; }
+.ld-pin:focus-visible .ld-pin-dot { stroke-width: 3.2; }
+
+.ld-tip { position: absolute; transform: translate(14px, -50%); pointer-events: none; z-index: 2;
+  background: var(--ld-tip-bg); border: 1px solid var(--tip-ink); border-left-width: 3px; border-radius: 2px;
+  padding: 7px 11px 8px; box-shadow: 0 6px 18px -8px var(--shadow-strong); white-space: nowrap; display: flex; flex-direction: column; gap: 2px; }
+.ld-tip-n { font-family: var(--font-sans); font-size: 0.98rem; font-weight: 500; color: var(--text-primary); }
+.ld-tip-s { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); }
+
+.ld-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 14px 16px; margin: 0;
+  border-top: 1px solid var(--ld-ink-soft); background: var(--ld-cream); }
+.ld-lg { display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px 6px 10px; white-space: nowrap;
+  font-family: var(--font-sans); font-size: 0.92rem; color: var(--text-secondary); background: transparent;
+  border: 1px solid var(--border-color); border-radius: 2px; cursor: pointer; }
+.ld-lg:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.ld-lg:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+.ld-lg.is-on { border-color: var(--lg-ink, var(--text-primary)); color: var(--text-primary); background: var(--bg-primary); }
+.ld .ld-legend .ld-lg > .ld-lg-foot { width: 11px; height: 17px; min-width: 0; max-width: 11px; flex: 0 0 11px; fill: var(--lg-ink, var(--text-muted)); }
+.ld-legend-note { margin-left: auto; font-family: var(--font-sans); font-style: italic; font-size: 0.86rem; color: var(--text-muted); }
+
+/* ---------- oath, ticket, lede ---------- */
+.ld-oath { display: block; margin: 34px auto 20px; padding: 6px 14px; background: none; border: 0; cursor: pointer;
+  font-family: var(--font-sans); font-style: italic; font-size: clamp(1.15rem, 2vw, 1.5rem); color: var(--accent-primary);
+  text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 6px; transition: text-decoration-color 0.25s ease, color 0.4s ease; }
+.ld-oath:hover, .ld-oath:focus-visible { text-decoration-color: var(--accent-primary); outline: none; }
+.ld-oath.is-spoken { color: var(--text-muted); cursor: default; text-decoration-color: transparent; }
+.ld-oath-wand { display: inline-block; font-style: normal; font-size: 0.7em; margin-right: 4px; transform: translateY(-2px); }
+.ld-oath:not(.is-spoken) .ld-oath-wand { animation: ldWand 2.4s ease-in-out infinite; }
+@keyframes ldWand { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.ld-ink { animation: ldInk 1.5s ease both; }
+@keyframes ldInk { from { opacity: 0; } to { opacity: 1; } }
+.ld-legend.is-hidden { opacity: 0; pointer-events: none; }
+.ld-legend { transition: opacity 0.6s ease 0.8s; }
+
+.ld-ticket { display: grid; grid-template-columns: 132px 1fr; background: var(--ld-cream); color: var(--ld-ink);
+  border: 1px solid var(--ld-ink-soft); border-radius: 2px; box-shadow: 0 1px 0 var(--shadow-soft); }
+.ld-tk-stub { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 18px 12px;
+  border-right: 1.5px dashed var(--ld-ink-soft); background: repeating-linear-gradient(0deg, transparent 0 7px, rgba(74,52,33,0.05) 7px 8px); }
+.ld-tk-admit, .ld-tk-no { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; writing-mode: vertical-rl; transform: rotate(180deg); }
+.ld-seal { width: 44px; height: 44px; }
+.ld-seal-wax { fill: var(--accent-oxblood); opacity: 0.94; }
+.ld-seal-ring { fill: none; stroke: var(--ld-cream); stroke-width: 1.6; opacity: 0.75; }
+.ld-seal-mono { font-family: var(--font-sans); font-size: 38px; font-weight: 500; text-anchor: middle; fill: var(--ld-cream); }
+.ld-tk-body { position: relative; padding: 22px 30px 26px; }
+.ld-tk-rule { height: 3px; border-top: 1px solid var(--ld-ink-soft); border-bottom: 1px solid var(--ld-ink-soft); }
+.ld-tk-head { font-family: var(--font-sans); font-style: italic; font-size: 0.95rem; text-align: center; margin: 14px 0 6px; opacity: 0.85; }
+.ld-tk-plat { display: flex; align-items: baseline; justify-content: center; gap: 14px; margin: 0 0 14px; }
+.ld-tk-plat-l { font-family: var(--font-sans); font-style: italic; font-size: 1.35rem; opacity: 0.85; }
+.ld-tk-plat-n { font-family: var(--font-sans); font-size: clamp(3.6rem, 7vw, 5.4rem); line-height: 0.9; font-weight: 400; letter-spacing: -0.02em; }
+.ld-tk-plat-n sup { font-size: 0.42em; vertical-align: 0.6em; margin-left: 3px; }
+.ld-tk-legs { display: grid; gap: 12px; border-top: 1px solid var(--ld-ink-soft); padding-top: 14px; }
+.ld-tk-leg { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; }
+.ld-tk-end { display: flex; flex-direction: column; gap: 2px; }
+.ld-tk-end-r { text-align: right; }
+.ld-tk-end b { font-family: var(--font-mono); font-size: 1.35rem; font-weight: 500; }
+.ld-tk-end span { font-family: var(--font-sans); font-style: italic; font-size: 0.9rem; opacity: 0.85; }
+.ld-tk-mid { display: flex; align-items: center; gap: 8px; min-width: 96px; }
+.ld-tk-line { flex: 1; height: 1px; background: var(--ld-ink-soft); }
+.ld-tk-arrow { opacity: 0.8; }
+.ld-tk-meta { grid-column: 1 / -1; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; opacity: 0.7; margin-top: -4px; }
+.ld-tk-foot { font-family: var(--font-sans); font-style: italic; font-size: 0.9rem; text-align: center; margin: 16px 0 14px; opacity: 0.85; }
+.ld-stamp { position: absolute; right: 26px; top: 18px; width: 108px; height: 108px; transform: rotate(-12deg);
+  fill: none; stroke: var(--accent-oxblood); stroke-width: 1.6; opacity: 0.62; mix-blend-mode: multiply; }
+[data-theme="dark"] .ld-stamp { mix-blend-mode: normal; opacity: 0.7; }
+.ld-stamp-t { font-family: var(--font-mono); font-size: 9.6px; letter-spacing: 0.12em; fill: var(--accent-oxblood); stroke: none; }
+.ld-stamp-c { font-family: var(--font-sans); font-style: italic; font-size: 22px; fill: var(--accent-oxblood); stroke: none; text-anchor: middle; }
+
+
+/* ---------- the days ---------- */
+.ld-days { margin-top: 56px; }
+.ld-day-main { min-width: 0; padding-right: 10px; }
+.ld-day { padding: 8px 0 44px; }
+.ld-flourish { display: block; width: 240px; height: 24px; margin: 0 auto 40px; color: var(--ld-ink); opacity: 0.55; }
+.ld-day-grid { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 0 56px; align-items: start; }
+.ld-day-n { font-family: var(--font-sans); font-style: italic; font-size: 4.2rem; line-height: 0.8; font-weight: 300; color: var(--ld-ink); margin-bottom: 14px; }
+.ld-day-kicker { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px; }
+.ld-day-title { font-family: var(--font-sans); font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.1; font-weight: 500; letter-spacing: -0.015em; color: var(--text-primary); margin: 0 0 14px; }
+.ld-day-blurb { font-family: var(--font-sans); font-size: 1.02rem; line-height: 1.75; color: var(--text-secondary); margin: 0 0 26px; max-width: 48ch; }
+.ld-map-mini { max-width: 460px; box-shadow: 0 1px 0 var(--shadow-soft); }
+.ld-map-mini .ld-m-label { font-size: 22px; stroke-width: 6px; }
+.ld-map-mini .ld-lm path, .ld-map-mini .ld-lm rect, .ld-map-mini .ld-lm circle, .ld-map-mini .ld-lm line { stroke-width: 1.9; }
+
+/* the cake: a photograph pinned to the plan, the page's one splash of colour */
+.ld-cake { margin: 10px 0 0 104px; max-width: 176px; }
+.ld-cake-frame { position: relative; transform: rotate(-1.6deg); background: var(--ld-cream); padding: 10px 10px 12px;
+  border: 1px solid var(--ld-ink-soft); box-shadow: 0 1px 0 var(--shadow-soft), 0 14px 30px -18px var(--shadow-strong); }
+.ld-cake-frame img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+.ld-cake-tab { position: absolute; width: 34px; height: 12px; background: rgba(233, 214, 170, 0.75);
+  border: 1px solid rgba(74, 52, 33, 0.18); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.ld-cake-tab-tl { top: -6px; left: 22px; transform: rotate(-38deg); }
+.ld-cake-tab-br { bottom: -6px; right: 22px; transform: rotate(-38deg); }
+[data-theme="dark"] .ld-cake-tab { background: rgba(217, 198, 163, 0.35); }
+.ld-cake-cap { font-family: var(--font-sans); font-style: italic; font-size: 0.92rem; color: var(--text-muted); text-align: center; margin-top: 12px; }
+
+/* ---------- the hours, walked in footprints ---------- */
+.ld-sched { list-style: none; margin: 6px 0 0; padding: 0; }
+.ld-stop { display: grid; grid-template-columns: 64px 26px minmax(0, 1fr); }
+.ld-stop-t { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); padding-top: 5px; }
+.ld-stop-rail { position: relative; display: flex; justify-content: center; }
+.ld-stop-rail::before { content: ''; position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dotted var(--ld-ink-soft); }
+.ld-stop:first-child .ld-stop-rail::before { top: 12px; }
+.ld-stop:last-child .ld-stop-rail::before { bottom: calc(100% - 12px); }
+.ld .ld-stop-rail > .ld-foot { position: relative; width: 12px; height: 16px; min-width: 0; max-width: 12px; flex: 0 0 12px; margin-top: 4px;
+  fill: var(--ld-ink); opacity: 0.5; background: var(--bg-primary); }
+.ld-stop.is-major .ld-foot { opacity: 1; }
+.ld-stop-body { padding: 0 0 18px 14px; }
+.ld-stop-n { display: block; font-family: var(--font-sans); font-size: 1.02rem; font-weight: 500; color: var(--text-primary); }
+.ld-stop:not(.is-major) .ld-stop-n { font-weight: 400; color: var(--text-secondary); }
+.ld-stop-g { color: var(--ld-ink); margin-right: 9px; font-size: 0.85em; }
+.ld-stop-off { font-family: var(--font-sans); font-style: italic; font-size: 0.85rem; font-weight: 400; color: var(--text-muted); margin-left: 10px; }
+.ld-stop-note { display: block; font-family: var(--font-sans); font-size: 0.93rem; line-height: 1.68; color: var(--text-secondary); margin-top: 4px; max-width: 52ch; }
+
+/* ---------- polaroids: a print beside each hour that has one ---------- */
+.ld-stop-body { display: block; }
+.ld-stop.has-photo .ld-stop-body { display: grid; gap: 0 18px; align-items: start; }
+.ld-stop.has-photo.pol-r .ld-stop-body { grid-template-columns: minmax(0, 1fr) 160px; }
+.ld-stop.has-photo.pol-l .ld-stop-body { grid-template-columns: 160px minmax(0, 1fr); }
+.ld-stop.has-photo.pol-l .ld-pol { order: -1; justify-self: start; }
+.ld-stop.has-photo.pol-r .ld-pol { justify-self: end; }
+.ld-stop-text { display: block; min-width: 0; }
+.ld-pol { position: relative; margin: calc(2px + var(--ld-y, 0px)) 8px 8px 0; padding: 7px 7px 22px; width: 136px; background: #fbf8f1;
+  border: 1px solid rgba(74, 52, 33, 0.16); box-shadow: 0 1px 0 var(--shadow-soft), 0 12px 26px -16px var(--shadow-strong);
+  transform: rotate(var(--ld-tilt, -2deg)); transition: transform 320ms cubic-bezier(.2,.7,.2,1), box-shadow 320ms; }
+.ld-pol.is-s { width: 118px; padding: 6px 6px 20px; }
+/* minor hours get a smaller print, so the anchors of the day still read as anchors */
+.ld-stop:not(.is-major) .ld-pol, .ld-stop:not(.is-major) .ld-pol.is-l, .ld-stop:not(.is-major) .ld-pol.is-m { width: 100px; padding: 5px 5px 17px; }
+.ld-stop:not(.is-major) .ld-pol .ld-pol-cap { font-size: 0.66rem; bottom: 4px; }
+.ld-stop:not(.is-major) .ld-pol .ld-pol-tape { width: 32px; height: 10px; margin-left: -16px; }
+.ld-stop.has-photo:not(.is-major).pol-r .ld-stop-body { grid-template-columns: minmax(0, 1fr) 118px; }
+.ld-stop.has-photo:not(.is-major).pol-l .ld-stop-body { grid-template-columns: 118px minmax(0, 1fr); }
+.ld-pol.is-l { width: 156px; padding: 8px 8px 24px; }
+.ld-stop:hover .ld-pol, .ld-stop:focus-within .ld-pol { transform: rotate(0deg) scale(1.05); box-shadow: 0 1px 0 var(--shadow-soft), 0 18px 34px -16px var(--shadow-strong); z-index: 2; }
+.ld-pol img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; background: var(--ld-cream);
+  filter: saturate(0.88) contrast(1.04) sepia(0.14); }
+.ld-pol-cap { font-family: var(--font-sans); font-style: italic; font-size: 0.78rem; line-height: 1.25; color: #5a4a3a; text-align: center;
+  position: absolute; left: 8px; right: 8px; bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ld-pol.is-s .ld-pol-cap { font-size: 0.7rem; bottom: 5px; }
+.ld-pol-tape { position: absolute; width: 42px; height: 13px; background: rgba(233, 214, 170, 0.78);
+  border: 1px solid rgba(74, 52, 33, 0.18); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.ld-pol.tape-c .ld-pol-tape { top: -7px; left: 50%; margin-left: -21px; transform: rotate(-3deg); }
+.ld-pol.tape-tl .ld-pol-tape { top: -5px; left: -12px; transform: rotate(-42deg); }
+.ld-pol.tape-tr .ld-pol-tape { top: -5px; right: -12px; transform: rotate(42deg); }
+[data-theme="dark"] .ld-pol { background: #efe6d6; border-color: rgba(0,0,0,0.25); }
+[data-theme="dark"] .ld-pol-tape { background: rgba(217, 198, 163, 0.4); }
+.ld-credits { margin: 34px auto 0; max-width: 720px; font-family: var(--font-sans); font-size: 0.72rem; color: var(--text-muted); opacity: 0.6; }
+.ld-credits summary { cursor: pointer; text-align: center; font-style: italic; list-style: none; }
+.ld-credits summary::-webkit-details-marker { display: none; }
+.ld-credits ul { margin: 10px 0 0; padding-left: 18px; line-height: 1.6; }
+.ld-credits a { color: inherit; }
+
+/* ---------- the wand: cursor and sparks ---------- */
+.london-page, .london-page * { cursor: url('/Images/london/wand.svg') 0 0, url('/Images/london/wand.png') 0 0, auto; }
+.london-page a, .london-page button, .london-page [role="button"], .london-page summary, .london-page label,
+.london-page .ld-pin, .london-page .ld-lm-hit, .london-page .ld-wiz, .london-page .ld-lg, .london-page .ld-oath { cursor: url('/Images/london/wand-lit.svg') 0 0, url('/Images/london/wand-lit.png') 0 0, pointer; }
+.london-page button:disabled { cursor: url('/Images/london/wand.svg') 0 0, url('/Images/london/wand.png') 0 0, default; }
+.ld-spark { position: fixed; z-index: 9999; pointer-events: none; font-size: 13px; line-height: 1; color: var(--accent-oxblood);
+  transform: translate(-50%, -50%); animation: ldSpark 640ms cubic-bezier(.2,.7,.3,1) forwards; text-shadow: 0 0 6px rgba(246, 215, 122, 0.9); }
+.ld-spark:nth-child(odd) { color: #c9a56a; }
+@keyframes ldSpark {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15) rotate(var(--rot)); }
+}
+/* the London page hides the masthead's station clock row: this is a document, not a departures board */
+.london-page .pm-id { display: none; }
+/* old-print face for the headings, loaded by the page itself */
+.ld { --ld-font-old: 'IM Fell English', var(--font-sans); --ld-snitch: #d9b45a; }
+[data-theme="dark"] .ld { --ld-snitch: #c9a44e; }
+.ld .ld-day-title, .ld .ld-managed, .ld .ld-oath, .ld .ld-tk-head, .ld .ld-day-n { font-family: var(--ld-font-old); }
+.ld .ld-day-title { letter-spacing: 0; font-weight: 400; }
+.ld .ld-flourish { width: 260px; height: 26px; opacity: 0.85; }
+/* her house, on her day only: a small striped band under the numeral */
+.ld-house-band { display: block; width: 46px; height: 7px; margin: -6px 0 14px 2px; border-radius: 1px;
+  background: repeating-linear-gradient(90deg, #ecb939 0 11px, #372e29 11px 22px); box-shadow: 0 1px 0 var(--shadow-soft); }
+
+/* ---------- the loose snitch: lives on the page, not the screen ----------
+   Absolutely positioned inside the page, so it scrolls with the document and you meet it
+   at different heights as you read. One slow loop wanders the full length of the page. */
+.ld { position: relative; }
+.ld-snitch { position: absolute; left: 0; top: 18vh; z-index: 500; pointer-events: none; opacity: 0.6;
+  animation: ldSnitchFly 150s linear infinite; will-change: transform; }
+.ld-snitch-bob { animation: ldSnitchBob 5.2s ease-in-out infinite alternate; }
+.ld-snitch svg { display: block; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.18)); }
+.ld-snitch-wing { transform-origin: 32px 12px; animation: ldFlutter 0.22s ease-in-out infinite alternate; }
+.ld-snitch-wing-r { animation-delay: 0.11s; }
+@keyframes ldSnitchFly {
+  0%   { transform: translate(6vw, 0) rotate(-4deg); }
+  10%  { transform: translate(78vw, 900px) rotate(3deg); }
+  20%  { transform: translate(14vw, 2100px) rotate(-3deg); }
+  30%  { transform: translate(70vw, 3400px) rotate(2deg); }
+  40%  { transform: translate(22vw, 4900px) rotate(-2deg); }
+  50%  { transform: translate(82vw, 6400px) rotate(3deg); }
+  60%  { transform: translate(10vw, 8200px) rotate(-3deg); }
+  70%  { transform: translate(74vw, 10200px) rotate(2deg); }
+  80%  { transform: translate(18vw, 12300px) rotate(-2deg); }
+  90%  { transform: translate(80vw, 14200px) rotate(3deg); }
+  100% { transform: translate(6vw, 0) rotate(-4deg); }
+}
+@keyframes ldSnitchBob { from { transform: translateY(-9px); } to { transform: translateY(9px); } }
+@keyframes ldFlutter { from { transform: scaleY(1) rotate(0deg); } to { transform: scaleY(0.55) rotate(6deg); } }
+@media (max-width: 900px) { .ld-snitch { display: none; } }
+
+/* the cake as one more print, beside Thursday's map */
+.ld-cake-pol { margin: 26px 0 0 18px; width: 172px; padding: 9px 9px 26px; }
+.ld-cake-pol img { object-position: 50% 42%; filter: saturate(1) contrast(1.02) sepia(0.05); }
+.ld-cake-pol .ld-pol-cap { font-size: 0.86rem; }
+@media (max-width: 900px) { .ld-cake-pol { margin: 18px auto 0; } }
+
+/* ---------- sign-off, colophon ---------- */
+.ld-managed { text-align: center; font-family: var(--font-sans); font-style: italic; font-size: 1.3rem; color: var(--accent-oxblood); margin: 80px 0 0; }
+.ld-colophon { text-align: center; font-family: var(--font-sans); font-style: italic; font-size: 0.8rem; color: var(--text-muted); opacity: 0.7; margin: 10px 0 0; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .ld-day-grid { grid-template-columns: 1fr; gap: 28px 0; }
+  .ld-map-mini { max-width: 100%; }
+  .ld-legend-note { margin-left: 0; width: 100%; }
+}
+@media (max-width: 640px) {
+  .ld-wrap { padding: 8px 16px 72px; }
+  .ld-ticket { grid-template-columns: 1fr; }
+  .ld-tk-stub { flex-direction: row; padding: 12px 18px; border-right: none; border-bottom: 1.5px dashed var(--ld-ink-soft); }
+  .ld-tk-admit, .ld-tk-no { writing-mode: horizontal-tb; transform: none; }
+  .ld-tk-leg { grid-template-columns: 1fr; gap: 6px; }
+  .ld-tk-mid { display: none; }
+  .ld-tk-end-r { text-align: left; }
+  .ld-stamp { width: 84px; height: 84px; right: 14px; top: auto; bottom: 14px; }
+  .ld-tk-foot { padding-right: 104px; text-align: left; }
+  .ld-stop { grid-template-columns: 52px 22px minmax(0, 1fr); }
+  .ld-stop.has-photo.pol-r .ld-stop-body, .ld-stop.has-photo.pol-l .ld-stop-body,
+  .ld-stop.has-photo:not(.is-major).pol-r .ld-stop-body, .ld-stop.has-photo:not(.is-major).pol-l .ld-stop-body { grid-template-columns: 1fr; }
+  .ld-stop.has-photo.pol-l .ld-pol { order: 0; }
+  .ld-stop.has-photo .ld-pol { justify-self: start; width: 132px; margin: 12px 0 14px 2px; }
+  .ld-stop.has-photo:not(.is-major) .ld-pol { width: 104px; }
+  .ld-stop.has-photo.pol-l .ld-pol { justify-self: end; margin-right: 10px; }
+  .ld-m-place, .ld-m-off, .ld-m-ribbon-s { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ld-walker { display: none; }
+  .ld-ink, .ld-oath-wand { animation: none; }
+  .ld-legend { transition: none; }
+  .ld-owl { animation: none; }
+  .ld-reveal { animation: none; stroke-dashoffset: 0; }
+  .ld-pin { animation: none; }
+  .ld-pin, .ld-trail, .ld-pin-dot, .ld-m-off { transition: none; }
+  .ld-pol { transition: none; }
+  .ld-spark { display: none; }
+  .ld-snitch, .ld-snitch-bob, .ld-snitch-wing { animation: none; }
+  .ld-snitch { display: none; }
+}
