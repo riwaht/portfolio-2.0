@@ -3,11 +3,13 @@ import FeatureItinerary from './FeatureItinerary';
 import DeparturesBoard from './DeparturesBoard';
 import TerminalHeader from './TerminalHeader';
 import ArrivalsBoard from './ArrivalsBoard';
+import Passport from './Passport';
 import {
   journeyPoints,
   getJourneyStats,
   getFeaturedItineraries,
   getArrivalsLedger,
+  getPassportStamps,
   iataFor,
 } from '../../Utils/journeyData';
 import { pad2, prefersReducedMotion } from '../../Utils/ui';
@@ -28,6 +30,7 @@ function JourneyBoard() {
   const stats = getJourneyStats();
   const featured = getFeaturedItineraries();
   const ledger = getArrivalsLedger();
+  const stamps = getPassportStamps();
   const current = journeyPoints.find((p) => p.type === 'current');
   const currentCity = current ? current.city : null;
   // The departures board flies out of wherever home currently is (Paris · CDG).
@@ -98,6 +101,14 @@ function JourneyBoard() {
             <div className="jb-tag">{pad2(ledger.length)} stops · 2018 — now<br />Tap a flight for its boarding pass</div>
           </div>
           <ArrivalsBoard items={ledger} />
+        </section>
+
+        <section aria-label="Passport — a stamp for every country">
+          <div className="jb-slabel">
+            <h2>Passport</h2>
+            <div className="jb-tag">{pad2(stamps.length)} countries · stamped on entry<br />In order of first arrival</div>
+          </div>
+          <Passport stamps={stamps} />
         </section>
 
         <div className="jb-foot">
