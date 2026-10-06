@@ -137,7 +137,10 @@ function Passport({ stamps }) {
           io.disconnect();
         }
       },
-      { threshold: 0.3 }
+      // Fire once the spread's top edge is a quarter of the way up the screen,
+      // rather than a share of its height, so a tall stacked spread on a short
+      // phone still triggers.
+      { rootMargin: '0px 0px -25% 0px' }
     );
     io.observe(ref.current);
     return () => io.disconnect();
