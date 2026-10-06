@@ -108,7 +108,7 @@ function Stamp({ stamp, active, onFocus, stampedIn }) {
 }
 
 function caption(stamp) {
-  if (!stamp) return 'Hover a stamp for its entry';
+  if (!stamp) return 'Tap a stamp for its entry';
   if (stamp.home) return `${stamp.country} · home · ${stamp.visits} stops`;
   const stops = `${stamp.visits} ${stamp.visits === 1 ? 'stop' : 'stops'}`;
   return `${stamp.country} · first entry ${stamp.city}, ${stamp.date} · ${stops}`;
