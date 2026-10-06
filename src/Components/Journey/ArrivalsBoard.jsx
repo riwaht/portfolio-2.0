@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import FlapBoard from './FlapBoard';
+import BoardingPass from './BoardingPass';
 
 // Year for a ledger row: current resident → this year; dated stay → its year;
 // the undated home base → its own "Base" group at the foot of the board.
@@ -21,14 +23,24 @@ const remark = (it) => {
 const COLUMNS = ['Arrived', 'From', 'Flight', 'Remarks'];
 
 /**
- * The ARRIVALS board — the deduped arrivals ledger as a split-flap mirror of
- * Departures: one row per city, every row landed. Year-divider bands break the
- * ~22 rows into the index's year groups; the home base anchors the foot. A row
- * whose trip has a written-up itinerary links out (with the same "→" affordance
- * as Departures); the rest are static — so finished trips and any older stay you
- * later document become clickable here.
+ * The ARRIVALS board — the arrivals ledger as a split-flap mirror of Departures:
+ * one row per visit, every row landed. Year-divider bands break the rows into
+ * year groups; the home base anchors the foot. Every row is a button that
+ * unfolds its boarding pass underneath (one open at a time, Esc closes); a trip
+ * with a written-up itinerary links out from inside its pass.
  */
 function ArrivalsBoard({ items }) {
+  const [openId, setOpenId] = useState(null);
+
+  useEffect(() => {
+    if (!openId) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpenId(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [openId]);
+
   if (!items || items.length === 0) return null;
 
   // Group newest-first by year, Base group last (mirrors the old atlas index).
@@ -46,22 +58,25 @@ function ArrivalsBoard({ items }) {
     rows.push({ key: `yr-${year}`, divider: `—— ${year} ——` });
     byYear.get(year).forEach((it) => {
       const r = remark(it);
-      const href = it.itinerary || undefined;
+      const open = openId === it.id;
+      const panelId = `bp-${it.id}`;
       rows.push({
         key: it.id,
         live: it.status === 'RESIDENT',
-        href,
+        onToggle: () => setOpenId(open ? null : it.id),
+        expanded: open ? <BoardingPass item={it} id={panelId} /> : null,
+        panelId,
         cells: [
           { content: it.label, className: 'fb-when' },
           { content: it.city, className: 'fb-city', sub: it.region },
           { content: it.iata, className: 'fb-flight' },
           {
-            content: href ? (
+            content: (
               <>
                 {r.content}
-                <span className="fb-arrow" aria-hidden="true">→</span>
+                <span className="fb-chev" aria-hidden="true">▸</span>
               </>
-            ) : r.content,
+            ),
             className: `fb-status fb-status-${r.kind}`,
           },
         ],

@@ -95,7 +95,7 @@ function JourneyBoard() {
         <section aria-label="Arrivals — everywhere I've landed">
           <div className="jb-slabel">
             <h2>Arrivals</h2>
-            <div className="jb-tag">{pad2(ledger.length)} stops<br />Everywhere I&apos;ve landed · 2018 — now</div>
+            <div className="jb-tag">{pad2(ledger.length)} stops · 2018 — now<br />Tap a flight for its boarding pass</div>
           </div>
           <ArrivalsBoard items={ledger} />
         </section>
