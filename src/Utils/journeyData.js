@@ -138,6 +138,7 @@ export const journeyPoints = [
   {
     id: 'paris-jul-2023',
     city: 'Paris',
+    from: 'Beirut', // trip left from the home base, not the previous stop
     country: 'France',
     geo: { lon: 2.35, lat: 48.9 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -198,6 +199,7 @@ export const journeyPoints = [
   {
     id: 'athens-2024',
     city: 'Athens',
+    from: 'Beirut', // trip left from the home base, not the previous stop
     country: 'Greece',
     geo: { lon: 23.73, lat: 37.98 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -234,6 +236,7 @@ export const journeyPoints = [
   {
     id: 'tokyo-2025',
     city: 'Tokyo',
+    from: 'Beirut', // trip left from the home base, not the previous stop
     country: 'Japan',
     geo: { lon: 138.7, lat: 35.7 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -285,8 +288,8 @@ export const journeyPoints = [
     country: 'Japan',
     geo: { lon: 137.7, lat: 35.4 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
-    dateRange: 'Feb 2025',
-    month: 2,
+    dateRange: 'Mar 2025',
+    month: 3,
     type: 'travel',
     description: 'Visible for the two days I was there. Biked around Lake Kawaguchiko. Went to a very fancy ryokan with a private onsen. Had a 7-course Wagyu dinner. Unlimited wine. Stood in awe of Mt Fuji.',
     professional: null,
@@ -492,7 +495,31 @@ export const journeyPoints = [
     geo: { lon: 21.0, lat: 52.2 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
     dateRange: 'Nov 2025',
-    month: 10,
+    month: 11,
+    type: 'work',
+    description: 'Back to base.',
+    professional: null,
+  },
+  {
+    id: 'delphi-2025',
+    city: 'Delphi',
+    country: 'Greece',
+    geo: { lon: 22.5, lat: 38.48 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Nov 2025',
+    month: 11,
+    type: 'travel',
+    description: 'The ancient sanctuary of Apollo on the slopes of Mount Parnassus, once the navel of the world.',
+    professional: null,
+  },
+  {
+    id: 'warsaw-after-delphi',
+    city: 'Warsaw',
+    country: 'Poland',
+    geo: { lon: 21.0, lat: 52.2 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Nov 2025',
+    month: 11,
     type: 'work',
     description: 'Back to base.',
     professional: null,
@@ -515,8 +542,8 @@ export const journeyPoints = [
     country: 'Poland',
     geo: { lon: 21.0, lat: 52.2 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
-    dateRange: 'Nov 2025',
-    month: 11,
+    dateRange: 'Dec 2025',
+    month: 12,
     type: 'work',
     description: 'Back to wrap up the internship. Last pierogi runs and goodbyes.',
     professional: null,
@@ -682,6 +709,7 @@ export const journeyPoints = [
   {
     id: 'beirut-jul-2026',
     city: 'Beirut',
+    from: 'Paris', // Deauville was a day trip, so this flight left from Paris
     country: 'Lebanon',
     geo: { lon: 35.5, lat: 33.9 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -705,6 +733,7 @@ export const journeyPoints = [
   {
     id: 'dolomites-jul-2026',
     city: 'Dolomites',
+    from: 'Paris', // trip left from the home base, not the previous stop
     country: 'Italy',
     geo: { lon: 12.13, lat: 46.54 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -730,6 +759,7 @@ export const journeyPoints = [
   {
     id: 'corfu-aug-2026',
     city: 'Corfu',
+    from: 'Paris', // trip left from the home base, not the previous stop
     country: 'Greece',
     geo: { lon: 19.92, lat: 39.62 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -755,6 +785,7 @@ export const journeyPoints = [
   {
     id: 'london-sep-2026',
     city: 'London',
+    from: 'Paris', // trip left from the home base, not the previous stop
     country: 'United Kingdom',
     geo: { lon: -0.1, lat: 51.5 },
     get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
@@ -774,6 +805,19 @@ export const journeyPoints = [
     startDate: '2026-09-09',
     endDate: '2026-09-13',
     theme: 'parchment',
+  },
+  {
+    id: 'bois-francs-sep-2026',
+    city: 'Les Bois Francs',
+    from: 'Paris', // trip left from the home base, not the previous stop
+    country: 'France',
+    geo: { lon: 0.93, lat: 48.74 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: 'Sep 2026',
+    month: 9,
+    type: 'travel',
+    description: 'A weekend in the Normandy forest at Center Parcs Les Bois-Francs.',
+    professional: null,
   }
 ];
 
@@ -808,11 +852,41 @@ const IATA = {
   'Hyères': 'TLN',
   Athens: 'ATH', Aegina: 'AEG', Corinth: 'COR', Meteora: 'MET',
   Zakynthos: 'ZTH', 'Cape Sounio': 'SOU', Nafplio: 'NAF', Crete: 'HER',
-  Paros: 'PAS',
+  Paros: 'PAS', Delphi: 'DEL', 'Les Bois Francs': 'LBF',
 };
 
 export function iataFor(city) {
   return IATA[city] || '';
+}
+
+// Small deterministic string hash (FNV-1a), so a stop's gate and seat come out
+// the same on every render and every visit.
+function hashId(id) {
+  let h = 2166136261;
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+const GATE_LETTERS = 'ABCDEF';
+const SEAT_LETTERS = 'ABCDEF';
+const CLASS_BY_TYPE = { home: 'Home', work: 'Work', current: 'Resident' };
+
+// Boarding-pass details for a journey point. `from` defaults to the stop before
+// it in the full route (return stubs included), so a trip out of Warsaw reads WAW → X.
+function passFor(p, index) {
+  // An explicit `from` covers trips that left from base when the route has no
+  // return leg back to it (e.g. Greece 2024 → Tokyo really flew out of Beirut).
+  const origin = p.from || (index > 0 ? journeyPoints[index - 1].city : null);
+  const h = hashId(p.id);
+  return {
+    from: origin ? { city: origin, iata: IATA[origin] || '' } : null,
+    travelClass: CLASS_BY_TYPE[p.type] || 'Leisure',
+    gate: `${GATE_LETTERS[h % 6]}${1 + ((h >>> 3) % 30)}`,
+    seat: `${1 + ((h >>> 8) % 40)}${SEAT_LETTERS[(h >>> 14) % 6]}`,
+  };
 }
 
 const yearOf = (p) => {
@@ -872,6 +946,7 @@ const RETURN_STUB_IDS = new Set([
   'warsaw-after-scandinavia',
   'warsaw-after-london',
   'warsaw-after-paris',
+  'warsaw-after-delphi',
   'warsaw-return-2025',
   'paris-after-strasbourg',
   'paris-apr-2026',
@@ -889,11 +964,11 @@ export function getArrivalsLedger(today = new Date()) {
   // graduates in here. Return-to-base transit stubs are dropped entirely.
   const isLiveFeature = (p) => p.startDate && p.endDate && tripPhase(p, iso) !== 'documented';
   const isFutureUpcoming = (p) => p.type === 'upcoming' && !(p.endDate < iso);
-  const arrived = journeyPoints.filter(
-    (p) => !isLiveFeature(p) && !isFutureUpcoming(p) && !RETURN_STUB_IDS.has(p.id)
-  );
+  const arrived = journeyPoints
+    .map((p, idx) => ({ p, idx }))
+    .filter(({ p }) => !isLiveFeature(p) && !isFutureUpcoming(p) && !RETURN_STUB_IDS.has(p.id));
 
-  const items = arrived.map((p) => {
+  const items = arrived.map(({ p, idx }) => {
     const y = yearOf(p);
     const status =
       p.type === 'current' ? 'RESIDENT' : p.type === 'home' ? 'HOME' : 'STAMPED';
@@ -905,12 +980,7 @@ export function getArrivalsLedger(today = new Date()) {
           : y
             ? String(y)
             : 'HOME';
-    // Day-of-month off the trip's own start date, so two dated trips sharing a
-    // month still read newest-first (Dolomites Jul 23 above Beirut Jul 11).
-    // Undated rows fall back to 0 and keep journeyPoints order via the stable sort.
-    const day = p.startDate ? Number(p.startDate.slice(8, 10)) : 0;
-    const sortKey =
-      p.type === 'current' ? Infinity : y ? y * 10000 + (p.month || 0) * 100 + day : 0;
+    const sortKey = p.type === 'current' ? Infinity : y ? y * 100 + (p.month || 0) : 0;
     return {
       id: p.id,
       city: p.city,
@@ -921,12 +991,14 @@ export function getArrivalsLedger(today = new Date()) {
       status,
       sortKey,
       itinerary: p.itinerary || null,
+      description: p.description || '',
+      ...passFor(p, idx),
+      order: idx,
     };
   });
 
-  // Stable sort keeps journeyPoints order within a month for undated rows, so the
-  // legs of one multi-city trip still read in trip order (e.g. Vienna → Krakow →
-  // Copenhagen → Malmö in Sep 2025). Dated trips break that tie by start date above.
-  items.sort((a, b) => b.sortKey - a.sortKey);
+  // journeyPoints is chronological, so within a month the later entry is the more
+  // recent stop: Beirut (Dec 2025) reads above the Paris and Strasbourg legs before it.
+  items.sort((a, b) => b.sortKey - a.sortKey || b.order - a.order);
   return items;
 }

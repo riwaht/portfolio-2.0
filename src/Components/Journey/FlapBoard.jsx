@@ -11,7 +11,9 @@ function Flap({ children, delay = 0, className = '' }) {
 
 // One board row. A divider row ({ divider }) draws a thin year band; a data row
 // renders its cells, wrapping flap cells in <Flap> and stacking any `sub` line
-// beneath. Rows with `href` link (Departures); rows without are static (Arrivals).
+// beneath. Rows with `href` link (Departures); rows with `onToggle` are buttons
+// that show their `expanded` panel underneath (Arrivals boarding passes). The
+// panel can outlive `open` briefly while it plays its closing animation.
 // Departures emits neither dividers nor `live` rows, so the `.fb-divider` and
 // `.fb-row-live` styles land with the Arrivals board (Task 5), not here.
 function Row({ row, rowIndex, stagger }) {
@@ -38,11 +40,26 @@ function Row({ row, rowIndex, stagger }) {
     return <Fragment key={col}>{body}</Fragment>;
   });
   const className = `fb-row${row.live ? ' fb-row-live' : ''}`;
-  return row.href ? (
-    <a className={className} href={row.href} onClick={row.onClick}>{cells}</a>
-  ) : (
-    <div className={className}>{cells}</div>
-  );
+  if (row.href) {
+    return <a className={className} href={row.href} onClick={row.onClick}>{cells}</a>;
+  }
+  if (row.onToggle) {
+    return (
+      <>
+        <button
+          type="button"
+          className={`${className} fb-row-toggle${row.open ? ' fb-row-open' : ''}`}
+          aria-expanded={Boolean(row.open)}
+          aria-controls={row.open ? row.panelId : undefined}
+          onClick={row.onToggle}
+        >
+          {cells}
+        </button>
+        {row.expanded}
+      </>
+    );
+  }
+  return <div className={className}>{cells}</div>;
 }
 
 /**
@@ -52,7 +69,8 @@ function Row({ row, rowIndex, stagger }) {
  *
  *   title    — device header label (e.g. "CDG · PARIS")
  *   columns  — array of column-head strings
- *   rows     — array of { key, href?, onClick?, live?, cells: [{ content, className, flap?, sub? }] }
+ *   rows     — array of { key, href?, onClick?, onToggle?, open?, expanded?, panelId?, live?,
+ *               cells: [{ content, className, flap?, sub? }] }
  *              or a divider row { key, divider }
  *   ariaLabel— accessible name for the board region
  */

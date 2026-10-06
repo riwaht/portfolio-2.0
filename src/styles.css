@@ -3314,6 +3314,150 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
   box-shadow: 0 0 0 0 rgba(var(--ping), 0.5); animation: jbPing 2.4s ease-out infinite;
 }
 
+/* Arrivals rows are buttons that unfold a boarding pass. Reset the button chrome
+   so the row still reads as a board row. */
+.fb-row-toggle {
+  width: 100%; border: 0; background: none; font: inherit; text-align: left; cursor: pointer;
+}
+.fb-row-toggle:focus-visible { outline: 2px solid var(--d-amber); outline-offset: 1px; }
+.fb-row-open { background: rgba(var(--jb-screen-rgb), 0.07); }
+.fb-chev {
+  display: inline-block; margin-left: 8px; opacity: 0.55;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.fb-row-toggle:hover .fb-chev { opacity: 1; }
+.fb-row-open .fb-chev { transform: rotate(90deg); opacity: 1; }
+
+/* =================== BOARDING PASS =================== */
+/* A printed ticket in fixed paper-and-ink colours, so it reads the same on the
+   manila (light) and illuminated (dark) board. */
+/* The wrapper animates its row height so the board below slides open and shut
+   with the pass instead of jumping. */
+.bp-wrap {
+  display: grid; grid-template-rows: 1fr;
+  animation: bpGrow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.bp-clip { min-height: 0; overflow: hidden; }
+.bp-pad { padding: 8px 4px 18px; }
+.bp-wrap.bp-closing {
+  animation: bpShrink 0.45s cubic-bezier(0.4, 0, 0.2, 1) both; pointer-events: none;
+}
+.bp-closing .bp { animation: bpTuck 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
+@keyframes bpGrow {
+  from { grid-template-rows: 0fr; }
+  to { grid-template-rows: 1fr; }
+}
+@keyframes bpShrink {
+  from { grid-template-rows: 1fr; }
+  to { grid-template-rows: 0fr; }
+}
+/* The shrinking wrapper crops the pass from the bottom; the pass itself just
+   lifts and fades, so nothing leaves an empty strip behind. */
+@keyframes bpTuck {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-10px); opacity: 0; }
+}
+.bp {
+  --bp-paper: #FBF5E9; --bp-ink: #1A1410; --bp-soft: #6E6250; --bp-rule: #D8C8A6;
+  --bp-accent: #A8512C;
+  display: grid; grid-template-columns: 1fr 168px; max-width: 880px; margin: 0 auto;
+  background: var(--bp-paper); color: var(--bp-ink); border-radius: 10px;
+  box-shadow: 0 18px 34px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(26, 20, 16, 0.08);
+  position: relative; overflow: hidden;
+  transform-origin: top center;
+  animation: bpPrint 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* Ticket notches where the stub tears off. */
+.bp::before, .bp::after {
+  content: ""; position: absolute; right: 159px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--fb-face);
+}
+.bp::before { top: -9px; }
+.bp::after { bottom: -9px; }
+@keyframes bpPrint {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(-6px); }
+  to { clip-path: inset(0 0 0 0); transform: translateY(0); }
+}
+.bp-main { padding: 18px 22px 20px; min-width: 0; }
+.bp-stub {
+  padding: 18px 18px 16px; border-left: 2px dashed var(--bp-rule);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.bp-top {
+  display: flex; justify-content: space-between; gap: 4px 12px;
+  flex-wrap: wrap; padding-bottom: 10px; border-bottom: 1px solid var(--bp-rule);
+  font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600; white-space: nowrap;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--bp-accent);
+}
+.bp-lbl, .bp-grid dt {
+  display: block; font-family: var(--font-mono); font-size: 0.56rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--bp-soft);
+}
+.bp-route { display: flex; align-items: center; gap: 16px; margin: 14px 0 16px; }
+.bp-port { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.bp-port:last-child { text-align: right; }
+.bp-code {
+  font-family: var(--font-mono); font-weight: 600; font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+  letter-spacing: 0.04em; line-height: 1.05;
+}
+.bp-city {
+  font-size: 0.82rem; color: var(--bp-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* Dotted flight path with the plane in the middle. */
+.bp-path {
+  flex: 1; position: relative; height: 1px; min-width: 40px;
+  background-image: linear-gradient(90deg, var(--bp-soft) 40%, transparent 0);
+  background-size: 7px 1px; display: flex; justify-content: center; align-items: center;
+}
+.bp-plane {
+  background: var(--bp-paper); padding: 0 6px; color: var(--bp-accent);
+  font-size: 1.05rem; line-height: 1; transform: translateY(-1px);
+}
+.bp-grid {
+  display: grid; grid-template-columns: repeat(5, auto); justify-content: space-between;
+  gap: 8px 16px; margin: 0 0 14px; padding: 12px 0; border-top: 1px solid var(--bp-rule);
+  border-bottom: 1px solid var(--bp-rule);
+}
+.bp-grid dd {
+  margin: 3px 0 0; font-family: var(--font-mono); font-weight: 600; font-size: 0.86rem;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.bp-desc {
+  margin: 0; font-size: 1rem; line-height: 1.55; color: #3A2F22; font-style: italic;
+  max-width: 62ch;
+}
+.bp-link {
+  display: inline-block; margin-top: 12px; font-family: var(--font-mono); font-size: 0.7rem;
+  font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--bp-accent); text-decoration: none; border-bottom: 1px solid currentColor;
+}
+.bp-link span { display: inline-block; transition: transform 0.3s ease; }
+.bp-link:hover span { transform: translateX(4px); }
+.bp-link:focus-visible { outline: 2px solid var(--bp-accent); outline-offset: 3px; }
+.bp-stub-val {
+  display: block; margin-top: 2px; font-family: var(--font-mono); font-weight: 600;
+  font-size: 0.86rem; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.bp-barcode { margin-top: auto; width: 100%; height: 38px; fill: var(--bp-ink); }
+
+@media (max-width: 720px) {
+  .bp { grid-template-columns: 1fr; }
+  .bp::before, .bp::after { display: none; }
+  .bp-stub {
+    border-left: 0; border-top: 2px dashed var(--bp-rule);
+    flex-direction: row; align-items: flex-end; flex-wrap: wrap; gap: 10px 22px;
+  }
+  .bp-barcode { flex: 1 0 100%; height: 30px; }
+  .bp-grid { grid-template-columns: repeat(3, auto); }
+  .bp-main { padding: 16px 16px 18px; }
+  .bp-desc { font-size: 0.95rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bp, .bp-wrap { animation: none; }
+  .fb-chev, .bp-link span { transition: none; }
+}
+
 @media (max-width: 720px) {
   .fb-cols { display: none; }
   .fb-row { grid-template-columns: 62px 1fr auto; gap: 11px; }
