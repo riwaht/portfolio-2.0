@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FlapBoard from './FlapBoard';
 import BoardingPass from './BoardingPass';
+import { prefersReducedMotion } from '../../Utils/ui';
 
 // Year for a ledger row: current resident → this year; dated stay → its year;
 // the undated home base → its own "Base" group at the foot of the board.
@@ -31,11 +32,31 @@ const COLUMNS = ['Arrived', 'From', 'Flight', 'Remarks'];
  */
 function ArrivalsBoard({ items }) {
   const [openId, setOpenId] = useState(null);
+  // Passes still folding away after being closed; each unmounts when its
+  // closing animation ends (or straight away under reduced motion).
+  const [closingIds, setClosingIds] = useState([]);
+
+  const startClosing = (id) => {
+    if (!prefersReducedMotion()) setClosingIds((ids) => (ids.includes(id) ? ids : [...ids, id]));
+  };
+  const finishClosing = (id) => setClosingIds((ids) => ids.filter((x) => x !== id));
+  const toggle = (id) => {
+    if (openId === id) {
+      startClosing(id);
+      setOpenId(null);
+      return;
+    }
+    if (openId) startClosing(openId);
+    finishClosing(id);
+    setOpenId(id);
+  };
 
   useEffect(() => {
     if (!openId) return undefined;
     const onKey = (e) => {
-      if (e.key === 'Escape') setOpenId(null);
+      if (e.key !== 'Escape') return;
+      startClosing(openId);
+      setOpenId(null);
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
@@ -59,12 +80,16 @@ function ArrivalsBoard({ items }) {
     byYear.get(year).forEach((it) => {
       const r = remark(it);
       const open = openId === it.id;
+      const closing = !open && closingIds.includes(it.id);
       const panelId = `bp-${it.id}`;
       rows.push({
         key: it.id,
         live: it.status === 'RESIDENT',
-        onToggle: () => setOpenId(open ? null : it.id),
-        expanded: open ? <BoardingPass item={it} id={panelId} /> : null,
+        onToggle: () => toggle(it.id),
+        open,
+        expanded: open || closing ? (
+          <BoardingPass item={it} id={panelId} closing={closing} onClosed={() => finishClosing(it.id)} />
+        ) : null,
         panelId,
         cells: [
           { content: it.label, className: 'fb-when' },

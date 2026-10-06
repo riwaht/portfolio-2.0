@@ -43,40 +43,54 @@ function Port({ label, code, city }) {
  * class on the main ticket, the stop's own note underneath, and a tear-off stub
  * with a barcode. Gate and seat are generated per stop in getArrivalsLedger.
  */
-function BoardingPass({ item, id }) {
+function BoardingPass({ item, id, closing = false, onClosed }) {
   const date = item.label === 'NOW' ? 'Now' : item.label;
+  // The wrapper's own height animation is the last to finish, so its end marks
+  // the pass as fully folded away.
+  const handleAnimationEnd = (e) => {
+    if (closing && e.target === e.currentTarget && onClosed) onClosed();
+  };
   return (
-    <div className="bp-wrap" id={id}>
-      <div className="bp" role="group" aria-label={`Boarding pass to ${item.city}`}>
-        <div className="bp-main">
-          <div className="bp-top">
-            <span>RWA · Riwa Hoteit Intl</span>
-            <span>Boarding pass</span>
+    <div
+      className={`bp-wrap${closing ? ' bp-closing' : ''}`}
+      id={id}
+      aria-hidden={closing || undefined}
+      onAnimationEnd={handleAnimationEnd}
+    >
+      <div className="bp-clip">
+        <div className="bp-pad">
+          <div className="bp" role="group" aria-label={`Boarding pass to ${item.city}`}>
+            <div className="bp-main">
+              <div className="bp-top">
+                <span>RWA · Riwa Hoteit Intl</span>
+                <span>Boarding pass</span>
+              </div>
+              <div className="bp-route">
+                <Port label="From" code={item.from?.iata} city={item.from ? item.from.city : 'Origin'} />
+                <span className="bp-path" aria-hidden="true"><span className="bp-plane">✈</span></span>
+                <Port label="To" code={item.iata} city={item.city} />
+              </div>
+              <dl className="bp-grid">
+                <div><dt>Passenger</dt><dd>Riwa Hoteit</dd></div>
+                <div><dt>Date</dt><dd>{date}</dd></div>
+                <div><dt>Gate</dt><dd>{item.gate}</dd></div>
+                <div><dt>Seat</dt><dd>{item.seat}</dd></div>
+                <div><dt>Class</dt><dd>{item.travelClass}</dd></div>
+              </dl>
+              {item.description && <p className="bp-desc">{item.description}</p>}
+              {item.itinerary && (
+                <a className="bp-link" href={item.itinerary}>
+                  Read the itinerary <span aria-hidden="true">→</span>
+                </a>
+              )}
+            </div>
+            <div className="bp-stub" aria-hidden="true">
+              <div><span className="bp-lbl">To</span><span className="bp-stub-val">{item.iata || item.city}</span></div>
+              <div><span className="bp-lbl">Date</span><span className="bp-stub-val">{date}</span></div>
+              <div><span className="bp-lbl">Seat</span><span className="bp-stub-val">{item.seat}</span></div>
+              <Barcode seed={`${item.id}${item.label}`} />
+            </div>
           </div>
-          <div className="bp-route">
-            <Port label="From" code={item.from?.iata} city={item.from ? item.from.city : 'Origin'} />
-            <span className="bp-path" aria-hidden="true"><span className="bp-plane">✈</span></span>
-            <Port label="To" code={item.iata} city={item.city} />
-          </div>
-          <dl className="bp-grid">
-            <div><dt>Passenger</dt><dd>Riwa Hoteit</dd></div>
-            <div><dt>Date</dt><dd>{date}</dd></div>
-            <div><dt>Gate</dt><dd>{item.gate}</dd></div>
-            <div><dt>Seat</dt><dd>{item.seat}</dd></div>
-            <div><dt>Class</dt><dd>{item.travelClass}</dd></div>
-          </dl>
-          {item.description && <p className="bp-desc">{item.description}</p>}
-          {item.itinerary && (
-            <a className="bp-link" href={item.itinerary}>
-              Read the itinerary <span aria-hidden="true">→</span>
-            </a>
-          )}
-        </div>
-        <div className="bp-stub" aria-hidden="true">
-          <div><span className="bp-lbl">To</span><span className="bp-stub-val">{item.iata || item.city}</span></div>
-          <div><span className="bp-lbl">Date</span><span className="bp-stub-val">{date}</span></div>
-          <div><span className="bp-lbl">Seat</span><span className="bp-stub-val">{item.seat}</span></div>
-          <Barcode seed={`${item.id}${item.label}`} />
         </div>
       </div>
     </div>

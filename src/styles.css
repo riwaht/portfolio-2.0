@@ -3331,7 +3331,32 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 /* =================== BOARDING PASS =================== */
 /* A printed ticket in fixed paper-and-ink colours, so it reads the same on the
    manila (light) and illuminated (dark) board. */
-.bp-wrap { padding: 8px 4px 18px; }
+/* The wrapper animates its row height so the board below slides open and shut
+   with the pass instead of jumping. */
+.bp-wrap {
+  display: grid; grid-template-rows: 1fr;
+  animation: bpGrow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.bp-clip { min-height: 0; overflow: hidden; }
+.bp-pad { padding: 8px 4px 18px; }
+.bp-wrap.bp-closing {
+  animation: bpShrink 0.45s cubic-bezier(0.4, 0, 0.2, 1) both; pointer-events: none;
+}
+.bp-closing .bp { animation: bpTuck 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
+@keyframes bpGrow {
+  from { grid-template-rows: 0fr; }
+  to { grid-template-rows: 1fr; }
+}
+@keyframes bpShrink {
+  from { grid-template-rows: 1fr; }
+  to { grid-template-rows: 0fr; }
+}
+/* The shrinking wrapper crops the pass from the bottom; the pass itself just
+   lifts and fades, so nothing leaves an empty strip behind. */
+@keyframes bpTuck {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-10px); opacity: 0; }
+}
 .bp {
   --bp-paper: #FBF5E9; --bp-ink: #1A1410; --bp-soft: #6E6250; --bp-rule: #D8C8A6;
   --bp-accent: #A8512C;
@@ -3429,7 +3454,7 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
   .bp-desc { font-size: 0.95rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bp { animation: none; }
+  .bp, .bp-wrap { animation: none; }
   .fb-chev, .bp-link span { transition: none; }
 }
 

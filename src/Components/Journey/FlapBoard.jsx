@@ -12,7 +12,8 @@ function Flap({ children, delay = 0, className = '' }) {
 // One board row. A divider row ({ divider }) draws a thin year band; a data row
 // renders its cells, wrapping flap cells in <Flap> and stacking any `sub` line
 // beneath. Rows with `href` link (Departures); rows with `onToggle` are buttons
-// that open their `expanded` panel underneath (Arrivals boarding passes).
+// that show their `expanded` panel underneath (Arrivals boarding passes). The
+// panel can outlive `open` briefly while it plays its closing animation.
 // Departures emits neither dividers nor `live` rows, so the `.fb-divider` and
 // `.fb-row-live` styles land with the Arrivals board (Task 5), not here.
 function Row({ row, rowIndex, stagger }) {
@@ -47,9 +48,9 @@ function Row({ row, rowIndex, stagger }) {
       <>
         <button
           type="button"
-          className={`${className} fb-row-toggle${row.expanded ? ' fb-row-open' : ''}`}
-          aria-expanded={Boolean(row.expanded)}
-          aria-controls={row.expanded ? row.panelId : undefined}
+          className={`${className} fb-row-toggle${row.open ? ' fb-row-open' : ''}`}
+          aria-expanded={Boolean(row.open)}
+          aria-controls={row.open ? row.panelId : undefined}
           onClick={row.onToggle}
         >
           {cells}
@@ -68,7 +69,7 @@ function Row({ row, rowIndex, stagger }) {
  *
  *   title    — device header label (e.g. "CDG · PARIS")
  *   columns  — array of column-head strings
- *   rows     — array of { key, href?, onClick?, onToggle?, expanded?, panelId?, live?,
+ *   rows     — array of { key, href?, onClick?, onToggle?, open?, expanded?, panelId?, live?,
  *               cells: [{ content, className, flap?, sub? }] }
  *              or a divider row { key, divider }
  *   ariaLabel— accessible name for the board region
