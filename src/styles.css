@@ -3518,7 +3518,9 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
 }
 .pp-head { padding-bottom: 10px; border-bottom: 1px solid var(--pp-rule); }
 .pp-foot { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--pp-rule); align-items: baseline; }
-.pp-caption { color: var(--pp-ink); letter-spacing: 0.14em; min-height: 1em; }
+.pp-caption { color: var(--pp-ink); letter-spacing: 0.14em; line-height: 1.7; }
+/* Room for the longest caption (Greece, three lines) so hovering doesn't resize the book. */
+.pp-page-left .pp-foot { min-height: calc(3 * 1.7em + 10px); }
 .pp-pageno { font-weight: 600; }
 .pp-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px;
@@ -3560,6 +3562,10 @@ body.journey-page .footer-text { color: var(--jb-ink-soft); }
   .pp-page-right { border-radius: 2px 2px 8px 8px; box-shadow: inset 0 22px 26px -22px rgba(26, 20, 16, 0.35); }
   .pp-grid { min-height: 0; }
   .pp-page { padding: 18px 16px 14px; }
+  .pp-page-left .pp-foot { min-height: calc(4 * 1.7em + 10px); }
+}
+@media (max-width: 360px) {
+  .pp-page-left .pp-foot { min-height: calc(5 * 1.7em + 10px); }
 }
 @media (max-width: 440px) {
   .pp-grid { grid-template-columns: repeat(2, 1fr); }

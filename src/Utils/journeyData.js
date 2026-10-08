@@ -1020,7 +1020,7 @@ export function getPassportStamps(today = new Date()) {
   chronological.forEach((it) => {
     const entry = byCountry.get(it.country);
     if (entry) {
-      entry.visits += 1;
+      if (!entry.cities.includes(it.city)) entry.cities.push(it.city);
       return;
     }
     byCountry.set(it.country, {
@@ -1030,7 +1030,8 @@ export function getPassportStamps(today = new Date()) {
       iata: it.iata,
       date: it.status === 'HOME' ? 'Home' : it.label,
       home: it.status === 'HOME',
-      visits: 1,
+      // Distinct cities, so the per-country counts add up to the header's city total.
+      cities: [it.city],
     });
   });
   return [...byCountry.values()].map((s, i) => ({ ...s, seed: hashId(s.country), index: i }));

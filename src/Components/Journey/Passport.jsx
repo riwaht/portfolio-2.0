@@ -80,9 +80,7 @@ function BoxStamp({ stamp, shape }) {
 function Stamp({ stamp, active, onFocus, stampedIn }) {
   const look = lookFor(stamp);
   const id = `pp-${stamp.code}`;
-  const label = stamp.home
-    ? `${stamp.country}, home, ${stamp.visits} stops`
-    : `${stamp.country}, first entry ${stamp.city} ${stamp.date}, ${stamp.visits} ${stamp.visits === 1 ? 'stop' : 'stops'}`;
+  const label = caption(stamp);
   return (
     <button
       type="button"
@@ -107,11 +105,16 @@ function Stamp({ stamp, active, onFocus, stampedIn }) {
   );
 }
 
+// "2 cities: Warsaw, Krakow" — the count matches the header's city total.
+function citiesLine(stamp) {
+  const n = stamp.cities.length;
+  return `${n} ${n === 1 ? 'city' : 'cities'}: ${stamp.cities.join(', ')}`;
+}
+
 function caption(stamp) {
   if (!stamp) return 'Tap a stamp for its entry';
-  if (stamp.home) return `${stamp.country} · home · ${stamp.visits} stops`;
-  const stops = `${stamp.visits} ${stamp.visits === 1 ? 'stop' : 'stops'}`;
-  return `${stamp.country} · first entry ${stamp.city}, ${stamp.date} · ${stops}`;
+  if (stamp.home) return `${stamp.country} · home · ${citiesLine(stamp)}`;
+  return `${stamp.country} · first entry ${stamp.city}, ${stamp.date} · ${citiesLine(stamp)}`;
 }
 
 /**
