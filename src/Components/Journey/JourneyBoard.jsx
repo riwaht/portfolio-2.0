@@ -3,11 +3,13 @@ import FeatureItinerary from './FeatureItinerary';
 import DeparturesBoard from './DeparturesBoard';
 import TerminalHeader from './TerminalHeader';
 import ArrivalsBoard from './ArrivalsBoard';
+import Passport from './Passport';
 import {
   journeyPoints,
   getJourneyStats,
   getFeaturedItineraries,
   getArrivalsLedger,
+  getPassportStamps,
   iataFor,
 } from '../../Utils/journeyData';
 import { pad2, prefersReducedMotion } from '../../Utils/ui';
@@ -24,10 +26,13 @@ import { pad2, prefersReducedMotion } from '../../Utils/ui';
  */
 function JourneyBoard() {
   const [departing, setDeparting] = useState(null);
+  // Arrivals and Passport share one section; the titles double as tabs.
+  const [view, setView] = useState('board');
 
   const stats = getJourneyStats();
   const featured = getFeaturedItineraries();
   const ledger = getArrivalsLedger();
+  const stamps = getPassportStamps();
   const current = journeyPoints.find((p) => p.type === 'current');
   const currentCity = current ? current.city : null;
   // The departures board flies out of wherever home currently is (Paris · CDG).
@@ -92,12 +97,33 @@ function JourneyBoard() {
           </section>
         )}
 
-        <section aria-label="Arrivals — everywhere I've landed">
+        <section aria-label="Arrivals and passport">
           <div className="jb-slabel">
-            <h2>Arrivals</h2>
-            <div className="jb-tag">{pad2(ledger.length)} stops · 2018 — now<br />Tap a flight for its boarding pass</div>
+            <div className="jb-tabs" role="tablist" aria-label="Arrivals view">
+              {[['board', 'Arrivals'], ['passport', 'Passport']].map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  role="tab"
+                  id={`jb-tab-${key}`}
+                  aria-selected={view === key}
+                  aria-controls="jb-tabpanel"
+                  className={`jb-tab${view === key ? ' jb-tab-on' : ''}`}
+                  onClick={() => setView(key)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="jb-tag">
+              {view === 'board'
+                ? (<>{pad2(ledger.length)} stops · 2018 — now<br />Tap a flight for its boarding pass</>)
+                : (<>{pad2(stamps.length)} countries · stamped on entry<br />In order of first arrival</>)}
+            </div>
           </div>
-          <ArrivalsBoard items={ledger} />
+          <div id="jb-tabpanel" role="tabpanel" aria-labelledby={`jb-tab-${view}`}>
+            {view === 'board' ? <ArrivalsBoard items={ledger} /> : <Passport stamps={stamps} />}
+          </div>
         </section>
 
         <div className="jb-foot">

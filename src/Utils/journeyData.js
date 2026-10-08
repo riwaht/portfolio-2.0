@@ -1002,3 +1002,37 @@ export function getArrivalsLedger(today = new Date()) {
   items.sort((a, b) => b.sortKey - a.sortKey || b.order - a.order);
   return items;
 }
+
+/* ---- Passport stamps ---- */
+
+const COUNTRY_CODES = {
+  Lebanon: 'LBN', France: 'FRA', Italy: 'ITA', Greece: 'GRC', Japan: 'JPN',
+  Poland: 'POL', 'Czech Republic': 'CZE', Hungary: 'HUN', Austria: 'AUT',
+  Denmark: 'DNK', Sweden: 'SWE', 'United Kingdom': 'GBR', Netherlands: 'NLD',
+};
+
+// One stamp per country, in the order each was first entered. Built off the
+// arrivals ledger so it only counts places already landed in, and so the home
+// base (undated, at the ledger's foot) comes out first.
+export function getPassportStamps(today = new Date()) {
+  const chronological = [...getArrivalsLedger(today)].reverse();
+  const byCountry = new Map();
+  chronological.forEach((it) => {
+    const entry = byCountry.get(it.country);
+    if (entry) {
+      if (!entry.cities.includes(it.city)) entry.cities.push(it.city);
+      return;
+    }
+    byCountry.set(it.country, {
+      country: it.country,
+      code: COUNTRY_CODES[it.country] || it.country.slice(0, 3).toUpperCase(),
+      city: it.city,
+      iata: it.iata,
+      date: it.status === 'HOME' ? 'Home' : it.label,
+      home: it.status === 'HOME',
+      // Distinct cities, so the per-country counts add up to the header's city total.
+      cities: [it.city],
+    });
+  });
+  return [...byCountry.values()].map((s, i) => ({ ...s, seed: hashId(s.country), index: i }));
+}
