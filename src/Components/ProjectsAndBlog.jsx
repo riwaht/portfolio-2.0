@@ -88,6 +88,17 @@ function ProjectsAndBlog() {
 
     const blogPosts = [
         {
+            id: 5,
+            title: "Building a project staffing app in Mistral Studio",
+            date: "November 2026",
+            readTime: "2 min watch",
+            tags: ["AI", "Mistral"],
+            excerpt: "A short Mistral video where I walk through a project staffing app built in Mistral Studio. I didn't build this use case, but it runs on Apps, the product my team works on, so I got to be the one showing it.",
+            externalUrl: "https://youtu.be/Oe5z6BsWf7w",
+            externalLabel: "↗ Watch on YouTube",
+            variant: "mistral"
+        },
+        {
             id: 4,
             title: "Spaces: A CLI Built for Humans and Agents",
             date: "March 2026",
@@ -357,7 +368,7 @@ function ProjectsAndBlog() {
                                         </div>
                                     )}
                                     {post.externalUrl && (
-                                        <span className="blog-card-external-hint">↗ Read on mistral.ai</span>
+                                        <span className="blog-card-external-hint">{post.externalLabel || '↗ Read on mistral.ai'}</span>
                                     )}
                                 </article>
                             ))}
