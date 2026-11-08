@@ -818,6 +818,19 @@ export const journeyPoints = [
     type: 'travel',
     description: 'A weekend in the Normandy forest at Center Parcs Les Bois-Francs.',
     professional: null,
+  },
+  {
+    id: 'london-nov-2026',
+    city: 'London',
+    from: 'Paris', // trip left from the home base, not the previous stop
+    country: 'United Kingdom',
+    geo: { lon: -0.1, lat: 51.5 },
+    get coordinates() { return geoToGrid(this.geo.lon, this.geo.lat); },
+    dateRange: '2–6 Nov 2026',
+    month: 11,
+    type: 'travel',
+    description: 'A team trip to London. We ate our way through the city, Din Tai Fung included, and stopped by the new Harry Potter store.',
+    professional: null,
   }
 ];
 
